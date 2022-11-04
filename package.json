@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fluentui/react": "^8.99.3",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.12",
+    "@mui/styled-engine-sc": "^5.10.6",
+    "office-ui-fabric-core": "^11.0.1",
+    "styled-components": "^5.3.6"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.2.1"
+  }
+}
