@@ -3,6 +3,7 @@ import HomePage from "./HomePage";
 
 test("test HomePage", () => {
   render(<HomePage />);
-  const linkElement = screen.getByText(/insert test/i);
-  expect(linkElement).toBeInTheDocument();
+  //insert expect statements to test component below
+  // const linkElement = screen.getByText(/insert test/i);
+  // expect(linkElement).toBeInTheDocument();
 });

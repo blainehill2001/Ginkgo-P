@@ -3,7 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import MyFirstComponent from "../MyFirstComponent";
 import NavBar from "../NavBar";
 import HomePage from "../HomePage";
-import Particles from "../../utils/particles.js-master/src/particles.js";
+import Body from "../Body";
+import Particles from "../../assets/particles.js-master/src/particles.js";
 
 function App() {
   window.onload = function () {
@@ -52,8 +53,10 @@ function App() {
   return (
     <div className="App">
       <header>
+        {/* <MyFirstComponent /> */}
         <NavBar />
         <HomePage />
+        <Body />
       </header>
 
       <canvas className="background"></canvas>
