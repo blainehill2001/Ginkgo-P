@@ -8,7 +8,9 @@ To launch the frontend, first download Node.js from [here](https://nodejs.org/en
 
 Then, run npm i in the root project folder to install all necessary node packages. cd into kompare_backend and kompare_frontend and do the same.
 
-Create a .env file with a value for MONGODB_URL as per their documentation
+You will have to create an account with MongoDB [here](https://www.mongodb.com/home).
+
+Then, cd into kompare_backend. Create a .env file with a value for MONGODB_URL as per their documentation [here](https://www.mongodb.com/docs/manual/reference/connection-string/).
 
 To run on your local machine, enter 'npm run start'
 
