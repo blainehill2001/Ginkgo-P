@@ -54,7 +54,6 @@ const getAlgoResult = (req, res, next) => {
     return mongo_check.result;
   } else {
     //if it is not in mongodb, call loadProcess;
-    function load(data) {}
   }
 
   // async function getResult() {
