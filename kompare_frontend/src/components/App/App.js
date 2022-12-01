@@ -1,6 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import MyFirstComponent from "../MyFirstComponent";
+import MyFirstComponent from "../MyFirstComponent";
 import NavBar from "../NavBar";
 import HomePage from "../HomePage";
 import Body from "../Body";
@@ -52,15 +52,14 @@ function App() {
   }
   return (
     <div className="App">
-      <header>
-        {/* <MyFirstComponent /> */}
+      <>
         <NavBar />
-        <HomePage />
-        <Body />
-      </header>
-
-      <canvas className="background"></canvas>
-      <script src="../../utils/particles.js-master/src/particles.js"></script>
+        <MyFirstComponent />
+      </>
+      <>
+        <canvas className="background"></canvas>
+        <script src="../../assets/particles.js-master/src/particles.js"></script>
+      </>
     </div>
   );
 }

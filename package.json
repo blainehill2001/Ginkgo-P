@@ -1,16 +1,23 @@
 {
-  "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "@fluentui/react": "^8.99.3",
-    "@fontsource/roboto": "^4.5.8",
-    "@mui/icons-material": "^5.10.9",
-    "@mui/material": "^5.10.12",
-    "@mui/styled-engine-sc": "^5.10.6",
-    "office-ui-fabric-core": "^11.0.1",
-    "styled-components": "^5.3.6"
+  "name": "kompare2.0",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"cd kompare_backend && npm run dev\" \"cd kompare_frontend && npm run start\""
   },
-  "devDependencies": {
-    "tailwindcss": "^3.2.1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blainehill2001/KomPare.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blainehill2001/KomPare/issues"
+  },
+  "homepage": "https://github.com/blainehill2001/KomPare#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0"
   }
 }
