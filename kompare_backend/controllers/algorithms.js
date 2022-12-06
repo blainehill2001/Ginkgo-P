@@ -41,12 +41,12 @@ function returnData(data) {
   return data;
 }
 
-const getAlgoResult = (req, res, next) => {
+const getAlgoResult = async (req, res, next) => {
   //check redis for AlgorithmCall object as key
   //if it is in cache
   //return object.result
   //if it is not in cache
-  //check mongodb using mongoose queries and await
+  // check mongodb using mongoose queries and await
   const mongo_check = searchMongo(req.body);
   //if it is in mongodb
   if (typeof is_in_mongodb !== "undefined") {
@@ -56,24 +56,15 @@ const getAlgoResult = (req, res, next) => {
     //if it is not in mongodb, call loadProcess;
   }
 
-  // async function getResult() {
-  //   const res = await loadProcess(...Object.values(req.body)).then(
-  //     //   (result) => (),
-  //     (result) => {
-  //       return result;
-  //     },
-  //     console.log
-  //   );
-  //   return res;
-  // }
-  // const algocall_result = getResult();
-  // console.log(algocall_result);
-  //   }
+  const algocall_result = await loadProcess(...Object.values(req.body)).then(
+    (x) => x,
+    console.log
+  );
 
   //store answer in cache
-  //   let finished_algocall = new AlgorithmCall(
-  //     _.merge(req.body, { result: algocall_result })
-  //   );
+  let finished_algocall = new AlgorithmCall(
+    _.merge(req.body, { result: algocall_result })
+  );
   //store finished_algocall in cache
 
   //store answer in mongodb
@@ -81,6 +72,7 @@ const getAlgoResult = (req, res, next) => {
   res.json({
     message:
       "GET request receieved. Check console log for test of spawned process.",
+    algocall_result: finished_algocall,
   });
   next();
 };
