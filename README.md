@@ -35,3 +35,4 @@ To be filled out later - Blaine Nov 4th
 * [Mongoose Tutorial](https://www.youtube.com/watch?v=DZBGEVgL2eE&ab_channel=WebDevSimplified)
 * [Calling Python Script with NodeJS Express Server](https://stackoverflow.com/questions/44423931/calling-python-script-with-node-js-express-server)
 * [How to Access Return Value of a Promise](https://dev.to/ramonak/javascript-how-to-access-the-return-value-of-a-promise-object-1bck)
+* [How to Use Redis With Express and MongoDB/Mongoose](https://blog.devsharma.live/how-to-use-redis-with-express)

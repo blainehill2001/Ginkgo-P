@@ -37,44 +37,57 @@ async function searchMongo(body) {
   return doc;
 }
 
-function returnData(data) {
-  return data;
-}
-
 const getAlgoResult = async (req, res, next) => {
   //check redis for AlgorithmCall object as key
   //if it is in cache
+  //TODO
   //return object.result
   //if it is not in cache
-  // check mongodb using mongoose queries and await
-  const mongo_check = searchMongo(req.body);
+  var mongo_check;
+  searchMongo(req.body).then((res) => {
+    mongo_check = res;
+  });
   //if it is in mongodb
-  if (typeof is_in_mongodb !== "undefined") {
+  if (typeof mongo_check !== "undefined") {
     //return object.result
-    return mongo_check.result;
+    return res.status(201).json({
+      algocall_result: mongo_check.result,
+      message:
+        "GET request receieved. Found algorithm result for inputs in MongoDB.",
+    });
+    // next();
   } else {
     //if it is not in mongodb, call loadProcess;
+
+    const algocall_result = await loadProcess(...Object.values(req.body)).then(
+      (x) => x,
+      console.log
+    );
+
+    let finished_algocall = new AlgorithmCall(
+      _.merge(req.body, { result: algocall_result })
+    );
+
+    //store finished_algocall in cache
+    //TODO
+    //store answer in mongodb
+    return finished_algocall
+      .save()
+      .then(() => {
+        res.status(201).json({
+          message:
+            "GET request receieved. Ran algorithm and stored results [in cache] AND MongoDB.",
+          algocall_result: finished_algocall,
+        });
+      })
+      .catch((err) => {
+        res.status(400).json({
+          message: `GET request receieved. Ran algorithm and stored results [in cache] but NOT MongoDB. See error: \n${err}`,
+          algocall_result: finished_algocall,
+        });
+      });
+    // next();
   }
-
-  const algocall_result = await loadProcess(...Object.values(req.body)).then(
-    (x) => x,
-    console.log
-  );
-
-  //store answer in cache
-  let finished_algocall = new AlgorithmCall(
-    _.merge(req.body, { result: algocall_result })
-  );
-  //store finished_algocall in cache
-
-  //store answer in mongodb
-  //   finished_algocall.save();
-  res.json({
-    message:
-      "GET request receieved. Check console log for test of spawned process.",
-    algocall_result: finished_algocall,
-  });
-  next();
 };
 
 const postAlgoResult = (req, res, next) => {
