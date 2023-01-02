@@ -23,10 +23,9 @@ To be filled out later - Blaine Nov 4th
 To be filled out later - Blaine Nov 4th
 
 ## Helpful Resources Used
-* [Particles JS](https://marcbruederlin.github.io/particles.js/)
+* [Particles JS](https://particles.js.org/)
 * [Postman](https://www.postman.com/downloads/)
 * [React Query](https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com/)
-* [Organizing Express Routes](https://blog.devsharma.live/how-to-use-redis-with-express)
 * [Example of Amazing React + Express project](https://github.com/oldboyxx/jira_clone)
 * [Examples of Routes and Controllers](https://lo-victoria.com/build-a-rest-api-with-nodejs-routes-and-controllers)
 * [MongoDB REST Tutorial](https://www.mongodb.com/languages/express-mongodb-rest-api-tutorial)

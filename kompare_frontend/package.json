@@ -12,6 +12,7 @@
     "bootstrap": "^5.2.2",
     "daisyui": "^2.46.1",
     "jquery": "^3.6.3",
+    "json": "^11.0.0",
     "particlesjs": "^2.2.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",

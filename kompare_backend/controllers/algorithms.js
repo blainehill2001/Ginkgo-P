@@ -3,18 +3,18 @@ var bbPromise = require("bluebird");
 const AlgorithmCall = require("../schemas/algorithm.model");
 const _ = require("lodash");
 
-function loadProcess(script_type, script_name, ...args) {
+function loadProcess(script_language, script_name, ...args) {
   /*
         Inputs:
-            script_type: String => which language our script is
+            script_language: String => which language our script is
             script_name: String => title of script with file extension (e.g. "script1.py" not "script1")
             ...args: String => values of the rest of the parsed JSON object passed to api call
     */
 
   return new bbPromise(function (resolve, reject) {
-    var process = spawn(`${script_type}`, [
+    var process = spawn(`${script_language}`, [
       `./algorithm_scripts/${script_name}`,
-      ...args,
+      ...args
     ]);
     let process_result = "";
     process.stdout.on("data", function (data) {
@@ -36,8 +36,11 @@ async function searchMongo(body) {
   const doc = await AlgorithmCall.findOne(body).exec();
   return doc;
 }
-
-const getAlgoResult = async (req, res, next) => {
+const getAlgoResult = (req, res, next) => {
+  res.json({ message: "GET request receieved." });
+  next();
+};
+const postAlgoResult = async (req, res, next) => {
   //check redis for AlgorithmCall object as key
   //if it is in cache
   //TODO
@@ -53,7 +56,7 @@ const getAlgoResult = async (req, res, next) => {
     return res.status(201).json({
       algocall_result: mongo_check.result,
       message:
-        "GET request receieved. Found algorithm result for inputs in MongoDB.",
+        "GET request receieved. Found algorithm result for inputs in MongoDB."
     });
     // next();
   } else {
@@ -77,22 +80,17 @@ const getAlgoResult = async (req, res, next) => {
         res.status(201).json({
           message:
             "GET request receieved. Ran algorithm and stored results [in cache] AND MongoDB.",
-          algocall_result: finished_algocall,
+          algocall_result: finished_algocall
         });
       })
       .catch((err) => {
         res.status(400).json({
           message: `GET request receieved. Ran algorithm and stored results [in cache] but NOT MongoDB. See error: \n${err}`,
-          algocall_result: finished_algocall,
+          algocall_result: finished_algocall
         });
       });
     // next();
   }
-};
-
-const postAlgoResult = (req, res, next) => {
-  res.json({ message: "POST request receieved." });
-  next();
 };
 
 const putAlgoResult = (req, res, next) => {
@@ -109,5 +107,5 @@ module.exports = {
   getAlgoResult,
   postAlgoResult,
   putAlgoResult,
-  deleteAlgoResult,
+  deleteAlgoResult
 };

@@ -5,86 +5,139 @@ import * as yup from "yup";
 
 const MyFirstComponent = () => {
   const onSubmit = async (data) => {
-    const fields = { fields: data };
+    console.log("we got here!!");
+    const params = {
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": JSON.stringify(data)
+    };
+
+    console.log(params);
+
+    const response = await fetch(
+      "http://localhost:8080/api/algorithms",
+      params
+    );
+    const jsonData = await response.json();
+
+    console.log(response.status);
+    console.log(jsonData);
+  };
+
+  const onErrors = (data) => {
+    console.log(data);
   };
 
   const schema = yup.object().shape({
-    email: yup.string().email().required(),
-    password: yup.string().required().min(6),
+    language: yup.string().required(),
+    script: yup.string().required(),
+    query: yup.string().required()
   });
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors }
   } = useForm({
     mode: "onBlur",
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema)
   });
 
   return (
     <div className="justify-center py-20">
       <div className="group relative mx-auto w-96 overflow-hidden rounded-[16px] bg-gray-300 p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
-        <div className="group-hover:animate-spin-slow invisible absolute -top-40 -bottom-40 left-10 right-10 bg-gradient-to-r from-transparent via-white/90 to-transparent group-hover:visible"></div>
         <div className="relative rounded-[15px] bg-white p-6">
           <h5>React Hook Form - MyFirstComponent Example</h5>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit, onErrors)}>
             <div className="mb-8">
               <label
-                htmlFor="email"
+                htmlFor="language"
                 className={`block font-bold text-sm mb-2 ${
-                  errors.email ? "text-red-400" : "text-purple-400"
+                  errors.language ? "text-red-400" : "text-purple-500"
                 }`}
               >
-                Email
+                Language
               </label>
               <input
-                {...register("email")}
+                {...register("language")}
                 type="text"
-                id="email"
-                placeholder="hey@chrisoncode.io"
+                id="language"
+                placeholder="e.g., python"
                 autoComplete="off"
-                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-500 focus:bg-purple-600 ${
-                  errors.email
+                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-600 ${
+                  errors.language
                     ? "text-red-300 border-red-400"
-                    : "text-purple-200 border-purple-400"
+                    : "text-purple-500 border-purple-400"
                 }`}
               />
-              {errors.email && (
+              {errors.language && (
                 <p className="text-red-500 text-sm mt-2">
-                  A valid email is required.
+                  A valid language is required.
                 </p>
               )}
             </div>
 
             <div className="mb-8">
               <label
-                htmlFor="password"
+                htmlFor="script"
                 className={`block font-bold text-sm mb-2 ${
-                  errors.password ? "text-red-400" : "text-purple-400"
+                  errors.script ? "text-red-400" : "text-purple-500"
                 }`}
               >
-                Password
+                Script Name
               </label>
               <input
-                {...register("password")}
-                type="password"
-                id="password"
-                placeholder="superduperpassword"
+                {...register("script")}
+                type="script"
+                id="script"
+                placeholder="e.g., script1.py"
                 autoComplete="off"
-                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4 text-purple-200 focus:bg-purple-600 placeholder-purple-500 ${
-                  errors.password ? "border-red-400" : "border-purple-400"
+                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4 text-purple-500 focus:bg-purple-600 placeholder-purple-300 ${
+                  errors.script ? "border-red-400" : "border-purple-400"
                 }`}
               />
-              {errors.password && (
+              {errors.script && (
                 <p className="text-red-500 text-sm mt-2">
-                  Your password is required.
+                  Your Script Name is required.
                 </p>
               )}
             </div>
 
-            <button className="inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm">
+            <div className="mb-8">
+              <label
+                htmlFor="query"
+                className={`block font-bold text-sm mb-2 ${
+                  errors.query ? "text-red-400" : "text-purple-500"
+                }`}
+              >
+                Query
+              </label>
+              <input
+                {...register("query")}
+                type="text"
+                id="query"
+                placeholder="test query!"
+                autoComplete="off"
+                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-600 ${
+                  errors.query
+                    ? "text-red-300 border-red-400"
+                    : "text-purple-500 border-purple-400"
+                }`}
+              />
+              {errors.query && (
+                <p className="text-red-500 text-sm mt-2">
+                  A valid query is required.
+                </p>
+              )}
+            </div>
+
+            <button
+              className="inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm"
+              type="submit"
+            >
               Submit
             </button>
           </form>

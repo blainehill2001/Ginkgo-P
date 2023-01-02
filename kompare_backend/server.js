@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 const mongoose = require("mongoose");
+const cors = require("cors");
 const User = require("./schemas/user.model");
 const AlgorithmCall = require("./schemas/algorithm.model");
 const { apiRouter } = require("./routes"); // see the following link for organizing routes with express.js: https://dev.to/jameseaster/organizing-with-express-router-3i82
@@ -13,13 +14,16 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
 //Middleware
-app.use(express.urlencoded({ extended: true })).use(
-  express.json({
-    limit: "150mb",
-    extended: "true",
-    parameterLimit: 1000000,
-  })
-);
+app
+  .use(express.urlencoded({ extended: true }))
+  .use(
+    express.json({
+      limit: "150mb",
+      extended: "true",
+      parameterLimit: 1000000
+    })
+  )
+  .use(cors());
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
