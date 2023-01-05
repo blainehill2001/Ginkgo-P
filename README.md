@@ -16,11 +16,11 @@ To run on your local machine, enter 'npm run dev' from the root directory. This 
 
 ## Frontend
 
-To be filled out later - Blaine Nov 4th
+To be filled out later - Blaine Nov 4th, 2022
 
 ## Backend
 
-To be filled out later - Blaine Nov 4th
+To be filled out later - Blaine Nov 4th, 2022
 
 ## Helpful Resources Used
 * [Particles JS](https://particles.js.org/)
