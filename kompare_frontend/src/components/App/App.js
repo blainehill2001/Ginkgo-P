@@ -1,5 +1,4 @@
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import MyFirstComponent from "../MyFirstComponent";
 import NavBar from "../NavBar";
 import HomePage from "../HomePage";
