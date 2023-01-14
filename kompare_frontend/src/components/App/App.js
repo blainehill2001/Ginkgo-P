@@ -1,6 +1,7 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import MyFirstComponent from "../MyFirstComponent";
+// import MyFirstComponent from "../MyFirstComponent";
+import MyFirstAlgoCategory from "../MyFirstAlgoCategory";
 import NavBar from "../NavBar";
 import HomePage from "../HomePage";
 // import Body from "../Body";
@@ -58,7 +59,10 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/myfirstcomponent" element={<MyFirstComponent />} />
+            <Route
+              path="/myfirstalgocategory"
+              element={<MyFirstAlgoCategory />}
+            />
             <Route path="/transe" />
             <Route path="/gnnrl" />
           </Routes>
