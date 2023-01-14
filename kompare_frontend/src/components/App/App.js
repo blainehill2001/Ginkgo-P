@@ -1,4 +1,5 @@
 import "./App.css";
+import { Routes, Route } from "react-router-dom";
 import MyFirstComponent from "../MyFirstComponent";
 import NavBar from "../NavBar";
 import HomePage from "../HomePage";
@@ -55,9 +56,14 @@ function App() {
       <div className="App">
         <div>
           <NavBar />
-          <MyFirstComponent />
-          <Particles id="tsparticles" />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/myfirstcomponent" element={<MyFirstComponent />} />
+            <Route path="/transe" />
+            <Route path="/gnnrl" />
+          </Routes>
         </div>
+        <Particles id="tsparticles" />
       </div>
     </>
   );

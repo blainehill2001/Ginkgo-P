@@ -1,18 +1,45 @@
+// import { VscGithub, VscBug } from "react-icons/vsc";
+import { Link } from "react-router-dom";
+
 const NavBar = () => {
   return (
     <div className="px-10 pt-10">
       <div className="group relative mx-auto rounded-[16px] bg-gray-300 p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
         <div className="navbar bg-base-100 rounded-[15px]">
-          <div class="navbar bg-base-100" data-theme="dark">
-            <div class="flex-1 p-3">
-              <a class="btn btn-primary">daisyUI</a>
-            </div>
+          <div class="navbar bg-base-100">
+            <ul class="flex-1">
+              <li class="mr-6">
+                <Link to="/" class="btn btn-primary">
+                  KompaRe
+                </Link>
+              </li>
+              <li class="mr-6">
+                <a href="https://github.com/blainehill2001/KomPare">
+                  <img
+                    src="https://img.icons8.com/nolan/64/github.png"
+                    class="object-scale-down w-12 h-12"
+                  />
+                </a>
+              </li>
+            </ul>
             <div class="flex-none">
-              <ul class="menu menu-horizontal px-1">
+              <ul class="menu menu-horizontal px-8">
                 <li>
-                  <a>Item 1</a>
+                  <Link to="myfirstcomponent" class="text-purple-500">
+                    Example Algo
+                  </Link>
                 </li>
-                <li tabindex="0">
+                <li>
+                  <Link to="TransE" class="text-purple-500">
+                    TransE
+                  </Link>
+                </li>
+                <li>
+                  <Link to="gnnrl" class="text-purple-500">
+                    GNN + RL
+                  </Link>
+                </li>
+                {/* <li tabindex="0">
                   <a>
                     Parent
                     <svg
@@ -33,10 +60,7 @@ const NavBar = () => {
                       <a>Submenu 2</a>
                     </li>
                   </ul>
-                </li>
-                <li>
-                  <a>Item 3</a>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>

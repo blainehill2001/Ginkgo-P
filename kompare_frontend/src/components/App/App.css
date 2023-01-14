@@ -6,6 +6,10 @@ body {
   background-color: transparent !important;
 }
 
+.btn{
+  text-transform: none;
+}
+
 /* .background{
   position:absolute;
   display: block;

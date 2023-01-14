@@ -23,6 +23,8 @@ To be filled out later - Blaine Nov 4th
 To be filled out later - Blaine Nov 4th
 
 ## Helpful Resources Used
+* [DaisyUI](https://daisyui.com/)
+* [Tailwind CSS](https://tailwindcss.com/)
 * [Particles JS](https://particles.js.org/)
 * [Postman](https://www.postman.com/downloads/)
 * [React Query](https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com/)
