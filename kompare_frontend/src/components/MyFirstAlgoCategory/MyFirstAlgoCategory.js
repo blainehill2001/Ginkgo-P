@@ -2,8 +2,40 @@
 import React from "react";
 import MyFirstAlgoHome from "./MyFirstAlgoHome";
 import MyFirstAlgoTab1 from "./MyFirstAlgoTab1";
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel
+} from "@material-tailwind/react";
 
 const MyFirstAlgoCategory = () => {
+  const data = [
+    {
+      label: "Home",
+      value: "home",
+      desc: <MyFirstAlgoHome />
+    },
+    {
+      label: "Tab 1",
+      value: "tab1",
+      desc: <MyFirstAlgoTab1 />
+    },
+
+    {
+      label: "Tab 2",
+      value: "tab2",
+      desc: `Eventually insert tab 2 component here`
+    },
+
+    {
+      label: "Tab 3",
+      value: "tab3",
+      desc: `Eventually insert tab 3 component here`
+    }
+  ];
+
   return (
     <>
       <div className="justify-center py-20">
@@ -13,8 +45,28 @@ const MyFirstAlgoCategory = () => {
             data-theme="mytheme"
           >
             <h5>MyFirstAlgoCategory Component</h5>
-            <MyFirstAlgoHome />
-            <MyFirstAlgoTab1 />
+
+            <Tabs value="home">
+              <TabsHeader>
+                {data.map(({ label, value }) => (
+                  <Tab key={value} value={value}>
+                    {label}
+                  </Tab>
+                ))}
+              </TabsHeader>
+              <TabsBody
+                animate={{
+                  mount: { y: 0 },
+                  unmount: { y: 250 }
+                }}
+              >
+                {data.map(({ value, desc }) => (
+                  <TabPanel key={value} value={value}>
+                    {desc}
+                  </TabPanel>
+                ))}
+              </TabsBody>
+            </Tabs>
           </div>
         </div>
       </div>

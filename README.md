@@ -23,6 +23,7 @@ To be filled out later - Blaine Nov 4th
 To be filled out later - Blaine Nov 4th
 
 ## Helpful Resources Used
+* [Material Tailwind](https://www.material-tailwind.com/)
 * [DaisyUI](https://daisyui.com/)
 * [Tailwind CSS](https://tailwindcss.com/)
 * [Particles JS](https://particles.js.org/)
