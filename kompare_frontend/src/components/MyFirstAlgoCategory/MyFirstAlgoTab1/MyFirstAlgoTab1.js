@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import Loading from "../Loading";
 
 async function fetchWithTimeout(resource, options = {}) {
   const { timeout = 30000 } = options;
@@ -198,7 +199,8 @@ const MyFirstAlgoTab1 = () => {
               Submit
             </button>
           </form>
-          {isLoading && <p>show loading component here!</p>}
+          <Loading />
+          {isLoading && <Loading />}
           {!isLoading && hasError && <p> show error component here</p>}
           {data &&
             data.algocall_result &&
