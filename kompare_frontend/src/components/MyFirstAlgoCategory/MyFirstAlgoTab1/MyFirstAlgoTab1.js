@@ -199,7 +199,6 @@ const MyFirstAlgoTab1 = () => {
               Submit
             </button>
           </form>
-          <Loading />
           {isLoading && <Loading />}
           {!isLoading && hasError && <p> show error component here</p>}
           {data &&
