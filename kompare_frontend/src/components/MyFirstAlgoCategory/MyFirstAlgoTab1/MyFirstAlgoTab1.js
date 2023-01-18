@@ -1,7 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
+async function fetchWithTimeout(resource, options = {}) {
+  const { timeout = 30000 } = options;
+
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  const response = await fetch(resource, {
+    ...options,
+    signal: controller.signal
+  });
+  clearTimeout(id);
+  return response;
+}
 
 const MyFirstAlgoTab1 = () => {
   const [data, setData] = useState({});
@@ -20,14 +33,23 @@ const MyFirstAlgoTab1 = () => {
     setIsLoading(true);
     setData({});
     setHasError(false);
-    fetch("http://localhost:8080/api/algorithms", params)
+    fetchWithTimeout("http://localhost:8080/api/algorithms", params)
       .then((res) => {
-        if (!res.ok) setHasError(true);
+        if (!res.ok) {
+          setHasError(true);
+          setIsLoading(false);
+          console.log(res.status);
+        }
         return res.json();
       })
       .then((data) => {
         setIsLoading(false);
         setData(data);
+      })
+      .catch((err) => {
+        setHasError(true);
+        setIsLoading(false);
+        console.log(err);
       });
 
     // const response = await fetch(
@@ -37,6 +59,25 @@ const MyFirstAlgoTab1 = () => {
     // const jsonData = await response.json();
     // console.log(response.status);
     // console.log(jsonData);
+    // try {
+    //   fetchWithTimeout("http://localhost:8080/api/algorithms", params)
+    //     .then((res) => {
+    //       if (!res.ok) {
+    //         setHasError(true);
+    //         setIsLoading(false);
+    //         return res.json();
+    //       }
+    //     })
+    //     .then((data) => {
+    //       setIsLoading(false);
+    //       setData(data);
+    //     });
+    // } catch (error) {
+    //   // Timeouts if the request takes
+    //   // longer than 6 seconds
+    //   setHasError(true);
+    //   setIsLoading(false);
+    // }
   };
 
   const onErrors = (data) => {
