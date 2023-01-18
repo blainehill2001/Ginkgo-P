@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 const MyFirstAlgoTab1 = () => {
+  const [data, setData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
   const onSubmit = async (data) => {
-    console.log("we got here!!");
     const params = {
       "method": "POST",
       "headers": {
@@ -14,16 +17,26 @@ const MyFirstAlgoTab1 = () => {
       "body": JSON.stringify(data)
     };
 
-    console.log(params);
+    setIsLoading(true);
+    setData({});
+    setHasError(false);
+    fetch("http://localhost:8080/api/algorithms", params)
+      .then((res) => {
+        if (!res.ok) setHasError(true);
+        return res.json();
+      })
+      .then((data) => {
+        setIsLoading(false);
+        setData(data);
+      });
 
-    const response = await fetch(
-      "http://localhost:8080/api/algorithms",
-      params
-    );
-    const jsonData = await response.json();
-
-    console.log(response.status);
-    console.log(jsonData);
+    // const response = await fetch(
+    //   "http://localhost:8080/api/algorithms",
+    //   params
+    // );
+    // const jsonData = await response.json();
+    // console.log(response.status);
+    // console.log(jsonData);
   };
 
   const onErrors = (data) => {
@@ -70,7 +83,7 @@ const MyFirstAlgoTab1 = () => {
                 id="language"
                 placeholder="e.g., python"
                 autoComplete="off"
-                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-600 ${
+                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
                   errors.language
                     ? "text-red-300 border-red-400"
                     : "text-purple-500 border-purple-400"
@@ -98,7 +111,7 @@ const MyFirstAlgoTab1 = () => {
                 id="script"
                 placeholder="e.g., script1.py"
                 autoComplete="off"
-                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4 text-purple-500 focus:bg-purple-600 placeholder-purple-300 ${
+                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4 text-purple-500 focus:bg-purple-100 placeholder-purple-300 ${
                   errors.script ? "border-red-400" : "border-purple-400"
                 }`}
               />
@@ -124,7 +137,7 @@ const MyFirstAlgoTab1 = () => {
                 id="query"
                 placeholder="test query!"
                 autoComplete="off"
-                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-600 ${
+                className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
                   errors.query
                     ? "text-red-300 border-red-400"
                     : "text-purple-500 border-purple-400"
@@ -144,6 +157,15 @@ const MyFirstAlgoTab1 = () => {
               Submit
             </button>
           </form>
+          {isLoading && <p>show loading component here!</p>}
+          {!isLoading && hasError && <p> show error component here</p>}
+          {data &&
+            data.algocall_result &&
+            data.algocall_result.result &&
+            !isLoading &&
+            !hasError && (
+              <p>this is data: {String(data.algocall_result.result)}</p>
+            )}
         </div>
       </div>
     </div>

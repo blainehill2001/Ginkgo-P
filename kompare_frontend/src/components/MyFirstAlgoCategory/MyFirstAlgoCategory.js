@@ -11,7 +11,7 @@ import {
 } from "@material-tailwind/react";
 
 const MyFirstAlgoCategory = () => {
-  const data = [
+  const tabs = [
     {
       label: "Home",
       value: "home",
@@ -48,7 +48,7 @@ const MyFirstAlgoCategory = () => {
 
             <Tabs value="home">
               <TabsHeader>
-                {data.map(({ label, value }) => (
+                {tabs.map(({ label, value }) => (
                   <Tab key={value} value={value}>
                     {label}
                   </Tab>
@@ -60,7 +60,7 @@ const MyFirstAlgoCategory = () => {
                   unmount: { y: 250 }
                 }}
               >
-                {data.map(({ value, desc }) => (
+                {tabs.map(({ value, desc }) => (
                   <TabPanel key={value} value={value}>
                     {desc}
                   </TabPanel>
