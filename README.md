@@ -6,7 +6,7 @@
 
 To launch the frontend, first download Node.js from [here](https://nodejs.org/en/download/).
 
-Then, run npm i in the root project folder to install all necessary node packages (npm install). cd into kompare_backend and kompare_frontend and do the same.
+Then, run `npm ci` in the root project folder to install all necessary node packages (npm clean install). cd into kompare_backend and kompare_frontend and do the same.
 
 Then, cd into kompare_backend. Create a .env file with and enter **mongodb+srv://<username>:<password>@kompare2.nbbfmkm.mongodb.net/?retryWrites=true&w=majority** after substituting in the username and password. To get a valid url, you might have to be added as a Database User in MongoDB. (TODO for later: ensure that the access IP Addresses accessible to the DB is *not* 0.0.0.0/0.0.0 - namely add whatever private IPs as exclusive users.)
 
