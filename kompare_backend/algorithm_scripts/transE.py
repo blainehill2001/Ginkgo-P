@@ -19,8 +19,8 @@ def read_dict(file_name):
     return entity2id, id2entity
 
 root_dir = os.getcwd()
-root_dir = os.path.join(root_dir, "..")
-data_dir = os.path.join(root_dir, "data")
+root_dir = os.path.join(root_dir, ".")
+data_dir = os.path.join(root_dir, "datasets")
 KG_dir = os.path.join(data_dir, "KG")
 
 dict_dir = os.path.join(KG_dir, "wikidata_convex_embedding")
