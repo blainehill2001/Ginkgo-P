@@ -60,14 +60,14 @@ const ParticlesComponent = (props) => {
         size: {
           value: { min: 1, max: 5 } // let's randomize the particles size a bit
         },
-        // move: {
-        //   direction: "none",
-        //   enable: true,
-        //   outModes: "out",
-        //   random: false,
-        //   speed: 2,
-        //   straight: false
-        // },
+        move: {
+          direction: "none",
+          enable: true,
+          outModes: "out",
+          random: false,
+          speed: 2,
+          straight: false
+        },
         opacity: {
           animation: {
             enable: true,
