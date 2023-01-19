@@ -34,7 +34,7 @@ const ParticlesComponent = (props) => {
         },
         modes: {
           push: {
-            quantity: 2 // number of particles to add on click
+            quantity: 4 // number of particles to add on click
           },
           repulse: {
             distance: 90 // distance of the particles from the cursor
@@ -42,6 +42,10 @@ const ParticlesComponent = (props) => {
         }
       },
       particles: {
+        number: {
+          value: 10,
+          max: 100
+        },
         links: {
           enable: true, // enabling this will make particles linked together
           distance: 200 // maximum distance for linking the particles
@@ -50,11 +54,33 @@ const ParticlesComponent = (props) => {
           enable: true, // enabling this will make particles move in the canvas
           speed: { min: 1, max: 5 } // using a range in speed value will make particles move in a random speed between min/max values, each particles have its own value, it won't change in time by default
         },
-        opacity: {
-          value: { min: 0.3, max: 0.7 } // using a different opacity, to have some semitransparent effects
-        },
+        // opacity: {
+        //   value: { min: 0.3, max: 0.7 } // using a different opacity, to have some semitransparent effects
+        // },
         size: {
-          value: { min: 1, max: 3 } // let's randomize the particles size a bit
+          value: { min: 1, max: 5 } // let's randomize the particles size a bit
+        },
+        // move: {
+        //   direction: "none",
+        //   enable: true,
+        //   outModes: "out",
+        //   random: false,
+        //   speed: 2,
+        //   straight: false
+        // },
+        opacity: {
+          animation: {
+            enable: true,
+            speed: 0.05,
+            sync: true,
+            startValue: "max",
+            count: 10,
+            destroy: "min"
+          },
+          value: {
+            min: 0.4,
+            max: 0.8
+          }
         }
       }
     };
