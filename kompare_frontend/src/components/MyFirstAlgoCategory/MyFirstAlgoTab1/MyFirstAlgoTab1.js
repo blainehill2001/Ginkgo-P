@@ -193,7 +193,11 @@ const MyFirstAlgoTab1 = () => {
             </div>
 
             <button
-              className="inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm"
+              className={
+                isLoading === true
+                  ? "inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm opacity-50 cursor-not-allowed"
+                  : "inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm"
+              }
               type="submit"
             >
               Submit
