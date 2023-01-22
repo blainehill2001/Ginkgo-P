@@ -22,6 +22,7 @@ function loadProcess(script_language, script_name, ...args) {
     });
 
     process.stderr.on("data", function (err) {
+      console.log(err.toString());
       reject(err.toString());
     });
 

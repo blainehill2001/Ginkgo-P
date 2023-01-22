@@ -30,13 +30,23 @@ const NavBar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="TransE" className="text-purple-500">
-                    TransE
+                  <Link to="kgcompletion" className="text-purple-500">
+                    KG Completion
                   </Link>
                 </li>
                 <li>
-                  <Link to="gnnrl" className="text-purple-500">
-                    GNN + RL
+                  <Link to="kgquestionanswering" className="text-purple-500">
+                    KG Question Answering
+                  </Link>
+                </li>
+                <li>
+                  <Link to="multihopreasoning" className="text-purple-500">
+                    Multi-Hop Reasoning
+                  </Link>
+                </li>
+                <li>
+                  <Link to="pointwisereasoning" className="text-purple-500">
+                    Point-Wise Reasoning
                   </Link>
                 </li>
                 {/* <li tabindex="0">

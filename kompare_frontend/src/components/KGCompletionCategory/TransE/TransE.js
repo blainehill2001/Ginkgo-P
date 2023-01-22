@@ -17,18 +17,22 @@ async function fetchWithTimeout(resource, options = {}) {
   return response;
 }
 
-const MyFirstAlgoTab1 = () => {
+const TransE = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data_sent) => {
     const params = {
       "method": "POST",
       "headers": {
         "Content-Type": "application/json"
       },
-      "body": JSON.stringify(data)
+      "body": JSON.stringify({
+        "language": "python",
+        "script": "transE.py",
+        ...data_sent
+      })
     };
     console.log(params);
 
@@ -44,9 +48,9 @@ const MyFirstAlgoTab1 = () => {
         }
         return res.json();
       })
-      .then((data) => {
+      .then((data_received) => {
         setIsLoading(false);
-        setData(data);
+        setData(data_received);
       })
       .catch((err) => {
         setHasError(true);
@@ -55,13 +59,13 @@ const MyFirstAlgoTab1 = () => {
       });
   };
 
-  const onErrors = (data) => {
-    console.log(data);
+  const onErrors = (data_received) => {
+    console.log(data_received);
   };
 
   const schema = yup.object().shape({
-    language: yup.string().required(),
-    script: yup.string().required(),
+    // language: yup.string().required(),
+    // script: yup.string().required(),
     query: yup.string().required()
   });
 
@@ -76,7 +80,7 @@ const MyFirstAlgoTab1 = () => {
   });
 
   return (
-    <div className="justify-center">
+    <div className="justify-center ">
       <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
         <div
           className="relative rounded-[15px] p-6 text-purple-500"
@@ -84,9 +88,9 @@ const MyFirstAlgoTab1 = () => {
         >
           <div className="flex flex-col space-y-4">
             <div className="flex-auto">
-              <h5>MyFirstAlgoTab1 Component</h5>
+              <h5>TransE Component</h5>
               <form onSubmit={handleSubmit(onSubmit, onErrors)}>
-                <div className="mb-8">
+                {/* <div className="mb-8">
                   <label
                     htmlFor="language"
                     className={`block font-bold text-sm mb-2 ${
@@ -138,7 +142,7 @@ const MyFirstAlgoTab1 = () => {
                       Your Script Name is required.
                     </p>
                   )}
-                </div>
+                </div> */}
 
                 <div className="mb-8">
                   <label
@@ -198,4 +202,4 @@ const MyFirstAlgoTab1 = () => {
   );
 };
 
-export default MyFirstAlgoTab1;
+export default TransE;

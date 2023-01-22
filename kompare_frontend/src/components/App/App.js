@@ -1,7 +1,7 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-// import MyFirstComponent from "../MyFirstComponent";
 import MyFirstAlgoCategory from "../MyFirstAlgoCategory";
+import KGCompletionCategory from "../KGCompletionCategory";
 import NavBar from "../NavBar";
 import HomePage from "../HomePage";
 // import Body from "../Body";
@@ -16,8 +16,10 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="myfirstalgo" element={<MyFirstAlgoCategory />} />
-            <Route path="transe" />
-            <Route path="gnnrl" />
+            <Route path="multihopreasoning" />
+            <Route path="pointwisereasoning" />
+            <Route path="kgcompletion" element={<KGCompletionCategory />} />
+            <Route path="kgquestionanswering" />
           </Routes>
         </div>
         <Particles id="tsparticles" />
