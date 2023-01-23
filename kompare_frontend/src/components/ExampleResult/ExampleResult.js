@@ -67,14 +67,18 @@ const ExampleResult = ({ data }) => {
     const forceLink = d3
       .forceLink(links)
       .id(({ index: i }) => N[i])
-      .distance(200);
-    if (nodeStrength !== undefined) forceNode.strength(nodeStrength);
+      .distance(250);
+    // if (nodeStrength !== undefined) forceNode.strength(nodeStrength);
+    // if (linkStrength !== undefined) forceLink.strength(linkStrength);
+    if (nodeStrength !== undefined)
+      forceNode.strength(-5000).distanceMax(200).distanceMin(100);
     if (linkStrength !== undefined) forceLink.strength(linkStrength);
 
     const simulation = d3
       .forceSimulation(nodes)
       .force("link", forceLink)
       .force("charge", forceNode)
+      .force("charge", d3.forceCollide().radius(50))
       .force("center", d3.forceCenter())
       .on("tick", ticked);
 
@@ -125,7 +129,7 @@ const ExampleResult = ({ data }) => {
       })
       .attr("fill", "black")
       .attr("stroke", "none")
-      .attr("font-size", "0.7em");
+      .attr("font-size", "0.85em");
 
     const edgepaths = svg
       .selectAll(".edgepath")
