@@ -1,6 +1,4 @@
 import sys
 
-print("Hello World! This is script1.py")
-print(str(sys.argv[1]))
-print("good result!!!!!!!")
+print('{\n    "status": "Good",\n    "result1": {\n      "nodes": [\n        { "id": "6", "name": "Aiea,_Hawaii" },\n        { "id": "3", "name": "Black_Week_(Hawaii)" },\n        { "id": "7", "name": "Honolulu" },\n        { "id": "4", "name": "Aloha_Stadium" },\n        { "id": "1", "name": "Hawaii" },\n        { "id": "8", "name": "Hawaii_Convention_Center" },\n        { "id": "5", "name": "Halawa,_Hawaii" },\n        { "id": "2", "name": "Hawaii_State_Capitol" }\n      ],\n      "links": [\n        { "source": "1", "type": "isLocatedIn", "target": "2" },\n        { "source": "1", "type": "happenedIn", "target": "3" },\n        { "source": "1", "type": "isLocatedIn", "target": "4" },\n        { "source": "1", "type": "isLocatedIn", "target": "5" },\n        { "source": "1", "type": "isLocatedIn", "target": "6" },\n        { "source": "1", "type": "hasCapital", "target": "7" },\n        { "source": "1", "type": "isLocatedIn", "target": "8" },\n        { "source": "2", "type": "isLocatedIn", "target": "7" },\n        { "source": "3", "type": "happenedIn", "target": "7" },\n        { "source": "4", "type": "isLocatedIn", "target": "5" },\n        { "source": "4", "type": "isLocatedIn", "target": "6" },\n        { "source": "4", "type": "isLocatedIn", "target": "7" },\n        { "source": "7", "type": "isLocatedIn", "target": "8" }\n      ]\n    }\n  }')
 sys.stdout.flush()

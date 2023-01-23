@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Loading from "../Loading";
+import ExampleResult from "../ExampleResult";
 
 async function fetchWithTimeout(resource, options = {}) {
   const { timeout = 30000 } = options;
@@ -17,7 +18,7 @@ async function fetchWithTimeout(resource, options = {}) {
   return response;
 }
 
-const TransE = () => {
+const MyFirstAlgoTab1 = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -30,7 +31,7 @@ const TransE = () => {
       },
       "body": JSON.stringify({
         "language": "python",
-        "script": "transE.py",
+        "script": "script1.py",
         ...data_sent
       })
     };
@@ -58,8 +59,8 @@ const TransE = () => {
       });
   };
 
-  const onErrors = (data_received) => {
-    console.log(data_received);
+  const onErrors = (data) => {
+    console.log(data);
   };
 
   const schema = yup.object().shape({
@@ -79,17 +80,17 @@ const TransE = () => {
   });
 
   return (
-    <div className="justify-center ">
-      <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
-        <div
-          className="relative rounded-[15px] p-6 text-purple-500"
-          data-theme="mytheme"
-        >
-          <div className="flex flex-col space-y-4">
-            <div className="flex-auto">
-              <h5>TransE Component</h5>
-              <form onSubmit={handleSubmit(onSubmit, onErrors)}>
-                {/* <div className="mb-8">
+    <div className="justify-center">
+      {/* <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500"> */}
+      <div
+        className="relative rounded-[15px] p-6 text-purple-500"
+        data-theme="mytheme"
+      >
+        <div className="flex flex-col space-y-4">
+          <div className="flex-auto">
+            <h5>MyFirstAlgoTab2 Component</h5>
+            <form onSubmit={handleSubmit(onSubmit, onErrors)}>
+              {/* <div className="mb-8">
                   <label
                     htmlFor="language"
                     className={`block font-bold text-sm mb-2 ${
@@ -143,62 +144,60 @@ const TransE = () => {
                   )}
                 </div> */}
 
-                <div className="mb-8">
-                  <label
-                    htmlFor="query"
-                    className={`block font-bold text-sm mb-2 ${
-                      errors.query ? "text-red-400" : "text-purple-500"
-                    }`}
-                  >
-                    Query
-                  </label>
-                  <input
-                    {...register("query")}
-                    type="text"
-                    id="query"
-                    placeholder="test query!"
-                    autoComplete="off"
-                    className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
-                      errors.query
-                        ? "text-red-300 border-red-400"
-                        : "text-purple-500 border-purple-400"
-                    }`}
-                  />
-                  {errors.query && (
-                    <p className="text-red-500 text-sm mt-2">
-                      A valid query is required.
-                    </p>
-                  )}
-                </div>
-
-                <button
-                  className={
-                    isLoading === true
-                      ? "inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm opacity-50 cursor-not-allowed"
-                      : "inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm"
-                  }
-                  type="submit"
+              <div className="mb-8">
+                <label
+                  htmlFor="query"
+                  className={`block font-bold text-sm mb-2 ${
+                    errors.query ? "text-red-400" : "text-purple-500"
+                  }`}
                 >
-                  Submit
-                </button>
-              </form>
-            </div>
-            <div className="flex flex-col items-center">
-              {isLoading && <Loading />}
-              {!isLoading && hasError && <p> show error component here</p>}
-              {data &&
-                data.algocall_result &&
-                data.algocall_result.result &&
-                !isLoading &&
-                !hasError && (
-                  <p>this is data: {String(data.algocall_result.result)}</p>
+                  Query
+                </label>
+                <input
+                  {...register("query")}
+                  type="text"
+                  id="query"
+                  placeholder="enter anything - this is to demo the example result"
+                  autoComplete="off"
+                  className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
+                    errors.query
+                      ? "text-red-300 border-red-400"
+                      : "text-purple-500 border-purple-400"
+                  }`}
+                />
+                {errors.query && (
+                  <p className="text-red-500 text-sm mt-2">
+                    A valid query is required.
+                  </p>
                 )}
-            </div>
+              </div>
+
+              <button
+                className={
+                  isLoading === true
+                    ? "inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm opacity-50 cursor-not-allowed"
+                    : "inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm"
+                }
+                type="submit"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+          <div className="flex flex-col items-center">
+            {isLoading && <Loading />}
+            {!isLoading && hasError && <p> show error component here</p>}
+            {data &&
+              data.algocall_result &&
+              data.algocall_result.result &&
+              !isLoading &&
+              !hasError && <ExampleResult data={data.algocall_result.result} />}
           </div>
         </div>
       </div>
     </div>
+    // </div>
   );
 };
 
-export default TransE;
+export default MyFirstAlgoTab1;
