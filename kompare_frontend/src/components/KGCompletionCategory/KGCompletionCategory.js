@@ -2,6 +2,7 @@
 import React from "react";
 import KGCompletionHome from "./KGCompletionHome";
 import TransE from "./TransE";
+import ComplEx from "./ComplEx";
 import {
   Tabs,
   TabsHeader,
@@ -24,14 +25,14 @@ const KGCompletionCategory = () => {
     },
 
     {
-      label: "Tab 2",
-      value: "tab2",
-      desc: `Eventually insert tab 2 component here`
+      label: "ComplEx",
+      value: "complex",
+      desc: <ComplEx />
     },
 
     {
-      label: "Tab 3",
-      value: "tab3",
+      label: "RotatE",
+      value: "rotate",
       desc: `Eventually insert tab 3 component here`
     }
   ];
