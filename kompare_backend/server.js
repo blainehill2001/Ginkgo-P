@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 const mongoose = require("mongoose");
 const cors = require("cors");
+const corsOptions = require("./config/corsOptions");
 const User = require("./schemas/user.model");
 const AlgorithmCall = require("./schemas/algorithm.model");
 const { apiRouter } = require("./routes"); // see the following link for organizing routes with express.js: https://dev.to/jameseaster/organizing-with-express-router-3i82
@@ -23,7 +24,7 @@ app
       parameterLimit: 1000000
     })
   )
-  .use(cors());
+  .use(cors(corsOptions));
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
