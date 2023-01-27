@@ -87,7 +87,7 @@ const MyFirstAlgoTab1 = () => {
         className="relative rounded-[15px] p-6 text-purple-500"
         data-theme="mytheme"
       >
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-8">
           <div className="flex-auto">
             <h5>MyFirstAlgoTab2 Component</h5>
             <form onSubmit={handleSubmit(onSubmit, onErrors)}>
