@@ -5,6 +5,10 @@ import * as yup from "yup";
 import Loading from "../../Loading";
 import Error from "../../Error";
 
+const BACKEND =
+  process.env.BACKEND + "/api/algorithms" ||
+  "http://localhost:8080/api/algorithms";
+
 async function fetchWithTimeout(resource, options = {}) {
   const { timeout = 30000 } = options;
 
@@ -39,7 +43,7 @@ const TransE = () => {
     setIsLoading(true);
     setData({});
     setHasError(false);
-    fetchWithTimeout("http://localhost:8080/api/algorithms", params)
+    fetchWithTimeout(BACKEND, params)
       .then((res) => {
         if (!res.ok) {
           setHasError(true);
