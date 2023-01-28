@@ -15,7 +15,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="Example" element={<ExampleCategory />} />
+            {/* <Route path="Example" element={<ExampleCategory />} /> */}
             <Route path="multihopreasoning" />
             <Route path="pointwisereasoning" />
             <Route path="kgcompletion" element={<KGCompletionCategory />} />

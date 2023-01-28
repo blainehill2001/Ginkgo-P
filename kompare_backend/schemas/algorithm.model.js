@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var AlgorithmCallSchema = new Schema({
   script: {
     type: String,
-    enum: ["script1.py", "script2.cpp", "transE.py"],
+    enum: ["test_script.py", "script1.py", "script2.cpp", "transE.py"],
     required: true,
     unique: false
   },

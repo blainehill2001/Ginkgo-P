@@ -57,6 +57,7 @@ const ExampleTab1 = () => {
       .then((data_received) => {
         setIsLoading(false);
         setData(data_received);
+        console.log(JSON.parse(data_received.algocall_result.result));
       })
       .catch((err) => {
         setHasError(true);
