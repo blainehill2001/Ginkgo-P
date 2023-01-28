@@ -25,7 +25,7 @@ const NavBar = () => {
             <div className="flex-none">
               <ul className="menu menu-horizontal px-8">
                 <li>
-                  <Link to="myfirstalgo" className="text-purple-500">
+                  <Link to="Example" className="text-purple-500">
                     Example Algo
                   </Link>
                 </li>

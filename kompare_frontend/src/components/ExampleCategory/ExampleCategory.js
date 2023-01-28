@@ -1,8 +1,8 @@
 //imports
 import React from "react";
-import MyFirstAlgoHome from "./MyFirstAlgoHome";
-import MyFirstAlgoTab1 from "./MyFirstAlgoTab1";
-import MyFirstAlgoTab2 from "./MyFirstAlgoTab2";
+import ExampleHome from "./ExampleHome";
+import ExampleTab1 from "./ExampleTab1";
+import ExampleTab2 from "./ExampleTab2";
 import {
   Tabs,
   TabsHeader,
@@ -11,23 +11,23 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
-const MyFirstAlgoCategory = () => {
+const ExampleCategory = () => {
   const tabs = [
     {
       label: "Home",
       value: "home",
-      desc: <MyFirstAlgoHome />
+      desc: <ExampleHome />
     },
     {
       label: "Tab 1",
       value: "tab1",
-      desc: <MyFirstAlgoTab1 />
+      desc: <ExampleTab1 />
     },
 
     {
       label: "Tab 2",
       value: "tab2",
-      desc: <MyFirstAlgoTab2 />
+      desc: <ExampleTab2 />
     },
 
     {
@@ -45,7 +45,7 @@ const MyFirstAlgoCategory = () => {
             className="relative rounded-[15px] p-6 text-purple-500 flex-auto"
             data-theme="mytheme"
           >
-            <h5>MyFirstAlgoCategory Component</h5>
+            <h5>ExampleCategory Component</h5>
 
             <Tabs value="home">
               <TabsHeader>
@@ -75,4 +75,4 @@ const MyFirstAlgoCategory = () => {
   );
 };
 
-export default MyFirstAlgoCategory;
+export default ExampleCategory;

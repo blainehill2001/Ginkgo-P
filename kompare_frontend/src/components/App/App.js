@@ -1,6 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import MyFirstAlgoCategory from "../MyFirstAlgoCategory";
+import ExampleCategory from "../ExampleCategory";
 import KGCompletionCategory from "../KGCompletionCategory";
 import NavBar from "../NavBar";
 import HomePage from "../HomePage";
@@ -15,7 +15,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="myfirstalgo" element={<MyFirstAlgoCategory />} />
+            <Route path="Example" element={<ExampleCategory />} />
             <Route path="multihopreasoning" />
             <Route path="pointwisereasoning" />
             <Route path="kgcompletion" element={<KGCompletionCategory />} />

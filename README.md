@@ -2,25 +2,44 @@
 ## Blaine Hill and Lihui Liu, Fall 2022
 ### IDEA Lab, UIUC
 
+#### Frontend: Built using React, TailwindCSS, DaisyUI, Material Tailwind, ParticlesJS, and NodeJS.
+#### Backend: Built using Express.js, MongoDB, and NodeJS.
+
 ## How to Run
 
-To launch the frontend, first download Node.js from [here](https://nodejs.org/en/download/).
+To launch locally, first download NodeJS from [here](https://nodejs.org/en/download/). Ensure you have the latest version of NodeJS that this project supports. At the time of writing, it is **8.19.2**. Test that NodeJS is installed correctly with `npm --v` to check the version.
 
-Then, run `npm ci` in the root project folder to install all necessary node packages (npm clean install). cd into kompare_backend and kompare_frontend and do the same.
+Then, run `npm ci` in the root project folder to install all necessary node packages (npm clean install). `cd` into `kompare_backend` and `kompare_frontend` and do the run `npm ci` again in each directory.
 
-Then, cd into kompare_backend. Create a .env file with and enter **mongodb+srv://<username>:<password>@kompare2.nbbfmkm.mongodb.net/?retryWrites=true&w=majority** after substituting in the username and password. To get a valid url, you might have to be added as a Database User in MongoDB. (TODO for later: ensure that the access IP Addresses accessible to the DB is *not* 0.0.0.0/0.0.0 - namely add whatever private IPs as exclusive users.)
+We need to now create a MongoDB account to cache queries and their results in a database. Reference [this](https://www.mongodb.com/docs/manual/reference/connection-string/) resource to get a *MongoDB Connection String in URI Format*. Once you have this string, create a .env file in /kompare_backend and enter `MONGODB_URI=<your MongoDB URI string here>` to set that environment variable. Ensure that the IP Addresses that are using/deploying your app are denoted inside your database's **Network Access** settings. If you wish to allow any IP address to connect to your MongoDB database, set this to be `0.0.0.0/0.0.0` . See [this](https://www.mongodb.com/docs/atlas/connect-to-database-deployment/) resource for more information.
 
-Feel free to edit the .env in ./kompare_backend for the server with other environment variables such as NODE_ENV to distinguish between prod and dev, PORT to distinguish which port the server will be on, etc.
+Additionally, you will need to set your default target for your frontend to send API requests to. If you wish to set it to be localhost and at port 8080, create a .env file in /kompare_frontend and enter `REACT_APP_DEFAULT_BACKEND=http://localhost:8080`.
 
 To run on your local machine, enter 'npm run dev' from the root directory. This will run both the frontend and backend on their development scripts as defined in their respective package.json.
 
-## Frontend
+You will need to set four other environment variables to run this platform in a production setting (not on a local machine): two in /kompare_backend/.env (`NODE_ENV` and `PORT`) and one in /kompare_frontend/.env (`REACT_APP_BACKEND` and `REACT_APP_NODE_ENV`). Set `NODE_ENV=prod` in a new line in /kompare_backend/.env to let the backend app know you are in production. Set `PORT=XXXX` in a new line in /kompare_backend/.env to let the backend app know you wish to run the application on a different port (the default is port 8080). Set `REACT_APP_BACKEND=yourBackendURL` in a new line in /kompare_frontend/.env to let the frontend app know you wish to send API requests to a different URL (your deployed API/your backend app) than than your DEFAULT_BACKEND value. Set `REACT_APP_NODE_ENV=prod`in a new line in /kompare_frontend/.env to let the frontend app know you are in production.
 
-To be filled out later - Blaine Nov 4th
+To deploy, we recommend an infrastructure as a service (IaaS) service such as [Render](render.com). Follow a tutorial such as [this](https://www.youtube.com/watch?v=l134cBAJCuc&ab_channel=DaveGray) to familiarize yourself with how to deploy a MERN stack app to Render.
 
-## Backend
+## How to add new Knowledge Graph Algorithms to the API
 
-To be filled out later - Blaine Nov 4th
+First, write and test an algorithm and add it to /kompare_backend/algorithm_scripts/ (you can access data and add new data to the /kompare_backend/datasets folder). Then, add the title of the script and its language initializer to /kompare_backend/algorithm_scripts. (E.g. `test_script.py` and `python` since I would run `python test_script.py` in my terminal.)
+
+Test your new algorithm using a resource such as [Postman](https://www.postman.com/downloads/) sending data to the API in the form of a body like so:
+
+```json
+{
+    "language": "python",
+    "script": "test_script.py",
+    "query": "My test query to see if my test script is running properly!"
+}
+```
+
+If you get back a response as expected, then your algorithm is implemented properly. Check out [this link](https://nodejs.org/api/child_process.html) for more resources on how to interact with a NodeJS child process. Two noteworthy hints are that data can be passed to a script via `sys argvs` in Python and to receive data from the script, simply `print` it in Python.
+
+## How to display results from new Knowledge Graph Algorithms using d3
+
+
 
 ## Helpful Resources Used
 * [Material Tailwind](https://www.material-tailwind.com/)

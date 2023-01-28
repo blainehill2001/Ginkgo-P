@@ -6,9 +6,10 @@ import Loading from "../../Loading";
 import Error from "../../Error";
 import ExampleResult from "../ExampleResult";
 
-const BACKEND =
-  process.env.BACKEND + "/api/algorithms" ||
-  "http://localhost:8080/api/algorithms";
+let BACKEND;
+process.env.REACT_APP_NODE_ENV == "prod"
+  ? (BACKEND = process.env.REACT_APP_BACKEND + "/api/algorithms")
+  : (BACKEND = process.env.REACT_APP_DEFAULT_BACKEND + "/api/algorithms");
 
 async function fetchWithTimeout(resource, options = {}) {
   const { timeout = 30000 } = options;
@@ -23,7 +24,7 @@ async function fetchWithTimeout(resource, options = {}) {
   return response;
 }
 
-const MyFirstAlgoTab1 = () => {
+const ExampleTab1 = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -93,7 +94,7 @@ const MyFirstAlgoTab1 = () => {
       >
         <div className="flex flex-col space-y-8">
           <div className="flex-auto">
-            <h5>MyFirstAlgoTab2 Component</h5>
+            <h5>ExampleTab2 Component</h5>
             <form onSubmit={handleSubmit(onSubmit, onErrors)}>
               {/* <div className="mb-8">
                   <label
@@ -205,4 +206,4 @@ const MyFirstAlgoTab1 = () => {
   );
 };
 
-export default MyFirstAlgoTab1;
+export default ExampleTab1;

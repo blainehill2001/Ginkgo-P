@@ -5,9 +5,10 @@ import * as yup from "yup";
 import Loading from "../../Loading";
 import Error from "../../Error";
 
-const BACKEND =
-  process.env.BACKEND + "/api/algorithms" ||
-  "http://localhost:8080/api/algorithms";
+let BACKEND;
+process.env.REACT_APP_NODE_ENV == "prod"
+  ? (BACKEND = process.env.REACT_APP_BACKEND + "/api/algorithms")
+  : (BACKEND = process.env.REACT_APP_DEFAULT_BACKEND + "/api/algorithms");
 
 async function fetchWithTimeout(resource, options = {}) {
   const { timeout = 30000 } = options;

@@ -1,7 +1,7 @@
 //see this example index.ts for good practice: https://github.com/jameseaster/roast-log-server/blob/main/src/index.ts
 //see this for information on controllers and routers: https://lo-victoria.com/build-a-rest-api-with-nodejs-routes-and-controllers
 //imports
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "prod") {
   require("dotenv").config();
 }
 const mongoose = require("mongoose");
