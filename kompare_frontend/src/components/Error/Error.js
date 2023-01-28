@@ -19,7 +19,8 @@ const Loading = () => {
             />
           </svg>
           <span>
-            Error! Retry using different inputs or wait a little while.
+            Error! The poor API didn't like that. Try again in a little bit or
+            with different inputs
           </span>
         </div>
       </div>
