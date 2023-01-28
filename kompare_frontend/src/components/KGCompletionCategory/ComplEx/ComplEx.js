@@ -41,6 +41,8 @@ const ComplEx = () => {
       })
     };
 
+    console.log(params);
+
     setIsLoading(true);
     setData({});
     setHasError(false);
