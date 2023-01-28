@@ -60,7 +60,7 @@ By sending a POST request with this body, the backend will run `python test_scri
 
 
 
-If you get back a response as expected, then your algorithm is implemented properly. Check out [this link](https://nodejs.org/api/child_process.html) for more resources on how to interact with a NodeJS child process. Two noteworthy hints are that data can be passed to a script via `sys argvs` in Python and to receive data from the script, simply `print` it in Python. Check out `/kompare_backend/algorithm_scripts/test_script.py` to see what we mean.
+If you get back a response as expected, then your algorithm is implemented properly. Check out [NodeJS documentation](https://nodejs.org/api/child_process.html) for more resources on how to interact with a NodeJS child process. Two noteworthy hints are that data can be passed to a script via `sys argvs` in Python and to receive data from the script, simply `print` it in Python. Check out `/kompare_backend/algorithm_scripts/test_script.py` to see what we mean.
 
 ## How to display results from new Knowledge Graph Algorithms using d3
 
