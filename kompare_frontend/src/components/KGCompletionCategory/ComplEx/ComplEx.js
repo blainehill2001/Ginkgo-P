@@ -55,6 +55,7 @@ const ComplEx = () => {
       .then((data_received) => {
         setIsLoading(false);
         setData(data_received);
+        console.log(data_received);
       })
       .catch((err) => {
         setHasError(true);
