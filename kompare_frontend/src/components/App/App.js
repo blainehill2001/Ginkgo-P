@@ -18,7 +18,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="example" element={<ExampleCategory />} />
+            {/* <Route path="example" element={<ExampleCategory />} /> */}
             <Route path="kgcompletion" element={<KGCompletionCategory />} />
             <Route
               path="kgquestionanswering"

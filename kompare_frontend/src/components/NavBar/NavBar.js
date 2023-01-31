@@ -24,11 +24,11 @@ const NavBar = () => {
             </ul>
             <div className="flex-none">
               <ul className="menu menu-horizontal px-8">
-                <li>
+                {/* <li>
                   <Link to="example" className="text-purple-500">
                     Example Algo
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link to="kgcompletion" className="text-purple-500">
                     KG Completion
