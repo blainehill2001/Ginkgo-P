@@ -10,8 +10,9 @@ var AlgorithmCallSchema = new Schema({
       "script2.cpp",
       "transE.py",
       "transE2.py",
-      "multihopkgqa.py",
-      "embedkgqa.py"
+      "multihopkg.py",
+      "embedkgqa.py",
+      "nibble.py"
     ],
     required: true,
     unique: false

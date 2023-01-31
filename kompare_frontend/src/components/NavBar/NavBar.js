@@ -41,7 +41,7 @@ const NavBar = () => {
                 </li>
                 <li>
                   <Link to="kgpointwisereasoning" className="text-purple-500">
-                    Point-Wise Reasoning
+                    KG Point-Wise Reasoning
                   </Link>
                 </li>
                 <li>
@@ -49,7 +49,7 @@ const NavBar = () => {
                     to="kgreinforcementlearning"
                     className="text-purple-500"
                   >
-                    Multi-Hop Reasoning
+                    KG Reinforcement Learning
                   </Link>
                 </li>
                 {/* <li tabindex="0">

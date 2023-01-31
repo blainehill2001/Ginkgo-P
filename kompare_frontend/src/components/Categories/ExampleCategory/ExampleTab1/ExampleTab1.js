@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
+import Result from "../../../Result";
 
 let BACKEND;
 process.env.REACT_APP_NODE_ENV == "prod"
@@ -193,9 +194,7 @@ const ExampleTab1 = () => {
                 data.algocall_result &&
                 data.algocall_result.result &&
                 !isLoading &&
-                !hasError && (
-                  <p>this is data: {String(data.algocall_result.result)}</p>
-                )}
+                !hasError && <Result data={data.algocall_result.result} />}
             </div>
           </div>
         </div>

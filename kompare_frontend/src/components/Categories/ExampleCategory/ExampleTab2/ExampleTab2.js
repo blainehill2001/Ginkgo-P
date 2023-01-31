@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
+import Result from "../../../Result";
 import ExampleResult from "../ExampleResult";
 
 let BACKEND;
