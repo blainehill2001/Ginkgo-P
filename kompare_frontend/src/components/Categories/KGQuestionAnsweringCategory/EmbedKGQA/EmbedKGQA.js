@@ -7,7 +7,7 @@ import Error from "../../../Error";
 import Result from "../../../Result";
 
 let BACKEND;
-process.env.REACT_APP_NODE_ENV == "prod"
+process.env.REACT_APP_NODE_ENV === "prod"
   ? (BACKEND = process.env.REACT_APP_BACKEND + "/api/algorithms")
   : (BACKEND = process.env.REACT_APP_DEFAULT_BACKEND + "/api/algorithms");
 
@@ -81,7 +81,6 @@ const EmbedKGQA = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors }
   } = useForm({
     mode: "onBlur",
