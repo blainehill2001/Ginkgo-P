@@ -1,11 +1,14 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import ExampleCategory from "../ExampleCategory";
-import KGCompletionCategory from "../KGCompletionCategory";
+import Particles from "../Particles";
+//import components and navbar
 import NavBar from "../NavBar";
 import HomePage from "../HomePage";
-// import Body from "../Body";
-import Particles from "../Particles";
+import ExampleCategory from "../Categories/ExampleCategory";
+import KGCompletionCategory from "../Categories/KGCompletionCategory";
+import KGQuestionAnsweringCategory from "../Categories/KGQuestionAnsweringCategory";
+import KGPointWiseReasoningCategory from "../Categories/KGPointWiseReasoningCategory";
+import KGReinforcementLearningCategory from "../Categories/KGReinforcementLearningCategory";
 
 function App() {
   return (
@@ -15,11 +18,20 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="Example" element={<ExampleCategory />} />
-            <Route path="multihopreasoning" />
-            <Route path="pointwisereasoning" />
+            <Route path="example" element={<ExampleCategory />} />
             <Route path="kgcompletion" element={<KGCompletionCategory />} />
-            <Route path="kgquestionanswering" />
+            <Route
+              path="kgquestionanswering"
+              element={<KGQuestionAnsweringCategory />}
+            />
+            <Route
+              path="kgpointwisereasoning"
+              element={<KGPointWiseReasoningCategory />}
+            />
+            <Route
+              path="kgreinforcementlearning"
+              element={<KGReinforcementLearningCategory />}
+            />
           </Routes>
         </div>
         <Particles id="tsparticles" />

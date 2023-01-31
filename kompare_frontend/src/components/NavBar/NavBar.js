@@ -25,7 +25,7 @@ const NavBar = () => {
             <div className="flex-none">
               <ul className="menu menu-horizontal px-8">
                 <li>
-                  <Link to="Example" className="text-purple-500">
+                  <Link to="example" className="text-purple-500">
                     Example Algo
                   </Link>
                 </li>
@@ -40,13 +40,16 @@ const NavBar = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="multihopreasoning" className="text-purple-500">
-                    Multi-Hop Reasoning
+                  <Link to="kgpointwisereasoning" className="text-purple-500">
+                    Point-Wise Reasoning
                   </Link>
                 </li>
                 <li>
-                  <Link to="pointwisereasoning" className="text-purple-500">
-                    Point-Wise Reasoning
+                  <Link
+                    to="kgreinforcementlearning"
+                    className="text-purple-500"
+                  >
+                    Multi-Hop Reasoning
                   </Link>
                 </li>
                 {/* <li tabindex="0">
