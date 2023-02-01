@@ -79,6 +79,7 @@ const ExampleTab1 = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors }
   } = useForm({
     mode: "onBlur",
@@ -181,8 +182,8 @@ const ExampleTab1 = () => {
               <button
                 className={
                   isLoading === true
-                    ? "inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm opacity-50 cursor-not-allowed"
-                    : "inline-block bg-yellow-500 text-yellow-800 rounded shadow py-2 px-5 text-sm"
+                    ? "inline-block bg-[#fbe5a9] text-[#8f69a2] rounded shadow py-2 px-5 text-sm opacity-50 cursor-not-allowed outline outline-1 outline-[#8f69a2]"
+                    : "inline-block bg-[#fbe5a9] text-[#8f69a2] rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2]"
                 }
                 type="submit"
               >

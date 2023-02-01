@@ -1,5 +1,6 @@
 // import { VscGithub, VscBug } from "react-icons/vsc";
 import { Link } from "react-router-dom";
+import home_png from "../../assets/home_icon.png";
 
 const NavBar = () => {
   return (
@@ -9,8 +10,11 @@ const NavBar = () => {
           <div className="navbar bg-base-100">
             <ul className="flex-1">
               <li className="mr-6">
-                <Link to="/" className="btn btn-primary">
+                {/* <Link to="/" className="btn btn-primary">
                   KompaRe
+                </Link> */}
+                <Link to="/">
+                  <img src={home_png} class="object-scale-down w-12 h-12" />
                 </Link>
               </li>
               <li className="mr-6">

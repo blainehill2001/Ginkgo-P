@@ -6,10 +6,12 @@ const Result = ({ data }) => {
   // Released under the ISC license.
   // https://observablehq.com/@d3/force-directed-graph
   function ForceGraph(
+    status, //a string denoting status of the data
     {
       nodes, // an iterable of node objects (typically [{id}, …])
       links // an iterable of link objects (typically [{source, target}, …])
     },
+    highlighted_path = {}, //a set denoting vectors (as a list) to be highlighted of the form <h, r, t>
     {
       nodeId = (d) => d.id, // given d in nodes, returns a unique identifier (string)
       nodeGroup, // given d in nodes, returns an (ordinal) value for color
@@ -36,6 +38,51 @@ const Result = ({ data }) => {
       invalidation // when this promise resolves, stop the simulation
     } = {}
   ) {
+    //set highlighted path to be a set to save time
+    var highlighted_path_set = new Set();
+    highlighted_path.forEach((item) => {
+      var forward_dir = {
+        "source": item.source,
+        "type": item.type,
+        "target": item.target
+      };
+      var backward_dir = {
+        "source": item.target,
+        "type": item.type,
+        "target": item.source
+      };
+      highlighted_path_set.add(JSON.stringify(forward_dir));
+      highlighted_path_set.add(JSON.stringify(backward_dir));
+    });
+
+    //edit linkstrokewidth and linkstrokeopacity to highlight edges
+
+    linkStroke = (cur_link) => {
+      if (typeof linkStroke == "function") {
+        return highlighted_path_set.has(JSON.stringify(cur_link))
+          ? "#fceaba"
+          : "#8f69a2";
+      } else {
+        return null;
+      }
+    };
+
+    linkStrokeWidth = (cur_link) => {
+      if (typeof linkStrokeWidth == "function") {
+        return highlighted_path_set.has(JSON.stringify(cur_link)) ? 6 : 2;
+      } else {
+        return null;
+      }
+    };
+
+    linkStrokeOpacity = (cur_link) => {
+      if (typeof linkStrokeOpacity == "function") {
+        return highlighted_path_set.has(JSON.stringify(cur_link)) ? 0.5 : 1;
+      } else {
+        return null;
+      }
+    };
+
     // Compute values.
     const N = d3.map(nodes, nodeId).map(intern);
     const LS = d3.map(links, linkSource).map(intern);
@@ -67,7 +114,7 @@ const Result = ({ data }) => {
     const forceLink = d3
       .forceLink(links)
       .id(({ index: i }) => N[i])
-      .distance(250);
+      .distance(350); //set how far apart nodes are here
     // if (nodeStrength !== undefined) forceNode.strength(nodeStrength);
     // if (linkStrength !== undefined) forceLink.strength(linkStrength);
     if (nodeStrength !== undefined)
@@ -88,6 +135,15 @@ const Result = ({ data }) => {
       .attr("height", height)
       .attr("viewBox", [-width / 2, -height / 2, width, height])
       .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
+    const outerlink = svg
+      .append("g")
+      .attr("stroke", "#ab47bc")
+      .attr("stroke-opacity", 0.4)
+      .attr("stroke-width", 12)
+      .selectAll("line")
+      .data(links)
+      .join("line");
 
     const link = svg
       .append("g")
@@ -129,7 +185,7 @@ const Result = ({ data }) => {
       })
       .attr("fill", "black")
       .attr("stroke", "none")
-      .attr("font-size", "0.85em");
+      .attr("font-size", "20");
 
     const edgepaths = svg
       .selectAll(".edgepath")
@@ -154,7 +210,7 @@ const Result = ({ data }) => {
       .attr("id", function (d, i) {
         return "edgelabel" + i;
       })
-      .attr("font-size", 15)
+      .attr("font-size", 20)
       .attr("fill", "#9c28b0")
       .append("textPath")
       .attr("xlink:href", function (d, i) {
@@ -181,6 +237,12 @@ const Result = ({ data }) => {
     }
 
     function ticked() {
+      outerlink
+        .attr("x1", (d) => d.source.x)
+        .attr("y1", (d) => d.source.y)
+        .attr("x2", (d) => d.target.x)
+        .attr("y2", (d) => d.target.y);
+
       link
         .attr("x1", (d) => d.source.x)
         .attr("y1", (d) => d.source.y)
@@ -244,16 +306,21 @@ const Result = ({ data }) => {
     return Object.assign(svg.node(), { scales: { color } });
   }
   var parsed_data = JSON.parse(data);
-  var chart = ForceGraph(parsed_data.result1, {
-    nodeId: (d) => d.id,
-    nodeGroup: (d) => d.group,
-    nodeTitle: (d) => `${d.name}`,
-    edgeLabel: (e) => `${e.type}`,
-    linkStrokeWidth: (l) => Math.sqrt(l.value),
-    width: 960,
-    height: 600,
-    invalidation: null // a promise to stop the simulation when the cell is re-run
-  });
+  var chart = ForceGraph(
+    parsed_data.status,
+    parsed_data.result1,
+    parsed_data.highlighted_path,
+    {
+      nodeId: (d) => d.id,
+      nodeGroup: (d) => d.group,
+      nodeTitle: (d) => `${d.name}`,
+      edgeLabel: (e) => `${e.type}`,
+      linkStrokeWidth: (l) => Math.sqrt(l.value),
+      width: 960,
+      height: 600,
+      invalidation: null // a promise to stop the simulation when the cell is re-run
+    }
+  );
 
   const svg = useRef(null);
   useEffect(() => {
