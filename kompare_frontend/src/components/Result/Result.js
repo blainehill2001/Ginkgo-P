@@ -114,7 +114,7 @@ const Result = ({ data }) => {
     const forceLink = d3
       .forceLink(links)
       .id(({ index: i }) => N[i])
-      .distance(350); //set how far apart nodes are here
+      .distance(320); //set how far apart nodes are here
     // if (nodeStrength !== undefined) forceNode.strength(nodeStrength);
     // if (linkStrength !== undefined) forceLink.strength(linkStrength);
     if (nodeStrength !== undefined)
