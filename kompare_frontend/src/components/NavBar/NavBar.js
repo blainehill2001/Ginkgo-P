@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <div className="px-10 pt-10">
+    <div className="px-10 pt-10 pb-5">
       <div className="group relative mx-auto rounded-[16px] bg-gray-300 p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
         <div className="navbar bg-base-100 rounded-[15px]">
           <div className="navbar bg-base-100">

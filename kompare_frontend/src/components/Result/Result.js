@@ -268,7 +268,7 @@ const Result = ({ data }) => {
         <div className="justify-center">
           <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
             <div
-              className="relative rounded-[15px] p-6 py-2 text-purple-500"
+              className="relative rounded-[15px] text-purple-500 p-5"
               data-theme="mytheme"
             >
               <h5>Result Component</h5>
