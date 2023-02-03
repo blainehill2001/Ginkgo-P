@@ -1,6 +1,7 @@
 # Ginkgo-P
-## Blaine Hill and Lihui Liu, Fall 2022
-### IDEA Lab, UIUC
+## General Illustrations of Networks and Knowledge Graphs for Openness as a Platform
+### Blaine Hill, Lihui Liu and Hanghang Tong, Fall 2022
+#### IDEA Lab, UIUC
 
 #### Frontend: Built using React, TailwindCSS, DaisyUI, Material Tailwind, ParticlesJS, and NodeJS.
 #### Backend: Built using Express.js, MongoDB, and NodeJS.
