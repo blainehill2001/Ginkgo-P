@@ -1,8 +1,7 @@
 //imports
 import React from "react";
-import KGCompletionHome from "./KGQuestionAnsweringHome";
-import EmbedKGQA from "./EmbedKGQA";
-import BiNet from "./BiNet";
+import KGReinforcementLearningHome from "./KGReinforcementLearningHome";
+import MultiHopKG from "./MultiHopKG";
 import {
   Tabs,
   TabsHeader,
@@ -11,23 +10,18 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
-const KGQuestionAnsweringCategory = () => {
+const KGReinforcementLearningCategory = () => {
   const tabs = [
     {
       label: "Home",
       value: "home",
-      desc: <KGCompletionHome />
-    },
-    {
-      label: "EmbedKGQA",
-      value: "embedkgqa",
-      desc: <EmbedKGQA />
+      desc: <KGReinforcementLearningHome />
     },
 
     {
-      label: "BiNet",
-      value: "binet",
-      desc: <BiNet />
+      label: "MultiHopKG",
+      value: "multihopkg",
+      desc: <MultiHopKG />
     }
   ];
 
@@ -39,7 +33,7 @@ const KGQuestionAnsweringCategory = () => {
             className="relative rounded-[15px] text-purple-500 flex-auto p-5"
             data-theme="mytheme"
           >
-            <h5>KGQuestionAnsweringCategory Component</h5>
+            <h5>KG Reinforcement Learning</h5>
 
             <Tabs value="home">
               <TabsHeader>
@@ -69,4 +63,4 @@ const KGQuestionAnsweringCategory = () => {
   );
 };
 
-export default KGQuestionAnsweringCategory;
+export default KGReinforcementLearningCategory;

@@ -1,22 +1,22 @@
 {
-  "name": "kompare2.0",
+  "name": "ginkgo-p",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"cd kompare_backend && npm run dev\" \"cd kompare_frontend && npm run start\""
+    "dev": "concurrently \"cd ginkgo_backend && npm run dev\" \"cd ginkgo_frontend && npm run start\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blainehill2001/KomPare.git"
+    "url": "git+https://github.com/blainehill2001/Ginkgo-P.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/blainehill2001/KomPare/issues"
+    "url": "https://github.com/blainehill2001/Ginkgo-P/issues"
   },
-  "homepage": "https://github.com/blainehill2001/KomPare#readme",
+  "homepage": "https://github.com/blainehill2001/Ginkgo-P#readme",
   "dependencies": {
     "concurrently": "^7.6.0"
   }

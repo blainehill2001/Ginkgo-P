@@ -1,7 +1,7 @@
 //imports
 import React from "react";
-import KGReinforcementLearningHome from "./KGReinforcementLearningHome";
-import MultiHopKG from "./MultiHopKG";
+import KGPointWiseReasoningHome from "./KGPointWiseReasoningHome";
+import Nibble from "./Nibble";
 import {
   Tabs,
   TabsHeader,
@@ -10,18 +10,18 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
-const KGReinforcementLearningCategory = () => {
+const KGPointWiseReasoningCategory = () => {
   const tabs = [
     {
       label: "Home",
       value: "home",
-      desc: <KGReinforcementLearningHome />
+      desc: <KGPointWiseReasoningHome />
     },
 
     {
-      label: "MultiHopKG",
-      value: "multihopkg",
-      desc: <MultiHopKG />
+      label: "Nibble",
+      value: "nibble",
+      desc: <Nibble />
     }
   ];
 
@@ -33,7 +33,7 @@ const KGReinforcementLearningCategory = () => {
             className="relative rounded-[15px] text-purple-500 flex-auto p-5"
             data-theme="mytheme"
           >
-            <h5>KGReinforcementLearningCategory Component</h5>
+            <h5>KG Point-Wise Reasoning</h5>
 
             <Tabs value="home">
               <TabsHeader>
@@ -63,4 +63,4 @@ const KGReinforcementLearningCategory = () => {
   );
 };
 
-export default KGReinforcementLearningCategory;
+export default KGPointWiseReasoningCategory;

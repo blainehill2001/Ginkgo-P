@@ -1,7 +1,8 @@
 //imports
 import React from "react";
-import KGPointWiseReasoningHome from "./KGPointWiseReasoningHome";
-import Nibble from "./Nibble";
+import KGCompletionHome from "./KGCompletionHome";
+import TransE from "./TransE";
+import ComplEx from "./ComplEx";
 import {
   Tabs,
   TabsHeader,
@@ -10,18 +11,29 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
-const KGPointWiseReasoningCategory = () => {
+const KGCompletionCategory = () => {
   const tabs = [
     {
       label: "Home",
       value: "home",
-      desc: <KGPointWiseReasoningHome />
+      desc: <KGCompletionHome />
+    },
+    {
+      label: "TransE",
+      value: "transe",
+      desc: <TransE />
     },
 
     {
-      label: "Nibble",
-      value: "nibble",
-      desc: <Nibble />
+      label: "ComplEx",
+      value: "complex",
+      desc: <ComplEx />
+    },
+
+    {
+      label: "RotatE",
+      value: "rotate",
+      desc: `Eventually insert tab 3 component here`
     }
   ];
 
@@ -33,7 +45,7 @@ const KGPointWiseReasoningCategory = () => {
             className="relative rounded-[15px] text-purple-500 flex-auto p-5"
             data-theme="mytheme"
           >
-            <h5>KGPointWiseReasoningCategory Component</h5>
+            <h5>KG Completion</h5>
 
             <Tabs value="home">
               <TabsHeader>
@@ -63,4 +75,4 @@ const KGPointWiseReasoningCategory = () => {
   );
 };
 
-export default KGPointWiseReasoningCategory;
+export default KGCompletionCategory;

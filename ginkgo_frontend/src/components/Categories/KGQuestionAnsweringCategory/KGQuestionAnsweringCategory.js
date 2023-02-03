@@ -1,8 +1,8 @@
 //imports
 import React from "react";
-import KGCompletionHome from "./KGCompletionHome";
-import TransE from "./TransE";
-import ComplEx from "./ComplEx";
+import KGCompletionHome from "./KGQuestionAnsweringHome";
+import EmbedKGQA from "./EmbedKGQA";
+import BiNet from "./BiNet";
 import {
   Tabs,
   TabsHeader,
@@ -11,7 +11,7 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
-const KGCompletionCategory = () => {
+const KGQuestionAnsweringCategory = () => {
   const tabs = [
     {
       label: "Home",
@@ -19,21 +19,15 @@ const KGCompletionCategory = () => {
       desc: <KGCompletionHome />
     },
     {
-      label: "TransE",
-      value: "transe",
-      desc: <TransE />
+      label: "EmbedKGQA",
+      value: "embedkgqa",
+      desc: <EmbedKGQA />
     },
 
     {
-      label: "ComplEx",
-      value: "complex",
-      desc: <ComplEx />
-    },
-
-    {
-      label: "RotatE",
-      value: "rotate",
-      desc: `Eventually insert tab 3 component here`
+      label: "BiNet",
+      value: "binet",
+      desc: <BiNet />
     }
   ];
 
@@ -45,7 +39,7 @@ const KGCompletionCategory = () => {
             className="relative rounded-[15px] text-purple-500 flex-auto p-5"
             data-theme="mytheme"
           >
-            <h5>KGCompletionCategory Component</h5>
+            <h5>KG Question Answering</h5>
 
             <Tabs value="home">
               <TabsHeader>
@@ -75,4 +69,4 @@ const KGCompletionCategory = () => {
   );
 };
 
-export default KGCompletionCategory;
+export default KGQuestionAnsweringCategory;

@@ -18,7 +18,7 @@ const NavBar = () => {
                 </Link>
               </li>
               <li className="mr-6">
-                <a href="https://github.com/blainehill2001/KomPare">
+                <a href="https://github.com/blainehill2001/Ginkgo-P">
                   <img
                     src="https://img.icons8.com/nolan/64/github.png"
                     className="object-scale-down w-12 h-12"
