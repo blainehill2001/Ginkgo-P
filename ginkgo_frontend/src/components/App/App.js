@@ -4,6 +4,7 @@ import Particles from "../Particles";
 //import components and navbar
 import NavBar from "../NavBar";
 import HomePage from "../HomePage";
+import Custom from "../Custom";
 import ExampleCategory from "../Categories/ExampleCategory";
 import KGCompletionCategory from "../Categories/KGCompletionCategory";
 import KGQuestionAnsweringCategory from "../Categories/KGQuestionAnsweringCategory";
@@ -18,6 +19,7 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="custom" element={<Custom />} />
             <Route path="example" element={<ExampleCategory />} />
             <Route path="kgcompletion" element={<KGCompletionCategory />} />
             <Route
