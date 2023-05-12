@@ -25,7 +25,6 @@ app
     })
   )
   .use(cors(corsOptions));
-
 // Database connection
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 mongoose.connection.once("open", function () {

@@ -38,10 +38,72 @@ async function searchMongo(body) {
   return doc;
 }
 const getAlgoResult = (req, res, next) => {
-  res.json({ message: "GET request receieved." });
+  res.json({ message: "GET (blaine wrote this) request receieved." });
   next();
 };
 const postAlgoResult = async (req, res, next) => {
+  //check redis for AlgorithmCall object as key
+  //if it is in cache
+  //TODO
+  //return object.result
+  //if it is not in cache
+  var mongo_check;
+  searchMongo(req.body).then((res) => {
+    mongo_check = res;
+  });
+  //if it is in mongodb
+  if (typeof mongo_check !== "undefined") {
+    //return object.result
+    return res.status(201).json({
+      algocall_result: mongo_check.result,
+      message:
+        "GET request receieved. Found algorithm result for inputs in MongoDB."
+    });
+    // next();
+  } else {
+    //if it is not in mongodb, call loadProcess;
+
+    const algocall_result = await loadProcess(...Object.values(req.body)).then(
+      (x) => x,
+      console.log
+    );
+
+    let finished_algocall = new AlgorithmCall(
+      _.merge(req.body, { result: algocall_result })
+    );
+
+    //store finished_algocall in cache
+    //TODO
+    //store answer in mongodb
+    return finished_algocall
+      .save()
+      .then(() => {
+        res.status(201).json({
+          message:
+            "GET request receieved. Ran algorithm and stored results [in cache] AND MongoDB.",
+          algocall_result: finished_algocall
+        });
+      })
+      .catch((err) => {
+        res.status(400).json({
+          message: `GET request receieved. Ran algorithm and stored results [in cache] but NOT MongoDB. See error: \n${err}`,
+          algocall_result: finished_algocall
+        });
+      });
+    // next();
+  }
+};
+
+const postCustomAlgoResult = async (req, res, next) => {
+  console.log(req.files);
+  console.log(req.body);
+  // Extract uploaded files from the request object
+  console.log("\n\n\nWe got to postCustomAlgoResult!\n\n\n");
+  console.log(req.files["language"]);
+  console.log(req.files["script"]);
+  console.log(req.files["script_file"]); // Array of uploaded files
+  console.log(req.files["user_email"]); // Array of uploaded files
+  console.log(req.files["data_files"]); // Array of uploaded files
   //check redis for AlgorithmCall object as key
   //if it is in cache
   //TODO
@@ -107,6 +169,7 @@ const deleteAlgoResult = (req, res, next) => {
 module.exports = {
   getAlgoResult,
   postAlgoResult,
+  postCustomAlgoResult,
   putAlgoResult,
   deleteAlgoResult
 };

@@ -12,7 +12,8 @@ var AlgorithmCallSchema = new Schema({
       "transE2.py",
       "multihopkg.py",
       "embedkgqa.py",
-      "nibble.py"
+      "nibble.py",
+      "runcustom.py"
     ],
     required: true,
     unique: false
