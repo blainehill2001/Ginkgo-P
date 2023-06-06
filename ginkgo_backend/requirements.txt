@@ -5,4 +5,4 @@ mkl-service==2.4.0
 munkres==1.1.4
 Pillow==9.4.0
 torch==1.12.1
-numpy==1.23.5
+numpy==1.21.6
