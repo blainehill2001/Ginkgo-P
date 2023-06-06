@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 import Result from "../../../Result";
+import text from "../../../../assets/train_triples.js";
+
+const rows = text.split("\n").map((row) => row.split("\t"));
+
+const getRandomRow = () => {
+  const randomIndex = Math.floor(Math.random() * rows.length);
+  return rows[randomIndex];
+};
 
 let BACKEND;
 process.env.REACT_APP_NODE_ENV === "prod"
@@ -28,6 +36,11 @@ const MultiHopKG = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+
+  const handleButtonClick = () => {
+    const [entity1, , relation] = getRandomRow();
+    setValue("query", `${entity1}, ${relation}`);
+  };
 
   const onSubmit = async (data_sent) => {
     const params = {
@@ -74,18 +87,23 @@ const MultiHopKG = () => {
   const schema = yup.object().shape({
     // language: yup.string().required(),
     // script: yup.string().required(),
-    query: yup.string().required()
+    query: yup
+      .string()
+      .required()
+      .matches(/^\w+,\s*\w+$/, 'Query must be in the format "xxxx, yyyy"')
   });
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors }
   } = useForm({
     mode: "onBlur",
     resolver: yupResolver(schema)
   });
+  const queryValue = watch("query");
 
   return (
     <div className="justify-center ">
@@ -96,6 +114,14 @@ const MultiHopKG = () => {
       >
         <div className="flex flex-col space-y-4">
           <div className="flex-auto">
+            <button
+              onClick={handleButtonClick}
+              className={
+                "inline-block bg-[#fbe5a9] text-[#8f69a2] rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2]"
+              }
+            >
+              Get Random Row
+            </button>
             <h5>MultiHopKG Component</h5>
             <form onSubmit={handleSubmit(onSubmit, onErrors)}>
               <div className="mb-8">
@@ -113,6 +139,7 @@ const MultiHopKG = () => {
                   id="query"
                   placeholder="test query!"
                   autoComplete="off"
+                  value={queryValue}
                   className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
                     errors.query
                       ? "text-red-300 border-red-400"

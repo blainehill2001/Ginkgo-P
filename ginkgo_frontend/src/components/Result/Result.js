@@ -125,8 +125,7 @@ const Result = ({ data }) => {
       .forceSimulation(nodes)
       .force("link", forceLink)
       .force("charge", forceNode)
-      .force("charge", d3.forceCollide().radius(50))
-      .force("center", d3.forceCenter())
+      .force("collide", d3.forceCollide().radius(nodeRadius + 2)) // Add forceCollide      .force("center", d3.forceCenter())
       .on("tick", ticked);
 
     const svg = d3

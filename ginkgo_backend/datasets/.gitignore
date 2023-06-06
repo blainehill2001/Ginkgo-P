@@ -1,4 +1,0 @@
-# ignoring files in /datasets because they are too large
-
-*
-!.gitignore
