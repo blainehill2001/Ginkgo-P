@@ -2,6 +2,8 @@ var spawn = require("child_process").spawn;
 var bbPromise = require("bluebird");
 const AlgorithmCall = require("../schemas/algorithm.model");
 const _ = require("lodash");
+const fs = require("fs");
+const path = require("path");
 
 function loadProcess(script_language, script_name, ...args) {
   /*
@@ -10,7 +12,6 @@ function loadProcess(script_language, script_name, ...args) {
             script_name: String => title of script with file extension (e.g. "script1.py" not "script1")
             ...args: String => values of the rest of the parsed JSON object passed to api call
     */
-
   return new bbPromise(function (resolve, reject) {
     var process = spawn(`${script_language}`, [
       `./algorithm_scripts/${script_name}`,
@@ -95,15 +96,41 @@ const postAlgoResult = async (req, res, next) => {
 };
 
 const postCustomAlgoResult = async (req, res, next) => {
-  console.log(req.files);
-  console.log(req.body);
-  // Extract uploaded files from the request object
-  console.log("\n\n\nWe got to postCustomAlgoResult!\n\n\n");
-  console.log(req.files["language"]);
-  console.log(req.files["script"]);
-  console.log(req.files["script_file"]); // Array of uploaded files
-  console.log(req.files["user_email"]); // Array of uploaded files
-  console.log(req.files["data_files"]); // Array of uploaded files
+  // Extract files from req.files into req.body
+  //   req.files.script_file.forEach((file) => {
+  //     console.log(
+  //       "this is script_file under postCustomAlgoResult for file: " + file
+  //     );
+  //     console.log("type of file is: " + typeof file);
+  //     console.log("the attributes of file are: " + Object.keys(file));
+  //   });
+  //   req.files.data_files.forEach((file) => {
+  //     console.log(
+  //       "this is data_files under postCustomAlgoResult for file: " + file
+  //     );
+  //     console.log("type of file is: " + typeof file);
+  //     console.log("the attributes of file are: " + Object.keys(file));
+  //   });
+
+  // Create an array to store the file paths
+  const filePaths = [];
+
+  // Iterate over the files and write them to /custom
+
+  for (const file of req.files.script_file) {
+    const filePath = path.resolve("custom") + `/${file.originalname}`;
+    filePaths.push(filePath);
+    fs.writeFileSync(filePath, file.buffer);
+  }
+  for (const file of req.files.data_files) {
+    const filePath = path.resolve("custom") + `/${file.originalname}`;
+    filePaths.push(filePath);
+    fs.writeFileSync(filePath, file.buffer);
+  }
+
+  //assign filePaths to req.body to pass it into spawned Python process
+  req.body.filepaths = filePaths;
+  req.body.smtb = [process.env.SMTB_USERNAME, process.env.SMTB_PASSWORD];
   //check redis for AlgorithmCall object as key
   //if it is in cache
   //TODO
@@ -124,7 +151,6 @@ const postCustomAlgoResult = async (req, res, next) => {
     // next();
   } else {
     //if it is not in mongodb, call loadProcess;
-
     const algocall_result = await loadProcess(...Object.values(req.body)).then(
       (x) => x,
       console.log

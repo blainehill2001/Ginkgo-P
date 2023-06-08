@@ -98,8 +98,10 @@ const FileUpload = () => {
     const formData = new FormData();
     formData.append("language", "python");
     formData.append("script", "runcustom.py");
-    formData.append("script_file", custom_script);
     formData.append("user_email", user_email);
+    custom_script.forEach((file) => {
+      formData.append("script_file", file);
+    });
     data_files.forEach((file) => {
       formData.append("data_files", file);
     });

@@ -28,10 +28,10 @@ app
 // Database connection
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 mongoose.connection.once("open", function () {
-  console.log("Connected to the Database.");
+  console.log("\n\nConnected to the Database.\n\n");
 });
 mongoose.connection.on("error", function (error) {
-  console.log("Mongoose Connection Error : " + error);
+  console.log("\n\nMongoose Connection Error : " + error + "\n\n");
 });
 
 //routes
