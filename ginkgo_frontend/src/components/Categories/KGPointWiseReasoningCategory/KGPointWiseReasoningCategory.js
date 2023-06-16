@@ -1,7 +1,7 @@
 //imports
 import React from "react";
 import KGPointWiseReasoningHome from "./KGPointWiseReasoningHome";
-import Nibble from "./Nibble";
+import PageRank from "./PageRank";
 import {
   Tabs,
   TabsHeader,
@@ -19,9 +19,9 @@ const KGPointWiseReasoningCategory = () => {
     },
 
     {
-      label: "Nibble",
-      value: "nibble",
-      desc: <Nibble />
+      label: "PageRank",
+      value: "pagerank",
+      desc: <PageRank />
     }
   ];
 

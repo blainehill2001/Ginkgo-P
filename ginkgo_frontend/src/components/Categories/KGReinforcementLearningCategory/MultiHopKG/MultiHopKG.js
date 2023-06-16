@@ -5,32 +5,11 @@ import * as yup from "yup";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 import Result from "../../../Result";
-import text from "../../../../assets/train_triples.js";
+import { getRandomRow } from "../../../../ops/getRandomRow.js";
+import { fetchWithTimeout } from "../../../../ops/fetchWithTimeout";
+import { getBackend } from "../../../../ops/getBackend.js";
 
-const rows = text.split("\n").map((row) => row.split("\t"));
-
-const getRandomRow = () => {
-  const randomIndex = Math.floor(Math.random() * rows.length);
-  return rows[randomIndex];
-};
-
-let BACKEND;
-process.env.REACT_APP_NODE_ENV === "prod"
-  ? (BACKEND = process.env.REACT_APP_BACKEND + "/api/algorithms")
-  : (BACKEND = process.env.REACT_APP_DEFAULT_BACKEND + "/api/algorithms");
-
-async function fetchWithTimeout(resource, options = {}) {
-  const { timeout = 30000 } = options;
-
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
-  const response = await fetch(resource, {
-    ...options,
-    signal: controller.signal
-  });
-  clearTimeout(id);
-  return response;
-}
+var BACKEND = getBackend();
 
 const MultiHopKG = () => {
   const [data, setData] = useState({});
@@ -85,8 +64,6 @@ const MultiHopKG = () => {
   };
 
   const schema = yup.object().shape({
-    // language: yup.string().required(),
-    // script: yup.string().required(),
     query: yup
       .string()
       .required()

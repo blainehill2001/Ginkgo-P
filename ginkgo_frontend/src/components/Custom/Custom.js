@@ -4,25 +4,10 @@ import { useDropzone } from "react-dropzone";
 import validator from "validator";
 import Loading from "../Loading";
 import Error from "../Error";
+import { fetchWithTimeout } from "../../ops/fetchWithTimeout";
+import { getCustomBackend } from "../../ops/getCustomBackend.js";
 
-let BACKEND;
-process.env.REACT_APP_NODE_ENV === "prod"
-  ? (BACKEND = process.env.REACT_APP_BACKEND + "/api/algorithms/custom")
-  : (BACKEND =
-      process.env.REACT_APP_DEFAULT_BACKEND + "/api/algorithms/custom");
-
-async function fetchWithTimeout(resource, options = {}) {
-  const { timeout = 30000 } = options;
-
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeout);
-  const response = await fetch(resource, {
-    ...options,
-    signal: controller.signal
-  });
-  clearTimeout(id);
-  return response;
-}
+var BACKEND = getCustomBackend();
 
 const FileUpload = () => {
   const [script, setScript] = useState([]);
