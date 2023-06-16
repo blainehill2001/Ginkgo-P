@@ -5,7 +5,7 @@ import * as yup from "yup";
 import Loading from "../../../Loading";
 import Error from "../../../Error";
 import Result from "../../../Result";
-import { getRandomRow } from "../../../../ops/getRandomRow.js";
+import { getRandomRowUMLS } from "../../../../ops/getRandomRowUMLS.js";
 import { fetchWithTimeout } from "../../../../ops/fetchWithTimeout";
 import { getBackend } from "../../../../ops/getBackend.js";
 
@@ -17,7 +17,7 @@ const MultiHopKG = () => {
   const [hasError, setHasError] = useState(false);
 
   const handleButtonClick = () => {
-    const [entity1, , relation] = getRandomRow();
+    const [entity1, , relation] = getRandomRowUMLS();
     setValue("query", `${entity1}, ${relation}`);
   };
 
