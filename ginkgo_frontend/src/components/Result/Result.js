@@ -5,6 +5,14 @@ const Result = ({ data }) => {
   // Copyright 2021 Observable, Inc.
   // Released under the ISC license.
   // https://observablehq.com/@d3/force-directed-graph
+
+  //TODO: incorporate highlighted_nodes to better organize algorithms.
+  var parsed_data = JSON.parse(data);
+  // Extract highlighted nodes from the JSON data (if available)
+  const highlightedNodes = parsed_data.highlighted_nodes || [];
+  // Process highlighted nodes to create a set for efficient lookup
+  const highlightedNodeSet = new Set(highlightedNodes);
+
   function ForceGraph(
     status, //a string denoting status of the data
     {
@@ -304,7 +312,7 @@ const Result = ({ data }) => {
 
     return Object.assign(svg.node(), { scales: { color } });
   }
-  var parsed_data = JSON.parse(data);
+
   var chart = ForceGraph(
     parsed_data.status,
     parsed_data.result1,

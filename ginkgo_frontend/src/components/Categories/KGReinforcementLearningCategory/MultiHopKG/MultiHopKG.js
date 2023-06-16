@@ -67,7 +67,10 @@ const MultiHopKG = () => {
     query: yup
       .string()
       .required()
-      .matches(/^\w+,\s*\w+$/, 'Query must be in the format "xxxx, yyyy"')
+      .matches(
+        /^\w+,\s*\w+$/,
+        'Query must be in the format "start node, start relation"'
+      )
   });
 
   const {
@@ -125,7 +128,7 @@ const MultiHopKG = () => {
                 />
                 {errors.query && (
                   <p className="text-red-500 text-sm mt-2">
-                    A valid query is required.
+                    Query must be in the format "start node, start relation".
                   </p>
                 )}
               </div>
