@@ -6,6 +6,8 @@
 #### Frontend: Built using React, TailwindCSS, DaisyUI, Material Tailwind, ParticlesJS, and NodeJS.
 #### Backend: Built using Express.js, MongoDB, and NodeJS.
 
+## Visit the Website: https://ginkgo-p.onrender.com/ 
+
 ## How to Run
 
 To launch locally, first download NodeJS from [here](https://nodejs.org/en/download/). Ensure you have the latest version of NodeJS that this project supports. At the time of writing, it is **8.19.2**. Test that NodeJS is installed correctly with `npm --v` to check the version.
