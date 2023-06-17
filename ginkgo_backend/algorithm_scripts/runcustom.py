@@ -8,6 +8,12 @@ from email.mime.application import MIMEApplication
 from email.mime.base import MIMEBase
 import os
 import io
+"""
+TODOs:
+    Add timestamp to email header
+    Return output both in email body and as a text file
+
+"""
 
 # print(sys.argv[1]) #take in the first non-"language" and non-"script" parameter in the API request and return it back to the user
 # print(sys.argv[2]) #take in the second non-"language" and non-"script" parameter in the API request and return it back to the user
@@ -19,8 +25,10 @@ script_file, data_files = filepaths[0], filepaths[1:]
 
 smtp_username, smtp_password = sys.argv[3].split(",")
 
+
 result = subprocess.check_output(["python", script_file, *data_files])
 output = result.decode('utf-8')
+
 # Construct the email message
 message = MIMEMultipart()
 message['From'] = 'your_email@example.com'

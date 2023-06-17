@@ -1,7 +1,7 @@
 import sys
 
 # Print the script name and command line arguments
-script_file = sys.argv[0]
+script_file = sys.argv[0] # this is 
 data_file_objects =  sys.argv[1:] # obtain all file objects when running the code. will be assigned in order
 
 #let's test this out by printing out some text files we pass to Ginkgo-P
@@ -13,8 +13,6 @@ for data_file_object in data_file_objects:
 
             # Print the contents
             print(file_contents)
-            print(type(data_file_object))
-            print(dir(data_file_object))
     except FileNotFoundError:
         print(f"File '{data_file_object}' not found.")
     except IOError:
