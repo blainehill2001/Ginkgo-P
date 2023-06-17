@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -16,11 +16,20 @@ const MultiHopKG = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
+  //To be used for highlighted Generate Query Button
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const handleInputFocus = () => {
+    setIsInputFocused(true);
+  };
+  const handleInputBlur = () => {
+    setIsInputFocused(false);
+  };
   const handleButtonClick = () => {
     const [entity1, , relation] = getRandomRowUMLS();
     setValue("query", `${entity1}, ${relation}`);
   };
 
+  //when user submits the form
   const onSubmit = async (data_sent) => {
     const params = {
       "method": "POST",
@@ -94,14 +103,6 @@ const MultiHopKG = () => {
       >
         <div className="flex flex-col space-y-4">
           <div className="flex-auto">
-            <button
-              onClick={handleButtonClick}
-              className={
-                "inline-block bg-[#fbe5a9] text-[#8f69a2] rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2]"
-              }
-            >
-              Get Random Row
-            </button>
             <h5>MultiHopKG Component</h5>
             <form onSubmit={handleSubmit(onSubmit, onErrors)}>
               <div className="mb-8">
@@ -113,19 +114,36 @@ const MultiHopKG = () => {
                 >
                   Query
                 </label>
-                <input
-                  {...register("query")}
-                  type="text"
-                  id="query"
-                  placeholder="test query!"
-                  autoComplete="off"
-                  value={queryValue}
-                  className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
-                    errors.query
-                      ? "text-red-300 border-red-400"
-                      : "text-purple-500 border-purple-400"
-                  }`}
-                />
+                <div className="relative flex items-center">
+                  <input
+                    {...register("query")}
+                    type="text"
+                    id="query"
+                    placeholder="test query!"
+                    autoComplete="off"
+                    value={queryValue}
+                    className={`flex-grow bg-transparent outline-none border-b-2 py-2 px-4 placeholder-purple-300 focus:bg-purple-100 ${
+                      errors.query
+                        ? "text-red-300 border-red-400"
+                        : "text-purple-500 border-purple-400"
+                    }`}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                  />
+                  <div className="absolute top-1/2 transform -translate-y-1/2 right-2">
+                    <button
+                      type="button"
+                      onClick={handleButtonClick}
+                      className={`py-1 px-4 inline-block rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2] ${
+                        isInputFocused
+                          ? "bg-[#e2c982] text-[#a39172]"
+                          : "bg-[#fbe5a9] text-[#8f69a2]"
+                      }`}
+                    >
+                      Generate Query
+                    </button>
+                  </div>
+                </div>
                 {errors.query && (
                   <p className="text-red-500 text-sm mt-2">
                     Query must be in the format "start node, start relation".
