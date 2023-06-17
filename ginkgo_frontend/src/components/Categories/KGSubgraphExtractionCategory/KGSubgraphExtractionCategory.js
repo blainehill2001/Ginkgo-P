@@ -10,7 +10,7 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
-const KGPointWiseReasoningCategory = () => {
+const KGSubgraphExtractionCategory = () => {
   const tabs = [
     {
       label: "Home",
@@ -63,4 +63,4 @@ const KGPointWiseReasoningCategory = () => {
   );
 };
 
-export default KGPointWiseReasoningCategory;
+export default KGSubgraphExtractionCategory;

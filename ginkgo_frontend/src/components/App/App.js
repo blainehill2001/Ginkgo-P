@@ -8,7 +8,7 @@ import Custom from "../Custom";
 import ExampleCategory from "../Categories/ExampleCategory";
 import KGCompletionCategory from "../Categories/KGCompletionCategory";
 import KGQuestionAnsweringCategory from "../Categories/KGQuestionAnsweringCategory";
-import KGPointWiseReasoningCategory from "../Categories/KGPointWiseReasoningCategory";
+import KGSubgraphExtractionCategory from "../Categories/KGSubgraphExtractionCategory";
 import KGReinforcementLearningCategory from "../Categories/KGReinforcementLearningCategory";
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
             />
             <Route
               path="kgpointwisereasoning"
-              element={<KGPointWiseReasoningCategory />}
+              element={<KGSubgraphExtractionCategory />}
             />
             <Route
               path="kgreinforcementlearning"

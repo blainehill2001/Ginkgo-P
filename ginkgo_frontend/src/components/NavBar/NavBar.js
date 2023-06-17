@@ -115,7 +115,7 @@ const NavBar = () => {
                                 "block rounded-[15px] px-4 py-2"
                               )}
                             >
-                              KG Point-Wise Reasoning
+                              KG Subgraph Extraction
                             </Link>
                           )}
                         </Menu.Item>
