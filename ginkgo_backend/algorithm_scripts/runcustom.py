@@ -12,7 +12,10 @@ import io
 TODOs:
     Add timestamp to email header
     Return output both in email body and as a text file
+    center Loading component on frontend for Custom Algo
+    Make success / failure notification for email being sent green or red
 
+    Ensure we delete the /custom folder after each custom run - otherwise these files will eat up storage
 """
 
 # print(sys.argv[1]) #take in the first non-"language" and non-"script" parameter in the API request and return it back to the user
