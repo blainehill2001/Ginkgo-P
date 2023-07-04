@@ -96,27 +96,10 @@ const postAlgoResult = async (req, res, next) => {
 };
 
 const postCustomAlgoResult = async (req, res, next) => {
-  // Extract files from req.files into req.body
-  //   req.files.script_file.forEach((file) => {
-  //     console.log(
-  //       "this is script_file under postCustomAlgoResult for file: " + file
-  //     );
-  //     console.log("type of file is: " + typeof file);
-  //     console.log("the attributes of file are: " + Object.keys(file));
-  //   });
-  //   req.files.data_files.forEach((file) => {
-  //     console.log(
-  //       "this is data_files under postCustomAlgoResult for file: " + file
-  //     );
-  //     console.log("type of file is: " + typeof file);
-  //     console.log("the attributes of file are: " + Object.keys(file));
-  //   });
-
   // Create an array to store the file paths
   const filePaths = [];
 
   // Iterate over the files and write them to /custom
-
   for (const file of req.files.script_file) {
     const filePath = path.resolve("custom") + `/${file.originalname}`;
     filePaths.push(filePath);
@@ -130,7 +113,12 @@ const postCustomAlgoResult = async (req, res, next) => {
 
   //assign filePaths to req.body to pass it into spawned Python process
   req.body.filepaths = filePaths;
-  req.body.smtb = [process.env.SMTB_USERNAME, process.env.SMTB_PASSWORD];
+  req.body.smtb = [
+    process.env.SMTP_USERNAME,
+    process.env.SMTP_PASSWORD,
+    process.env.SMTP_SERVER,
+    process.env.SMTP_PORT
+  ];
   //check redis for AlgorithmCall object as key
   //if it is in cache
   //TODO
@@ -177,8 +165,12 @@ const postCustomAlgoResult = async (req, res, next) => {
           message: `GET request receieved. Ran algorithm and stored results [in cache] but NOT MongoDB. See error: \n${err}`,
           algocall_result: finished_algocall
         });
+      })
+      .finally(() => {
+        fs.readdirSync(path.resolve("custom")).forEach((fileName) => {
+          fs.unlinkSync(path.join(path.resolve("custom"), fileName));
+        });
       });
-    // next();
   }
 };
 
