@@ -22,7 +22,7 @@ In the frontend .env set these environment variables:
 
 Step 2.) Under the "Run Custom KG Algorithm" tab, upload the `ExamplePythonScript.py` file under the Script Upload section.
 
-Step 3.) Upload both `ExampleTextFile1.txt` and `ExampleTextFile2.txt` using [Command/Control + clicks](https://support.apple.com/guide/mac-help/select-items-mchlp1378/mac#:~:text=Select%20multiple%20items%3A%20Press%20and,are%20included%20in%20the%20selection.) under the Data Upload section.
+Step 3.) Upload both `ExampleTextFile1.txt` using [Command/Control + clicks](https://support.apple.com/guide/mac-help/select-items-mchlp1378/mac#:~:text=Select%20multiple%20items%3A%20Press%20and,are%20included%20in%20the%20selection.) under the Data Upload section. Note that this file is created using [json.dumps()](https://www.geeksforgeeks.org/json-dumps-in-python/) in Python. This is a very helpful function that you may want to consider using to ensure you create a result that is valid JSON. There is also [JSON.stringify()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) in Javascript.
 
 Step 4.) Plug in your Email Address under the Email Upload section.
 

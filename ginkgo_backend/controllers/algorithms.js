@@ -17,18 +17,16 @@ function loadProcess(script_language, script_name, ...args) {
       `./algorithm_scripts/${script_name}`,
       ...args
     ]);
-    let process_result = "";
+    let process_result;
     process.stdout.on("data", function (data) {
-      process_result += data;
+      process_result = data;
     });
 
     process.stderr.on("data", function (err) {
-      console.log(err.toString());
       reject(err.toString());
     });
 
     process.on("close", function () {
-      //   console.log("done with process");
       resolve(process_result);
     });
   });
@@ -68,7 +66,6 @@ const postAlgoResult = async (req, res, next) => {
       (x) => x,
       console.log
     );
-
     let finished_algocall = new AlgorithmCall(
       _.merge(req.body, { result: algocall_result })
     );
@@ -143,7 +140,6 @@ const postCustomAlgoResult = async (req, res, next) => {
       (x) => x,
       console.log
     );
-
     let finished_algocall = new AlgorithmCall(
       _.merge(req.body, { result: algocall_result })
     );

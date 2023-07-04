@@ -4,6 +4,7 @@ import { useDropzone } from "react-dropzone";
 import validator from "validator";
 import Loading from "../Loading";
 import Error from "../Error";
+import Result from "../Result";
 import { fetchWithTimeout } from "../../ops/fetchWithTimeout";
 import { getCustomBackend } from "../../ops/getCustomBackend.js";
 
@@ -21,6 +22,7 @@ const FileUpload = () => {
   const [response, setResponse] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [hasError2, setHasError2] = useState(false); //refers to if the custom algo runs properly and doesn't return valid JSON
 
   const handleScriptChange = (acceptedFiles) => {
     // Check if any of the accepted files have an invalid extension
@@ -90,10 +92,6 @@ const FileUpload = () => {
     data_files.forEach((file) => {
       formData.append("data_files", file);
     });
-    console.log("this is formData:");
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
     const params = {
       "method": "POST",
       "body": formData
@@ -114,9 +112,16 @@ const FileUpload = () => {
         return res.json();
       })
       .then((response_received) => {
-        setIsLoading(false);
-        setResponse(response_received);
-        console.log(response_received);
+        try {
+          JSON.parse(response_received.algocall_result.result);
+          setIsLoading(false);
+          setResponse(response_received);
+          console.log(response_received);
+        } catch (error) {
+          setHasError2(true);
+          setIsLoading(false);
+          console.log(error);
+        }
       })
       .catch((err) => {
         setHasError(true);
@@ -318,13 +323,23 @@ const FileUpload = () => {
                 </Button>
               </div>
               {isLoading && <Loading />}
-              {!isLoading && hasError && <Error />}
-              {response &&
+              {!isLoading && hasError && (
+                <Error
+                  errorMessage="Error! The poor API didn't like that. Try again in a little bit or
+            with different inputs"
+                />
+              )}
+              {!isLoading && hasError2 && (
+                <div>
+                  <Error errorMessage="Error! Your inputs produced an output that isn't valid JSON. Edit your script or data files and try again." />
+                </div>
+              )}
+              {!isLoading &&
+                !hasError &&
+                response &&
                 response.algocall_result &&
-                response.algocall_result.result &&
-                !isLoading &&
-                !hasError && (
-                  <h5>{response.algocall_result.result.toString()}</h5>
+                response.algocall_result.result && (
+                  <Result data={response.algocall_result.result} />
                 )}
             </form>
           </Card>

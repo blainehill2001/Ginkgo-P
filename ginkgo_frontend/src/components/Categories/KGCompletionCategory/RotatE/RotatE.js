@@ -126,7 +126,12 @@ const RotatE = () => {
           </div>
           <div className="flex flex-col items-center">
             {isLoading && <Loading />}
-            {!isLoading && hasError && <Error />}
+            {!isLoading && hasError && (
+              <Error
+                errorMessage="Error! The poor API didn't like that. Try again in a little bit or
+            with different inputs"
+              />
+            )}
             {data &&
               data.algocall_result &&
               data.algocall_result.result &&

@@ -55,7 +55,8 @@ try:
         server.starttls()
         server.login(smtp_username, smtp_password)
         server.send_message(message)
-        print("Email sent successfully!")
+        # print("Email sent successfully!")
+        print(output)
 
 except smtplib.SMTPException as e:
     print("An error occurred while sending the email.")
