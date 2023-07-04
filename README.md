@@ -20,7 +20,7 @@ Additionally, you will need to set your default target for your frontend to send
 
 To run on your local machine, enter 'npm run dev' from the root directory. This will run both the frontend and backend on their development scripts as defined in their respective package.json.
 
-You will need to set four other environment variables to run this platform in a production setting (not on a local machine): two in `/ginkgo_backend/.env` (`NODE_ENV` and `PORT`) and one in `/ginkgo_frontend/.env` (`REACT_APP_BACKEND` and `REACT_APP_NODE_ENV`). Set `NODE_ENV=prod` in a new line in `/ginkgo_backend/.env` to let the backend app know you are in production. Set `PORT=XXXX` in a new line in `/ginkgo_backend/.env` to let the backend app know you wish to run the application on a different port (the default is port 8080). Set `REACT_APP_BACKEND=yourBackendURL` in a new line in `/ginkgo_frontend/.env` to let the frontend app know you wish to send API requests to a different URL (your deployed API/your backend app) than than your DEFAULT_BACKEND value. Set `REACT_APP_NODE_ENV=prod`in a new line in `/ginkgo_frontend/.env` to let the frontend app know you are in production.
+You will need to set environment variables to run this platform. See `getting_started_with_ginkgo-p/README.md` for more details and some example inputs.
 
 To deploy, we recommend an infrastructure as a service (IaaS) service such as [Render](render.com). Follow a tutorial such as [this](https://www.youtube.com/watch?v=l134cBAJCuc&ab_channel=DaveGray) to familiarize yourself with how to deploy a MERN stack app to Render.
 
@@ -92,7 +92,19 @@ where `VERY IMPORTANT GRAPH REPRESENTATION` is a collection of `<head, relation,
 
 ```json
 {
-    "status": "..return some status here (we use `Good` or `Bad`)",
+    "status": "..return some status here (we use `Good` or `Bad` depending on your custom algorithm and error handling)",
+    "highlighted_path": [ //this represents a list of links to be highlighted if you wish to
+        {
+            "source": "1",
+            "type": "isLocatedIn",
+            "target": "2"
+        },
+        {
+            "source": "1",
+            "type": "happenedIn",
+            "target": "3"
+        }
+    ],
     "result1": {
         "nodes": [
             {
