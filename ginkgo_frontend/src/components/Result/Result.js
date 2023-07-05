@@ -134,6 +134,7 @@ const Result = ({ data }) => {
       .force("link", forceLink)
       .force("charge", forceNode)
       .force("collide", d3.forceCollide().radius(nodeRadius + 2)) // Add forceCollide      .force("center", d3.forceCenter())
+      .force("center", d3.forceCenter(0, 0)) // Add forceCenter with initial center coordinates (0, 0)
       .on("tick", ticked);
 
     const svg = d3
@@ -312,7 +313,7 @@ const Result = ({ data }) => {
 
     return Object.assign(svg.node(), { scales: { color } });
   }
-
+  // Call the ForceGraph function when data changes
   var chart = ForceGraph(
     parsed_data.status,
     parsed_data.result1,
@@ -328,6 +329,33 @@ const Result = ({ data }) => {
       invalidation: null // a promise to stop the simulation when the cell is re-run
     }
   );
+
+  function resetSimulation() {
+    if (svg.current) {
+      while (svg.current.firstChild) {
+        svg.current.removeChild(svg.current.firstChild);
+      }
+
+      svg.current.appendChild(
+        ForceGraph(
+          parsed_data.status,
+          parsed_data.result1,
+          parsed_data.highlighted_path,
+          {
+            nodeId: (d) => d.id,
+            nodeGroup: (d) => d.group,
+            nodeTitle: (d) => `${d.name}`,
+            edgeLabel: (e) => `${e.type}`,
+            linkStrokeWidth: (l) => Math.sqrt(l.value),
+            width: 960,
+            height: 600,
+            invalidation: null // a promise to stop the simulation when the cell is re-run
+          }
+        )
+      );
+    }
+    console.log("we reset the sim");
+  }
 
   const svg = useRef(null);
   useEffect(() => {
@@ -346,6 +374,15 @@ const Result = ({ data }) => {
               data-theme="mytheme"
             >
               <h5>Result Component</h5>
+              <div className="absolute bottom-2 right-2">
+                <button
+                  type="button"
+                  onClick={() => resetSimulation()}
+                  className={`py-1 px-4 inline-block rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2] bg-[#fbe5a9] text-[#8f69a2]`}
+                >
+                  Reset
+                </button>
+              </div>
               <div ref={svg} />
             </div>
           </div>
