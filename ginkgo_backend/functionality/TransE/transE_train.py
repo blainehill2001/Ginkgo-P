@@ -1,89 +1,61 @@
 import numpy as np
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.layers import Embedding, Lambda
-from tensorflow.keras.models import Model
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.losses import MarginTripletLoss
+from ampligraph.latent_features import TransE
+from ampligraph.evaluation import evaluate_performance
 
-# Define the model architecture
-class TransEModel(Model):
-    def __init__(self, num_entities, num_relations, embedding_dim):
-        super(TransEModel, self).__init__()
-        self.entity_embeddings = Embedding(num_entities, embedding_dim)
-        self.relation_embeddings = Embedding(num_relations, embedding_dim)
-    
-    def call(self, inputs):
-        e1_embedded = self.entity_embeddings(inputs[:, 0])
-        r_embedded = self.relation_embeddings(inputs[:, 1])
-        e2_embedded = self.entity_embeddings(inputs[:, 2])
-        
-        e1_embedded = tf.nn.l2_normalize(e1_embedded, axis=1)
-        r_embedded = tf.nn.l2_normalize(r_embedded, axis=1)
-        e2_embedded = tf.nn.l2_normalize(e2_embedded, axis=1)
-        
-        return e1_embedded, r_embedded, e2_embedded
+# Load train data
+train_file_path = "../../../ginkgo_backend/data/umls/train.triples"
+train_data = []
 
-# Function to read and preprocess triples from a file
-def read_triples(file_path):
-    triples = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            e1, r, e2 = line.strip().split('\t')
-            triples.append((e1, r, e2))
-    return triples
+with open(train_file_path, "r") as train_file:
+    for line in train_file:
+        e1, r, e2 = line.strip().split("\t")
+        train_data.append((e1, r, e2))
 
-# Load and preprocess train and test triples
-train_triples = read_triples("../../../ginkgo_backend/data/umls/train.triples")
-test_triples = read_triples("../../../ginkgo_backend/data/umls/test.triples")
-
-# Create a set of unique entities and relations
+# Create entity and relation mappings
 entities = set()
 relations = set()
-for e1, r, e2 in train_triples + test_triples:
+
+for e1, r, e2 in train_data:
     entities.add(e1)
     entities.add(e2)
     relations.add(r)
-num_entities = len(entities)
-num_relations = len(relations)
-embedding_dim = 50
 
-# Create and compile the model
-model = TransEModel(num_entities, num_relations, embedding_dim)
-optimizer = Adam(learning_rate=0.001)
-model.compile(optimizer=optimizer, loss=MarginTripletLoss(margin=1.0))
+entity_to_id = {entity: idx for idx, entity in enumerate(entities)}
+relation_to_id = {relation: idx for idx, relation in enumerate(relations)}
 
-# Prepare data for training
-train_data = np.array([(e1, r, e2) for e1, r, e2 in train_triples])
-train_labels = np.zeros(len(train_triples))  # Dummies for triplet loss
+# Convert train triples to IDs
+train_data_ids = [
+    [entity_to_id[e1], relation_to_id[r], entity_to_id[e2]]
+    for e1, r, e2 in train_data
+]
+
+# Convert to ndarray
+train_data_ids = np.array(train_data_ids)
+
+# Define TransE model
+model = TransE(batches_count=100, seed=0, epochs=300, k=150, eta=20, optimizer='adam', optimizer_params={'lr': 0.001}, loss='multiclass_nll', verbose=True)
 
 # Train the model
-model.fit(train_data, train_labels, batch_size=64, epochs=10)
+model.fit(train_data_ids)
 
-# Function to perform inference using the trained model
-def infer_triples(model, triples):
-    embeddings = model.predict(np.array([(e1, r, e2) for e1, r, e2 in triples]))
-    return embeddings
+# Load test data
+test_file_path = "../../../ginkgo_backend/data/umls/test.triples"
+test_data = []
 
-# Prepare data for inference
-test_data = np.array([(e1, r) for e1, r, _ in test_triples])
+with open(test_file_path, "r") as test_file:
+    for line in test_file:
+        e1, r, e2 = line.strip().split("\t")
+        test_data.append((e1, r, e2))
 
-# Perform inference on test triples
-test_embeddings = infer_triples(model, test_data)
+# Convert test triples to IDs
+test_data_ids = [
+    [entity_to_id.get(e1, -1), relation_to_id.get(r, -1), entity_to_id.get(e2, -1)]
+    for e1, r, e2 in test_data
+]
 
-# Function to find the nearest entity to a given embedding
-def find_nearest_entity(embedding, embeddings):
-    distances = np.linalg.norm(embeddings - embedding, axis=1)
-    nearest_idx = np.argmin(distances)
-    return nearest_idx
+# Convert to ndarray
+test_data_ids = np.array(test_data_ids)
 
-# Evaluate the model by checking predicted entities against ground truth
-correct_predictions = 0
-for i, (_, r, e2) in enumerate(test_triples):
-    predicted_idx = find_nearest_entity(test_embeddings[i][0], test_embeddings[:, 2])
-    predicted_entity = entities[predicted_idx]
-    if predicted_entity == e2:
-        correct_predictions += 1
-
-accuracy = correct_predictions / len(test_triples)
-print("Accuracy:", accuracy)
+# Evaluate the model on test data
+ranks = evaluate_performance(test_data_ids, model=model, filter_triples=train_data_ids, use_default_protocol=True, verbose=True)
+print("Mean rank:", np.mean(ranks))
