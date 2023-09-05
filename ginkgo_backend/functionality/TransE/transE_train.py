@@ -22,7 +22,7 @@ train_data_ids = [
 ]
 
 # Define TransE model
-model = TransE(batches_count=100, seed=0, epochs=300, k=150, eta=20, optimizer='adam', optimizer_params={'lr': 0.001}, loss='multiclass_nll', verbose=True)
+model = TransE(batches_count=10, seed=0, epochs=10, k=150, eta=1, optimizer='adam', optimizer_params={'lr': 0.001}, loss='multiclass_nll', verbose=True)
 
 # Train the model
 model.fit(np.array(train_data_ids))

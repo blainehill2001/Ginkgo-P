@@ -1,6 +1,6 @@
 import numpy as np
 from ampligraph.latent_features import TransE  
-from ampligraph.evaluation import evaluate_performance
+from ampligraph.evaluation import evaluate_performance, mrr_score, hits_at_n_score
 from ampligraph.utils import restore_model
 import utils
 
@@ -22,5 +22,7 @@ test_data_ids = [
 ]
 
 # Evaluate the model on test data
-ranks = evaluate_performance(np.array(test_data_ids), model=model, filter_triples=test_data_ids, use_default_protocol=True, verbose=True)
+ranks = evaluate_performance(np.array(test_data_ids), model)
 print("Mean rank:", np.mean(ranks))
+print("MRR Score:", mrr_score(ranks))
+print("Hits at N=10:", hits_at_n_score(ranks, n=10))
