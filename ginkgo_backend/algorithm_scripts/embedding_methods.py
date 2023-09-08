@@ -4,6 +4,7 @@ from torch.nn.init import xavier_normal_
 import torch.nn as nn
 import torch.nn.functional as F
 import os
+import networkx as nx
 
 class TuckER(torch.nn.Module):
     def __init__(self, relation_dim, num_entities, pretrained_embeddings, pretrained_relation_embeddings, device, l3_reg, model, w_matrix, bn_list, freeze=True):
@@ -377,4 +378,25 @@ model = TuckER(relation_dim=relation_dim, num_entities = len(data.entity2idx), p
         pretrained_relation_embeddings=rel_embedding_matrix,
         freeze=True, device=device, l3_reg = 0.0, model = "RESCAL", w_matrix = w_matrix, bn_list=bn_list)
 ans = evaluate(model, entity_idx, relation_idx, use_cuda)
-print(idx2entity[ans])
+
+### find all paths between entity_idx and ans
+# build KG
+G_whole = nx.Graph()
+kg_triple_file = KG_dir + "/train.txt"
+with open(kg_triple_file, "r") as f:
+    for line in f.readlines():
+        eles = line.strip().split("\t")
+        if len(eles) < 3:
+            continue
+        G_whole.add_edge(eles[0], eles[2], label=eles[1])
+
+head_entity = idx2entity[entity_idx]
+tail_entity = idx2entity[ans]
+paths_between_generator = nx.all_simple_paths(G_whole,source=head_entity,target=tail_entity, cutoff=2)
+nodes_between_set = {node for path in paths_between_generator for node in path}
+SG = G_whole.subgraph(nodes_between_set)
+labels = nx.get_edge_attributes(SG, 'label')
+res = []
+for k, v in labels.items():
+  res.append([k[0], v, k[1]])
+print(res)
