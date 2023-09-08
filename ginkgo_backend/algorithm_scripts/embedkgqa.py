@@ -275,7 +275,7 @@ def find_answer(question, device, model, entity2idx, idx2entity=None):
     #reduce scores of all non-candidates
     new_scores = scores - (mask*99999)
     pred_ans = torch.argmax(new_scores).item()
-    return pred_ans, idx2entity[pred_ans]
+    return pred_ans, idx2entity[pred_ans], idx2entity[head.item()]
 
 def main(gpu, use_cuda, question, embedding_folder, model_path):
     ################## This need to change
@@ -303,9 +303,8 @@ def main(gpu, use_cuda, question, embedding_folder, model_path):
     model.to(device)
 
     # find_answer(question, device, model, entity2idx, idx2entity=None)
-    answers_id, answer_txt = find_answer(question, device, model=model, entity2idx=entity2idx, idx2entity=idx2entity)
-    print(answer_txt)
-    a = 0
+    answers_id, answer_txt, head_txt = find_answer(question, device, model=model, entity2idx=entity2idx, idx2entity=idx2entity)
+    return answer_txt, head_txt
 
 ##############################################################
 
@@ -373,4 +372,27 @@ if head not in kg_entity_map:
     return "entity doesn't exist in knowledge grpah"
 
 
-main(gpu="0", use_cuda=False, question=question, embedding_folder=embedding_folder, model_path=model_path)
+answer_txt, head_txt = main(gpu="0", use_cuda=False, question=question, embedding_folder=embedding_folder, model_path=model_path)
+
+##### find subgraph 
+### find all paths between entity_idx and ans
+# build KG
+G_whole = nx.Graph()
+kg_triple_file = KG_dir + "/train.txt"
+with open(kg_triple_file, "r") as f:
+    for line in f.readlines():
+        eles = line.strip().split("\t")
+        if len(eles) < 3:
+            continue
+        G_whole.add_edge(eles[0], eles[2], label=eles[1])
+
+head_entity = head_txt
+tail_entity = answer_txt
+paths_between_generator = nx.all_simple_paths(G_whole,source=head_entity,target=tail_entity, cutoff=2)
+nodes_between_set = {node for path in paths_between_generator for node in path}
+SG = G_whole.subgraph(nodes_between_set)
+labels = nx.get_edge_attributes(SG, 'label')
+res = []
+for k, v in labels.items():
+  res.append([k[0], v, k[1]])
+print(res)
