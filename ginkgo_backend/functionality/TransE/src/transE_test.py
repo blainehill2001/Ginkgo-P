@@ -1,3 +1,44 @@
+from pykeen.pipeline import pipeline
+from pykeen.datasets import UMLS
+from pykeen.evaluation import RankBasedEvaluator
+import torch
+
+# Load trained model
+model = torch.load('./model/trained_model.pkl')
+
+
+# Load UMLS test set
+dataset = UMLS()
+
+# Evaluate pipeline on test set
+evaluator = RankBasedEvaluator()
+results = evaluator.evaluate(
+    mapped_triples=dataset.testing.mapped_triples,
+    model=model,
+    additional_filter_triples=[
+        dataset.training.mapped_triples,
+        dataset.validation.mapped_triples,
+    ]
+)
+
+# Print evaluation results
+mean_rank = results.get_metric('mean_rank')
+mean_reciprocal_rank = results.get_metric('mean_reciprocal_rank')
+hits_at_10 = results.get_metric('hits@10')
+
+print(f"Mean Rank: {mean_rank}")
+print(f"Mean Reciprocal Rank: {mean_reciprocal_rank}")
+print(f"Hits@10: {hits_at_10}")
+
+
+
+
+"""
+# If we were to use Ampligraph (which requires tensorflow 1.x), we would use the following code:
+
+
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import numpy as np
 from ampligraph.latent_features import TransE  
 from ampligraph.evaluation import evaluate_performance, mrr_score, hits_at_n_score
@@ -27,18 +68,5 @@ print("Mean rank:", np.mean(ranks))
 print("MRR Score:", mrr_score(ranks))
 print("Hits at N=10:", hits_at_n_score(ranks, n=10))
 
+"""
 
-# import numpy as np
-# from ampligraph.evaluation import evaluate_performance, mrr_score, hits_at_n_score
-# from ampligraph.utils import restore_model
-# from ampligraph.datasets import load_from_csv
-
-# test_data = load_from_csv('../../../ginkgo_backend/data/ml1m', 'test.dat', sep='\t')
-
-# model = restore_model(model_name_path = 'model/transE_model_ml1m.pkl')
-
-# # Evaluate the model on test data
-# ranks = evaluate_performance(test_data, model)
-# print("Mean rank:", np.mean(ranks))
-# print("MRR Score:", mrr_score(ranks))
-# print("Hits at N=10:", hits_at_n_score(ranks, n=10))

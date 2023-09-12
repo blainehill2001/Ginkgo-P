@@ -1,3 +1,34 @@
+from pykeen.pipeline import pipeline, pipeline_from_path
+from pykeen.datasets import UMLS
+from pykeen.evaluation import RankBasedEvaluator
+import torch
+
+# Load your dataset
+dataset = UMLS()
+
+# Define and train your model using the pipeline
+# training_pipeline = pipeline(
+#     dataset=dataset,
+#     model='TransE',
+#     training_loop='slcwa',
+#     optimizer='adam',
+#     optimizer_kwargs={'lr': 0.001},
+#     epochs=50,
+#     loss='marginranking',
+#     regularizer='LP',
+#     regularizer_kwargs={'p': 2},
+#     negative_sampler='basic',
+#     negative_sampler_kwargs={'num_negs_per_pos': 1}
+# )
+training_pipeline = pipeline_from_path("./UMLS_pipeline.json")
+
+#save model, pipeline
+training_pipeline.save_to_directory('./model')
+
+
+"""
+# If we were to use Ampligraph (which requires tensorflow 1.x), we would use the following code:
+
 from ampligraph.latent_features import TransE  
 from ampligraph.utils import save_model
 from ampligraph.datasets import load_from_csv
@@ -29,14 +60,4 @@ model.fit(np.array(train_data_ids))
 
 save_model(model, "../model/transE_model_UMLS.pkl")
 
-# from ampligraph.latent_features import TransE  
-# from ampligraph.utils import save_model
-# from ampligraph.datasets import load_from_csv
-
-# train_data = load_from_csv('../../../ginkgo_backend/data/ml1m', 'train.dat', sep='\t')
-
-# model = TransE(batches_count=10, seed=0, epochs=10, k=150, eta=1, optimizer='adam', optimizer_params={'lr': 0.001}, loss='multiclass_nll', verbose=True)
-
-# model.fit(train_data)
-
-# save_model(model, "model/transE_model_ml1m.pkl")
+"""

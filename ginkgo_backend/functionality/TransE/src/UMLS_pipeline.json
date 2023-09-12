@@ -1,0 +1,23 @@
+{
+    "pipeline":{
+        "dataset": "umls",
+        "model": "TransE",
+        
+        "training_loop": "slcwa",
+        "optimizer": "adam",
+        "optimizer_kwargs": {
+            "lr": 0.001
+        },
+        "epochs": 50,
+        "loss": "marginranking",
+        "regularizer": "LP",
+        "regularizer_kwargs": {
+            "p": 2
+        },
+        "negative_sampler": "basic",
+        "negative_sampler_kwargs": {
+            "num_negs_per_pos": 1
+        }
+    },
+    "metadata": {}
+}
