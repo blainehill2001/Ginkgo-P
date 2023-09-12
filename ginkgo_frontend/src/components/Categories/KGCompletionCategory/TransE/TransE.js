@@ -7,14 +7,29 @@ import Error from "../../../Error";
 import Result from "../../../Result";
 import { fetchWithTimeout } from "../../../../ops/fetchWithTimeout";
 import { getBackend } from "../../../../ops/getBackend.js";
+import { getRandomRowUMLS } from "../../../../ops/getRandomRowUMLS.js";
 
 var BACKEND = getBackend();
 
-const TransE = () => {
+const PageRank = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
+  //To be used for highlighted Generate Query Button
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const handleInputFocus = () => {
+    setIsInputFocused(true);
+  };
+  const handleInputBlur = () => {
+    setIsInputFocused(false);
+  };
+  const handleButtonClick = () => {
+    const [entity1, entity2, relation] = getRandomRowUMLS();
+    setValue("query", `${entity1}, ${relation}`);
+  };
+
+  //when user submits the form
   const onSubmit = async (data_sent) => {
     const params = {
       "method": "POST",
@@ -23,7 +38,7 @@ const TransE = () => {
       },
       "body": JSON.stringify({
         "language": "python",
-        "script": "transE2.py",
+        "script": "transE.py",
         ...data_sent
       })
     };
@@ -38,7 +53,6 @@ const TransE = () => {
         if (!res.ok) {
           setHasError(true);
           setIsLoading(false);
-          console.log(res.status);
         }
         return res.json();
       })
@@ -59,86 +73,38 @@ const TransE = () => {
   };
 
   const schema = yup.object().shape({
-    // language: yup.string().required(),
-    // script: yup.string().required(),
-    query: yup.string().required()
+    query: yup
+      .string()
+      .required()
+      .matches(
+        /^\s*[^,]+\s*,\s*[^,]+\s*$/,
+        'Query must be in the format "string, string"'
+      )
   });
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors }
   } = useForm({
     mode: "onBlur",
     resolver: yupResolver(schema)
   });
+  const queryValue = watch("query");
 
   return (
     <div className="justify-center ">
       {/* <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500"> */}
       <div
-        className="relative rounded-[15px] px-6 text-purple-500"
+        className="relative rounded-[15px] p-6 text-purple-500"
         data-theme="mytheme"
       >
         <div className="flex flex-col space-y-4">
           <div className="flex-auto">
             <h5>TransE Component</h5>
             <form onSubmit={handleSubmit(onSubmit, onErrors)}>
-              {/* <div className="mb-8">
-                  <label
-                    htmlFor="language"
-                    className={`block font-bold text-sm mb-2 ${
-                      errors.language ? "text-red-400" : "text-purple-500"
-                    }`}
-                  >
-                    Language
-                  </label>
-                  <input
-                    {...register("language")}
-                    type="text"
-                    id="language"
-                    placeholder="e.g., python"
-                    autoComplete="off"
-                    className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
-                      errors.language
-                        ? "text-red-300 border-red-400"
-                        : "text-purple-500 border-purple-400"
-                    }`}
-                  />
-                  {errors.language && (
-                    <p className="text-red-500 text-sm mt-2">
-                      A valid language is required.
-                    </p>
-                  )}
-                </div>
-
-                <div className="mb-8">
-                  <label
-                    htmlFor="script"
-                    className={`block font-bold text-sm mb-2 ${
-                      errors.script ? "text-red-400" : "text-purple-500"
-                    }`}
-                  >
-                    Script Name
-                  </label>
-                  <input
-                    {...register("script")}
-                    type="script"
-                    id="script"
-                    placeholder="e.g., script1.py"
-                    autoComplete="off"
-                    className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4 text-purple-500 focus:bg-purple-100 placeholder-purple-300 ${
-                      errors.script ? "border-red-400" : "border-purple-400"
-                    }`}
-                  />
-                  {errors.script && (
-                    <p className="text-red-500 text-sm mt-2">
-                      Your Script Name is required.
-                    </p>
-                  )}
-                </div> */}
-
               <div className="mb-8">
                 <label
                   htmlFor="query"
@@ -148,21 +114,39 @@ const TransE = () => {
                 >
                   Query
                 </label>
-                <input
-                  {...register("query")}
-                  type="text"
-                  id="query"
-                  placeholder="test query!"
-                  autoComplete="off"
-                  className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
-                    errors.query
-                      ? "text-red-300 border-red-400"
-                      : "text-purple-500 border-purple-400"
-                  }`}
-                />
+                <div className="relative flex items-center">
+                  <input
+                    {...register("query")}
+                    type="text"
+                    id="query"
+                    placeholder="test query!"
+                    autoComplete="off"
+                    value={queryValue}
+                    className={`flex-grow bg-transparent outline-none border-b-2 py-2 px-4 placeholder-purple-300 focus:bg-purple-100 ${
+                      errors.query
+                        ? "text-red-300 border-red-400"
+                        : "text-purple-500 border-purple-400"
+                    }`}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                  />
+                  <div className="absolute top-1/2 transform -translate-y-1/2 right-2">
+                    <button
+                      type="button"
+                      onClick={handleButtonClick}
+                      className={`py-1 px-4 inline-block rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2] ${
+                        isInputFocused
+                          ? "bg-[#e2c982] text-[#a39172]"
+                          : "bg-[#fbe5a9] text-[#8f69a2]"
+                      }`}
+                    >
+                      Generate Query
+                    </button>
+                  </div>
+                </div>
                 {errors.query && (
                   <p className="text-red-500 text-sm mt-2">
-                    A valid query is required.
+                    Query must be in the format "source node, relation link"
                   </p>
                 )}
               </div>
@@ -200,4 +184,4 @@ const TransE = () => {
   );
 };
 
-export default TransE;
+export default PageRank;

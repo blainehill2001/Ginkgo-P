@@ -7,7 +7,7 @@ import Error from "../../../Error";
 import Result from "../../../Result";
 import { fetchWithTimeout } from "../../../../ops/fetchWithTimeout";
 import { getBackend } from "../../../../ops/getBackend.js";
-import { getRandomRow } from "../../../../ops/getRandomRow.js";
+import { getRandomRowUMLS } from "../../../../ops/getRandomRowUMLS.js";
 
 var BACKEND = getBackend();
 
@@ -25,7 +25,7 @@ const PageRank = () => {
     setIsInputFocused(false);
   };
   const handleButtonClick = () => {
-    const [entity1, entity2, relation] = getRandomRow();
+    const [entity1, entity2, relation] = getRandomRowUMLS();
     setValue(
       "query",
       `${entity1}, ${Math.floor(Math.random() * 5) + 1}, ${

@@ -117,10 +117,7 @@ const postCustomAlgoResult = async (req, res, next) => {
     process.env.SMTP_PORT
   ];
   //check redis for AlgorithmCall object as key
-  //if it is in cache
-  //TODO
-  //return object.result
-  //if it is not in cache
+
   var mongo_check;
   searchMongo(req.body).then((res) => {
     mongo_check = res;

@@ -1,5 +1,4 @@
-// import text from "../assets/train_triples.js";
-import text from "../assets/full_dataset.js";
+import text from "../assets/full_dataset_MovieLens.js";
 
 export const getRandomRow = () => {
   const rows = text.split("\n").map((row) => row.split("\t"));

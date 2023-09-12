@@ -9,7 +9,6 @@ var AlgorithmCallSchema = new Schema({
       "script1.py",
       "script2.cpp",
       "transE.py",
-      "transE2.py",
       "multihopkg.py",
       "embedkgqa.py",
       "pagerank.py",

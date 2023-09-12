@@ -3,7 +3,11 @@ import networkx as nx
 import pickle
 import json
 import os
+"""
+TODO:
+redo scores_file_path and graph_pickle_file_path for UMLS
 
+"""
 query_node, k, c = list(map(lambda x: x.strip(), sys.argv[1].split(",")))
 k, c = int(k), int(c)
 z=10
@@ -150,7 +154,6 @@ pr_scores = retrieve_scores(scores_file_path)
 
 # Extract the top-K subgraph and top-z subgraph
 k_subgraph, z_subgraph = extract_top_k_subgraph(graph, pr_scores, query_node, k, c, z)
-
 
 json_data = subgraph_to_json(k_subgraph, z_subgraph)
 print(json_data)

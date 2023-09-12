@@ -2,63 +2,95 @@ import torch
 from pykeen.datasets import UMLS
 from pykeen.predict import predict_target
 import json
-import random
 import os
+import re
 
-def run_inference(entity1, relation, dataset=UMLS, k1=1, k2=9):
-    dataset = dataset() #load dataset
+def run_inference(entity1, relation, k1=1, k2=9, js_text_file_name='ginkgo_frontend/src/assets/train_triples_UMLS.js'):
 
+    """
+    Run inference on a given entity and relation. Return a JSON string containing the predicted subgraph and neighboring subgraph.
+
+    Args:
+        entity1: Center entity name
+        relation: Relation name
+        k1: Number of predictions to return (default: 1)
+        k2: Number of neighboring nodes to return (default: 9)
+
+    Returns:
+        json_data: JSON string containing the predicted subgraph and neighboring subgraph
+
+    """
+    
+    dataset = UMLS() #load dataset
     # Load pretrained model
     model = torch.load(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'src/model/trained_model.pkl'))
 
-    # Get mappings from dataset 
-    entity_mapper = dataset.entity_to_id
-    relation_mapper = dataset.relation_to_id
-
     # Lookup entity and relation IDs
-    entity1 = 'hormone'
-    relation = 'affects'
+
     pred = predict_target(
         model=model,
         head=entity1,
         relation=relation,
         triples_factory=dataset.training
-    ).filter_triples(dataset.training).df[:k1]
-
+    ).filter_triples(dataset.training).filter_triples((entity1, relation, entity1)).df[:k1]
     pred_subgraph = []
     for index, row in pred.iterrows():
         pred_subgraph.append((entity1, relation, row["tail_label"]))
+    current_directory = os.path.dirname(__file__)
+    for _ in range(4):
+        current_directory = os.path.dirname(current_directory)
+    path_to_js_text_file = os.path.join(current_directory, f'{js_text_file_name}')
+    def parse_triples(filepath):
+        pattern = r'(\w+)\t(\w+)\t(\w+)'
+        
+        with open(filepath) as f:
+            text = f.read()
+        
+        for match in re.finditer(pattern, text):
+            yield match.groups()
 
-    nbr_subgraph = get_random_neighbors(entity1, k2, dataset.testing.triples)
+    nbr_subgraph = get_random_neighbors(entity1, k2, parse_triples(path_to_js_text_file))
 
     return subgraph_to_json(pred_subgraph, nbr_subgraph)
 
-def get_random_neighbors(entity, num_neighbors, triples, random_seed=12345):
-  """
-  Get random neighboring nodes for given entity.
-  
-  Args:
-    entity: Center entity name
-    num_neighbors: Number of neighbors to return 
-    triples: List of (head, rel, tail) triples  
+def get_random_neighbors(entity, num_neighbors, triples_generator):
+    """
+    Get random neighboring nodes for a given entity.
 
-  Returns:
-    neighbors: List of (head, rel, tail) triples
-  """
-  random.seed(random_seed)
-  # Filter triples with given entity as head 
-  entity_triples = [t for t in triples if t[0] == entity]
-  
-  # Sample random triples
-  neighbors = random.sample(entity_triples, k=num_neighbors)
-  
-  return neighbors
+    Args:
+        entity: Center entity name
+        num_neighbors: Number of neighbors to return
+        triples_generator: A generator of (head, rel, tail) triples
+
+    Returns:
+        neighbors: List of (head, rel, tail) triples
+    """
+    entity_triples = []
+    # Collect triples with the given entity as head until we have enough neighbors
+    for triple in triples_generator:
+        if triple[0] == entity:
+            entity_triples.append((triple[0], triple[2], triple[1]))
+            if len(entity_triples) >= num_neighbors:
+                break
+
+    # Return the shuffled triples as a list
+    return entity_triples
 
 
 
 
 
 def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
+    """
+    Convert a predicted subgraph and neighboring subgraph to a JSON string.
+
+    Args:
+        predicted_subgraph: List of (head, rel, tail) triples for the predicted subgraph
+        neighboring_subgraph: List of (head, rel, tail) triples for the neighboring subgraph
+
+    Returns:
+        json_data: JSON string containing the predicted subgraph and neighboring subgraph
+    """
     # Initialize the JSON data structure
     data = {
         "status": "Consistent",
@@ -98,7 +130,6 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
 
     for link in neighboring_subgraph:
         node1, relation, node2 = link
-
         # Assign node IDs and store nodes in the JSON data for the neighboring subgraph
         assign_node_id(node1)
         assign_node_id(node2)
@@ -112,6 +143,7 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
     return(json_data)
 
 """
+# If we were to use Ampligraph (which requires tensorflow 1.x), we would use the following code:
 
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
