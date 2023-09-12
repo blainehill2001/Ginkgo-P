@@ -36,6 +36,11 @@ const NavBar = () => {
             <div className="flex-none">
               <ul className="menu menu-horizontal px-8">
                 <li>
+                  <Link to="quickstart" className="text-purple-500">
+                    Quick Start
+                  </Link>
+                </li>
+                <li>
                   <Link to="custom" className="text-purple-500">
                     Run Custom KG Algorithm
                   </Link>

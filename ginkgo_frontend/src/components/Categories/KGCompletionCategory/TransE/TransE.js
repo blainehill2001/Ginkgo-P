@@ -11,7 +11,7 @@ import { getRandomRowUMLS } from "../../../../ops/getRandomRowUMLS.js";
 
 var BACKEND = getBackend();
 
-const PageRank = () => {
+const TransE = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -184,4 +184,4 @@ const PageRank = () => {
   );
 };
 
-export default PageRank;
+export default TransE;
