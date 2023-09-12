@@ -19,6 +19,6 @@ sys.path.append(downstream_script_dir)
 # # import src.experiments
 import src.transE_inference as transE_inference
 
-transE_inference.run_inference(e1, r)
-
+json_data = transE_inference.run_inference(e1, r)
+print(json_data)
 sys.stdout.flush()

@@ -37,20 +37,18 @@ class EntityRelationMapper:
         
 
     def get_entity_id(self, entity_name):
-        return self.entity2id.get(entity_name.strip(), -1)
+        return self.entity2id.get(entity_name, -1)
     
     def get_entity_name(self, entity_id):
-        print(entity_id)
         return self.id2entity.get(entity_id, 'UNKNOWN')
 
     def get_relation_id(self, relation_name):
-        return self.relation2id.get(relation_name.strip(), -1)
+        return self.relation2id.get(relation_name, -1)
     
     def get_relation_name(self, relation_id):
-        print(relation_id)
         return self.id2relation.get(relation_id, 'UNKNOWN')
     
-    def get_random_links_with_head(self, entity_name, num_links=9, random_seed=123456789):
+    def get_random_links_with_head(self, entity_id, num_links=9, random_seed=123456789):
         """
         Retrieve random links whose head is the specified entity.
 
@@ -62,3 +60,12 @@ class EntityRelationMapper:
             list of tuple: List of random links whose head is the specified entity.
         """
         random.seed(random_seed)
+        if entity_id == -1:
+            return []
+            
+        links = []
+        for _ in range(num_links):
+            relation_id = random.choice(list(self.relation2id.keys()))
+            tail_id = random.choice(list(self.entity2id.keys()))
+            links.append((entity_id, relation_id, tail_id))
+        return links

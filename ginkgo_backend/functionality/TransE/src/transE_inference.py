@@ -29,7 +29,7 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
 
     # Helper function to add an edge to the JSON data
     def add_edge(source, target, label):
-        data["result1"]["links"].append({"source": node_mapping[source], "type": label, "target": node_mapping[target]})
+        data["result1"]["links"].append({"source": node_mapping[source], "type": label.strip().rstrip("_inv"), "target": node_mapping[target]})
 
     for link in predicted_subgraph:
         node1, relation, node2 = link
@@ -41,7 +41,7 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
         data["highlighted_nodes"].append({"id": node_mapping[node2], "name": node2, "label": ""})
 
         # Store the highlighted path in the JSON data
-        data["highlighted_path"].append({"source": node_mapping[node1], "type": relation, "target": node_mapping[node2]})
+        data["highlighted_path"].append({"source": node_mapping[node1], "type": relation.strip().rstrip("_inv"), "target": node_mapping[node2]})
 
     for link in neighboring_subgraph:
         node1, relation, node2 = link
@@ -66,27 +66,23 @@ def run_inference(entity1, relation):
     entity1_id = mapper.get_entity_id(entity1)
     relation_id = mapper.get_relation_id(relation)
 
-    print(entity1_id, relation_id)
-
 
     x, scores = query_topn(model, top_n=1, head=entity1_id, relation=relation_id, tail=None) #generate top 5 predictions
-    print(x)
-    for _ in x:
-        print(_)
-    predicted_subgraph = [(mapper.get_entity_name(prediction[0]), mapper.get_relation_name(prediction[1]), mapper.get_entity_name(prediction[2])) for prediction in (x if len(x.shape) >= 2 else [x])]
+    if len(x.shape) > 1:
+        #2d array
+        predicted_subgraph = [(mapper.get_entity_name(line[0]).strip(), mapper.get_relation_name(line[1]).strip().rstrip("_inv"), mapper.get_entity_name(line[2]).strip()) for line in x]
+    else:
+        #1d array
+        predicted_subgraph = [(
+            mapper.get_entity_name(x[0]).strip(),
+            mapper.get_relation_name(x[1]).strip().rstrip("_inv"),
+            mapper.get_entity_name(x[2]).strip()
+        )]
 
-    # Find all unique relations in your knowledge graph
-    all_relations = np.unique(model.triples[:, 1])
+    
+    neighboring_subgraph = mapper.get_random_links_with_head(entity1_id)
 
-    # Randomly select one of these relations
-    selected_relation = np.random.choice(all_relations)
 
-    # Use query_topn to find all triples where entity1 is the head and the selected relation
-    results, _ = query_topn(model, top_n=None, head=entity1_id, relation=selected_relation, tail=None)
-
-    # Randomly select 9 results if there are more than 9
-    random_neighbors = np.random.choice(results, size=min(9, len(results)), replace=False)
-    print(random_neighbors)
     return subgraph_to_json(predicted_subgraph, neighboring_subgraph)
 
 
