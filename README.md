@@ -105,7 +105,7 @@ where `VERY IMPORTANT GRAPH REPRESENTATION` is a collection of `<head, relation,
             "target": "3"
         }
     ],
-    "result1": {
+    "graph": {
         "nodes": [
             {
                 "id": "1",

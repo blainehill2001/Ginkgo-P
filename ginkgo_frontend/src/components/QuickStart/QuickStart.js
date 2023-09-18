@@ -17,16 +17,16 @@ const QuickStart = () => {
       status: { type: "string" },
       highlighted_path: { type: "array" },
       highlighted_nodes: { type: "array" },
-      result1: {
+      graph: {
         type: "object",
         properties: {
           nodes: { type: "array" },
           links: { type: "array" }
         },
-        required: ["nodes", "links"] // Make sure "nodes" and "links" are present in "result1"
+        required: ["nodes", "links"] // Make sure "nodes" and "links" are present in "graph"
       }
     },
-    required: ["status", "highlighted_path", "highlighted_nodes", "result1"] // Make sure these properties are present at the top level
+    required: ["status", "highlighted_path", "highlighted_nodes", "graph"] // Make sure these properties are present at the top level
   };
 
   const validateJSON = (inputValue) => {
@@ -88,10 +88,18 @@ const QuickStart = () => {
                       {...register("query", { validate: validateJSON })} // Register the input with validation
                       id="query"
                       const
-                      placeholder="JSON goes here..." //add the full json structure here later
+                      placeholder={`{
+    "status": "Consistent",
+    "highlighted_path": [],
+    "highlighted_nodes": [],
+    "graph": {
+        "nodes": [],
+        "links": []
+    }
+}`} //add the full json structure here later
                       autoComplete="off"
                       value={queryValue}
-                      rows={5} // Set the number of rows
+                      rows={10} // Set the number of rows
                       cols={40} // Set the number of columns
                       className={`flex-grow bg-transparent outline-none border-b-2 py-2 px-4 placeholder-purple-300 focus:bg-purple-100 ${
                         errors.query

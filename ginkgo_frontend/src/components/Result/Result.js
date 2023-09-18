@@ -316,7 +316,7 @@ const Result = ({ data }) => {
   // Call the ForceGraph function when data changes
   var chart = ForceGraph(
     parsed_data.status,
-    parsed_data.result1,
+    parsed_data.graph,
     parsed_data.highlighted_path,
     {
       nodeId: (d) => d.id,
@@ -339,7 +339,7 @@ const Result = ({ data }) => {
       svg.current.appendChild(
         ForceGraph(
           parsed_data.status,
-          parsed_data.result1,
+          parsed_data.graph,
           parsed_data.highlighted_path,
           {
             nodeId: (d) => d.id,

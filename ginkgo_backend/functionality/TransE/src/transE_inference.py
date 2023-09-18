@@ -96,7 +96,7 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
         "status": "Consistent",
         "highlighted_path": [],
         "highlighted_nodes": [],
-        "result1": {
+        "graph": {
             "nodes": [],
             "links": []
         }
@@ -110,11 +110,11 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
         if node not in node_mapping:
             node_id = len(node_mapping) + 1
             node_mapping[node] = node_id
-            data["result1"]["nodes"].append({"id": node_id, "name": node, "label": ""})
+            data["graph"]["nodes"].append({"id": node_id, "name": node, "label": ""})
 
     # Helper function to add an edge to the JSON data
     def add_edge(source, target, label):
-        data["result1"]["links"].append({"source": node_mapping[source], "type": label.strip().rstrip("_inv"), "target": node_mapping[target]})
+        data["graph"]["links"].append({"source": node_mapping[source], "type": label.strip().rstrip("_inv"), "target": node_mapping[target]})
 
     for link in predicted_subgraph:
         node1, relation, node2 = link
@@ -160,7 +160,7 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
         "status": "Consistent",
         "highlighted_path": [],
         "highlighted_nodes": [],
-        "result1": {
+        "graph": {
             "nodes": [],
             "links": []
         }
@@ -174,11 +174,11 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
         if node not in node_mapping:
             node_id = len(node_mapping) + 1
             node_mapping[node] = node_id
-            data["result1"]["nodes"].append({"id": node_id, "name": node, "label": ""})
+            data["graph"]["nodes"].append({"id": node_id, "name": node, "label": ""})
 
     # Helper function to add an edge to the JSON data
     def add_edge(source, target, label):
-        data["result1"]["links"].append({"source": node_mapping[source], "type": label.strip().rstrip("_inv"), "target": node_mapping[target]})
+        data["graph"]["links"].append({"source": node_mapping[source], "type": label.strip().rstrip("_inv"), "target": node_mapping[target]})
 
     for link in predicted_subgraph:
         node1, relation, node2 = link

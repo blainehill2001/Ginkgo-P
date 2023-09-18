@@ -238,7 +238,7 @@ def format_path_ginkgo(path_trace, kg):
                 }
                 for num_highlight, text_highlight in highlighted_triples.items()
             ],
-            "result1": {
+            "graph": {
                 "nodes": [
                     {
                         "id": num_node,

@@ -244,7 +244,7 @@ const ExampleResult = ({ data }) => {
     return Object.assign(svg.node(), { scales: { color } });
   }
   var parsed_data = JSON.parse(data);
-  var chart = ForceGraph(parsed_data.result1, {
+  var chart = ForceGraph(parsed_data.graph, {
     nodeId: (d) => d.id,
     nodeGroup: (d) => d.group,
     nodeTitle: (d) => `${d.name}`,

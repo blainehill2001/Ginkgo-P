@@ -97,7 +97,7 @@ def subgraph_to_json(top_subgraph, bottom_subgraph):
         "status": "Consistent",
         "highlighted_path": [],
         "highlighted_nodes": [],
-        "result1": {
+        "graph": {
             "nodes": [],
             "links": []
         }
@@ -111,11 +111,11 @@ def subgraph_to_json(top_subgraph, bottom_subgraph):
         if node not in node_mapping:
             node_id = len(node_mapping) + 1
             node_mapping[node] = node_id
-            data["result1"]["nodes"].append({"id": node_id, "name": node, "label": ""})
+            data["graph"]["nodes"].append({"id": node_id, "name": node, "label": ""})
 
     # Helper function to add an edge to the JSON data
     def add_edge(source, target, label):
-        data["result1"]["links"].append({"source": node_mapping[source], "type": label, "target": node_mapping[target]})
+        data["graph"]["links"].append({"source": node_mapping[source], "type": label, "target": node_mapping[target]})
 
     # Assign node IDs and store nodes in the JSON data for the top subgraph
     for node in top_subgraph.nodes:
