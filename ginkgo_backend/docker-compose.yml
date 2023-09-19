@@ -2,6 +2,8 @@ version: "3"
 services:
 
   app:
+    image: ginkgo_backend_image
+    container_name: ginkgo_backend_container
     build:
       context: .
       args:
@@ -11,3 +13,4 @@ services:
      - .env
     ports:
      - "$PORT:$PORT"
+    command: ["node", "server.js"]

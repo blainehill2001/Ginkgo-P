@@ -5,7 +5,7 @@ import json
 import os
 import re
 
-def run_inference(entity1, relation, k1=1, k2=9, js_text_file_name='ginkgo_frontend/src/assets/train_triples_UMLS.js'):
+def run_inference(entity1, relation, k1=1, k2=9, js_text_file_name='data/umls/train_triples_UMLS.js'):
 
     """
     Run inference on a given entity and relation. Return a JSON string containing the predicted subgraph and neighboring subgraph.
@@ -40,7 +40,7 @@ def run_inference(entity1, relation, k1=1, k2=9, js_text_file_name='ginkgo_front
     for index, row in pred.iterrows():
         pred_subgraph.append((entity1, relation, row["tail_label"]))
     current_directory = os.path.dirname(__file__)
-    for _ in range(4):
+    for _ in range(3):
         current_directory = os.path.dirname(current_directory)
     path_to_js_text_file = os.path.join(current_directory, f'{js_text_file_name}')
     def parse_triples(filepath):

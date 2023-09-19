@@ -1,9 +1,15 @@
-FROM node:18.13.0
+# Start with a Python 3.7 base image
+FROM python:3.8
 
-WORKDIR /app
 
-COPY package*.json ./
+# Set up Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y nodejs
 
+# Add PyTorch to Node's Python path  
+ENV NODE_PATH="/usr/local/lib/python3.7/site-packages:${NODE_PATH}"
+
+# Set environment variables (optional)
 ARG MONGODB_URI
 ARG NODE_ENV
 ARG PORT
@@ -24,24 +30,15 @@ ENV KMP_DUPLICATE_LIB_OK=$KMP_DUPLICATE_LIB_OK
 ENV SMTP_PORT=$SMTP_PORT
 ENV SMTP_SERVER=$SMTP_SERVER
 
+# Copy Python requirements
+COPY ./requirements.txt /app/requirements.txt
+RUN pip install -r /app/requirements.txt
 
-RUN apt-get update && \
-    apt-get install -y python3 &&\
-    apt-get install -y python3-pip
-
-ENV PATH="/usr/bin:${PATH}" 
-
-RUN python3 --version
-RUN echo $PATH
-
+# Copy Node.js app code
+COPY package.json /app/
+WORKDIR /app
+COPY ./ /app
 RUN npm install
 
-COPY . .
-
-COPY requirements.txt /tmp/  
-
-RUN pip install -r /tmp/requirements.txt
-
-EXPOSE 8080
-
-CMD [ "node", "server.js" ]
+# Run the Node.js app
+CMD ["node", "server.js"]
