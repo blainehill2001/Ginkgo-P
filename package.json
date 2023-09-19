@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"cd ginkgo_backend && docker-compose down && docker rmi ginkgo_backend_docker && docker build --no-cache -t ginkgo_backend_docker . && docker-compose up\" \"cd ginkgo_frontend && npm run start\""
+    "dev": "concurrently \"cd ginkgo_backend && npm run dev\" \"cd ginkgo_frontend && npm run start\"",
+    "dev_docker": "concurrently \"cd ginkgo_backend && docker-compose down && docker rmi ginkgo_backend_docker && docker build --no-cache -t ginkgo_backend_docker . && docker-compose up\" \"cd ginkgo_frontend && npm run start\""
   },
   "repository": {
     "type": "git",
