@@ -21,6 +21,9 @@ def run_inference(entity1, relation, k1=1, k2=9, js_text_file_name='ginkgo_front
 
     """
     
+    with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), "log.txt"), "a") as log_file:
+        message = f"Entity: {entity1}, Relation: {relation}"
+        log_file.write(message + "\n")
     dataset = UMLS() #load dataset
     # Load pretrained model
     model = torch.load(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'src/model/trained_model.pkl'))

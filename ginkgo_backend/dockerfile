@@ -1,0 +1,47 @@
+FROM node:18.13.0
+
+WORKDIR /app
+
+COPY package*.json ./
+
+ARG MONGODB_URI
+ARG NODE_ENV
+ARG PORT
+ARG SMTP_USERNAME
+ARG GMAIL_PASSWORD
+ARG SMTP_PASSWORD
+ARG KMP_DUPLICATE_LIB_OK
+ARG SMTP_PORT
+ARG SMTP_SERVER
+
+ENV MONGODB_URI=$MONGODB_URI
+ENV NODE_ENV=$NODE_ENV
+ENV PORT=$PORT
+ENV SMTP_USERNAME=$SMTP_USERNAME
+ENV GMAIL_PASSWORD=$GMAIL_PASSWORD
+ENV SMTP_PASSWORD=$SMTP_PASSWORD
+ENV KMP_DUPLICATE_LIB_OK=$KMP_DUPLICATE_LIB_OK
+ENV SMTP_PORT=$SMTP_PORT
+ENV SMTP_SERVER=$SMTP_SERVER
+
+
+RUN apt-get update && \
+    apt-get install -y python3 &&\
+    apt-get install -y python3-pip
+
+ENV PATH="/usr/bin:${PATH}" 
+
+RUN python3 --version
+RUN echo $PATH
+
+RUN npm install
+
+COPY . .
+
+COPY requirements.txt /tmp/  
+
+RUN pip install -r /tmp/requirements.txt
+
+EXPOSE 8080
+
+CMD [ "node", "server.js" ]
