@@ -88,7 +88,8 @@ const QuickStart = () => {
                       {...register("query", { validate: validateJSON })} // Register the input with validation
                       id="query"
                       const
-                      placeholder={`{
+                      placeholder={`e.g.
+{
     "status": "Consistent",
     "highlighted_path": [],
     "highlighted_nodes": [],
