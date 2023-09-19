@@ -19,7 +19,7 @@ var AlgorithmCallSchema = new Schema({
   },
   language: {
     type: String,
-    enum: ["python", "g++"],
+    enum: ["python3"],
     required: true,
     unique: false
   },
