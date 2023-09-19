@@ -11,8 +11,8 @@ redo scores_file_path and graph_pickle_file_path for UMLS
 query_node, k, c = list(map(lambda x: x.strip(), sys.argv[1].split(",")))
 k, c = int(k), int(c)
 z=10
-scores_file_path = '../functionality/PageRank/pagerank_movielens_full_scores.txt'
-graph_pickle_file_path = '../functionality/PageRank/movielens_graph.pkl'
+scores_file_path = '../functionality/PageRank/pagerank_UMLS_full_scores.txt'
+graph_pickle_file_path = '../functionality/PageRank/UMLS_graph.pkl'
 
 script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
 scores_file_path = os.path.join(script_dir, scores_file_path)

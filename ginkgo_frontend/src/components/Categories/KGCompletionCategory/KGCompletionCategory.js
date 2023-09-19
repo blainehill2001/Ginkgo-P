@@ -3,6 +3,7 @@ import React from "react";
 import KGCompletionHome from "./KGCompletionHome";
 import TransE from "./TransE";
 import ComplEx from "./ComplEx";
+import RotatE from "./RotatE";
 import {
   Tabs,
   TabsHeader,
@@ -33,7 +34,7 @@ const KGCompletionCategory = () => {
     {
       label: "RotatE",
       value: "rotate",
-      desc: `Eventually insert tab 3 component here`
+      desc: <RotatE />
     }
   ];
 

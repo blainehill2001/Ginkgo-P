@@ -27,9 +27,9 @@ def pickle_graph(graph, output_file):
 
 # Main execution
 if __name__ == '__main__':
-    path = '/Users/blaineh2/Documents/movielens_processed/full_dataset.triples'
-    scores_output_file = './pagerank_movielens_full_scores.txt'
-    graph_output_file = './movielens_graph.pkl'
+    path = '/Users/blaineh2/Documents/Ginkgo-P/ginkgo_backend/data/umls/raw.triples'
+    scores_output_file = './pagerank_UMLS_full_scores.txt'
+    graph_output_file = './UMLS_graph.pkl'
 
     # Process input file and create the graph
     graph = process_input_file(path)
