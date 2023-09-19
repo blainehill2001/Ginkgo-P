@@ -22,7 +22,7 @@ const EmbedKGQA = () => {
         "Content-Type": "application/json"
       },
       "body": JSON.stringify({
-        "language": "python",
+        "language": "python3",
         "script": "embedkgqa.py",
         ...data_sent
       })

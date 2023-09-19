@@ -38,7 +38,7 @@ Test your new algorithm using a resource such as [Postman](https://www.postman.c
 
 ```json
 {
-    "language": "python",
+    "language": "python3",
     "script": "test_script.py",
     "arg1": "My test query to see",
     "arg2": "if my test script is running properly!"
@@ -53,7 +53,7 @@ By sending a POST request with this body, the backend will run `python test_scri
     "message": "some helpful logging",
     "algocall_result": {
         "script": "test_script.py",
-        "language": "python",
+        "language": "python3",
         "result": "My test query to see\nif my test script is running properly!\n",
         "_id": "a randomly generated id to be used as a unique identifier in MongoDB"
     }
@@ -218,7 +218,7 @@ const params = {
         "Content-Type": "application/json"
       },
       "body": JSON.stringify({
-        "language": "python",
+        "language": "python3",
         "script": "script1.py",
         ...data_sent
       })

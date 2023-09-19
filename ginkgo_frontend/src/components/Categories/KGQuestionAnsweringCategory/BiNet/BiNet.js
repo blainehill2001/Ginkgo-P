@@ -22,7 +22,7 @@ const BiNet = () => {
         "Content-Type": "application/json"
       },
       "body": JSON.stringify({
-        "language": "python",
+        "language": "python3",
         "script": "binet.py",
         ...data_sent
       })

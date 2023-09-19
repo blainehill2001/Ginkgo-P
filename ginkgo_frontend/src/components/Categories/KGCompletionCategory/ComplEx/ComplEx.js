@@ -22,7 +22,7 @@ const ComplEx = () => {
         "Content-Type": "application/json"
       },
       "body": JSON.stringify({
-        "language": "python",
+        "language": "python3",
         "script": "complex.py",
         ...data_sent
       })

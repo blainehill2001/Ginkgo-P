@@ -22,7 +22,7 @@ const ExampleTab1 = () => {
         "Content-Type": "application/json"
       },
       "body": JSON.stringify({
-        "language": "python",
+        "language": "python3",
         "script": "script1.py",
         ...data_sent
       })

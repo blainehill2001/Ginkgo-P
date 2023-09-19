@@ -37,7 +37,7 @@ const MultiHopKG = () => {
         "Content-Type": "application/json"
       },
       "body": JSON.stringify({
-        "language": "python",
+        "language": "python3",
         "script": "multihopkg.py",
         ...data_sent
       })

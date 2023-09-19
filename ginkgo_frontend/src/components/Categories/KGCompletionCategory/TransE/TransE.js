@@ -37,7 +37,7 @@ const TransE = () => {
         "Content-Type": "application/json"
       },
       "body": JSON.stringify({
-        "language": "python",
+        "language": "python3",
         "script": "transE.py",
         ...data_sent
       })

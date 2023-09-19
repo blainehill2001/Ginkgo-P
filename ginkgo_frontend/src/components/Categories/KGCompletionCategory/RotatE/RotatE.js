@@ -22,7 +22,7 @@ const RotatE = () => {
         "Content-Type": "application/json"
       },
       "body": JSON.stringify({
-        "language": "python",
+        "language": "python3",
         "script": "rotate.py",
         ...data_sent
       })
