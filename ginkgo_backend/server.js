@@ -19,7 +19,7 @@ app
   .use(express.urlencoded({ extended: true }))
   .use(
     express.json({
-      limit: "150mb",
+      limit: "500mb",
       extended: "true",
       parameterLimit: 1000000
     })
