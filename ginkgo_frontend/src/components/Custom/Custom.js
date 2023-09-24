@@ -83,7 +83,7 @@ const FileUpload = () => {
 
   const onSubmit = async (custom_script, user_email, data_files) => {
     const formData = new FormData();
-    formData.append("language", "python");
+    formData.append("language", "python3");
     formData.append("script", "runcustom.py");
     formData.append("user_email", user_email);
     custom_script.forEach((file) => {

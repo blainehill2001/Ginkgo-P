@@ -9,6 +9,7 @@ from email.mime.base import MIMEBase
 import os
 import io
 import datetime
+import json
 
 # print(sys.argv[1]) #take in the first non-"language" and non-"script" parameter in the API request and return it back to the user
 # print(sys.argv[2]) #take in the second non-"language" and non-"script" parameter in the API request and return it back to the user
@@ -52,11 +53,12 @@ for file in all_files:
 # Send the email
 try:
     with smtplib.SMTP(smtp_server, smtp_port) as server:
+        print(json.dumps(json.loads(output)))
         server.starttls()
         server.login(smtp_username, smtp_password)
         server.send_message(message)
         # print("Email sent successfully!")
-        print(output)
+        # print(output)
 
 except smtplib.SMTPException as e:
     print("An error occurred while sending the email.")
