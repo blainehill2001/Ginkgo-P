@@ -1,6 +1,6 @@
 //imports
 import React from "react";
-import KGPointWiseReasoningHome from "./KGSubgraphExtractionHome";
+import KGNodeRecommendationHome from "./KGNodeRecommendationHome";
 import PageRank from "./PageRank";
 import {
   Tabs,
@@ -10,12 +10,12 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
-const KGSubgraphExtractionCategory = () => {
+const KGNodeRecommendationCategory = () => {
   const tabs = [
     {
       label: "Home",
       value: "home",
-      desc: <KGPointWiseReasoningHome />
+      desc: <KGNodeRecommendationHome />
     },
 
     {
@@ -63,4 +63,4 @@ const KGSubgraphExtractionCategory = () => {
   );
 };
 
-export default KGSubgraphExtractionCategory;
+export default KGNodeRecommendationCategory;

@@ -64,7 +64,7 @@ const NavBar = () => {
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-4 whitespace-nowrap origin-top-right rounded-[16px] bg-gray-300 p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
                       <div className=" bg-base-100 rounded-[15px] p-3">
-                        <Menu.Item>
+                        {/* <Menu.Item>
                           {({ active }) => (
                             <Link
                               to="example"
@@ -76,6 +76,21 @@ const NavBar = () => {
                               )}
                             >
                               Example Algo
+                            </Link>
+                          )}
+                        </Menu.Item> */}
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to="kgnoderecommendation"
+                              className={classNames(
+                                active
+                                  ? "bg-gray-200 mix-blend-multiply text-purple-800"
+                                  : "text-purple-500",
+                                "block rounded-[15px] px-4 py-2"
+                              )}
+                            >
+                              KG Node Recommendation
                             </Link>
                           )}
                         </Menu.Item>
@@ -106,21 +121,6 @@ const NavBar = () => {
                               )}
                             >
                               KG Question Answering
-                            </Link>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <Link
-                              to="kgpointwisereasoning"
-                              className={classNames(
-                                active
-                                  ? "bg-gray-200 mix-blend-multiply text-purple-800"
-                                  : "text-purple-500",
-                                "block rounded-[15px] px-4 py-2"
-                              )}
-                            >
-                              KG Subgraph Extraction
                             </Link>
                           )}
                         </Menu.Item>
