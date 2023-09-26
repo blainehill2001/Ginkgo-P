@@ -4,6 +4,7 @@ import KGCompletionHome from "./KGCompletionHome";
 import TransE from "./TransE";
 import ComplEx from "./ComplEx";
 import RotatE from "./RotatE";
+import DistMult from "./DistMult";
 import {
   Tabs,
   TabsHeader,
@@ -35,6 +36,12 @@ const KGCompletionCategory = () => {
       label: "RotatE",
       value: "rotate",
       desc: <RotatE />
+    },
+
+    {
+      label: "DistMult",
+      value: "distmult",
+      desc: <DistMult />
     }
   ];
 
