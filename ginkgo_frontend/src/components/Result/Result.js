@@ -1,17 +1,67 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
+import { Text } from "@visx/text";
 
 const Result = ({ data }) => {
   // Copyright 2021 Observable, Inc.
   // Released under the ISC license.
   // https://observablehq.com/@d3/force-directed-graph
 
-  //TODO: incorporate highlighted_nodes to better organize algorithms.
-  var parsed_data = JSON.parse(data);
-  // Extract highlighted nodes from the JSON data (if available)
-  const highlightedNodes = parsed_data.highlighted_nodes || [];
-  // Process highlighted nodes to create a set for efficient lookup
-  const highlightedNodeSet = new Set(highlightedNodes);
+  const parsed_data = JSON.parse(data);
+
+  const links = [];
+  const highlightedLinks = [];
+
+  const linkMap = new Map();
+  const highlightLinkMap = new Map();
+
+  for (const link of parsed_data.graph.links) {
+    const key = `${link.source},${link.target}`;
+    if (linkMap.has(key)) {
+      const existing = linkMap.get(key);
+      existing.labels.push(link.type);
+    } else {
+      linkMap.set(key, {
+        source: link.source,
+        target: link.target,
+        labels: [link.type]
+      });
+    }
+  }
+
+  for (const highlightLink of parsed_data.highlighted_path) {
+    const key = `${highlightLink.source},${highlightLink.target}`;
+
+    if (highlightLinkMap.has(key)) {
+      const existing = highlightLinkMap.get(key);
+      existing.labels.push(highlightLink.type);
+    } else {
+      highlightLinkMap.set(key, {
+        source: highlightLink.source,
+        target: highlightLink.target,
+        labels: [highlightLink.type]
+      });
+    }
+  }
+
+  for (const value of linkMap.values()) {
+    links.push(value);
+  }
+  for (const link of links) {
+    link.label = link.labels.join(",");
+    delete link.labels; // Remove labels array
+  }
+
+  for (const value of highlightLinkMap.values()) {
+    highlightedLinks.push(value);
+  }
+  for (const highlightedLink of highlightedLinks) {
+    highlightedLink.label = highlightedLink.labels.join(",");
+    delete highlightedLink.labels; // Remove labels array
+  }
+
+  console.log(links);
+  console.log(highlightedLinks);
 
   function ForceGraph(
     status, //a string denoting status of the data
@@ -123,8 +173,6 @@ const Result = ({ data }) => {
       .forceLink(links)
       .id(({ index: i }) => N[i])
       .distance(320); //set how far apart nodes are here
-    // if (nodeStrength !== undefined) forceNode.strength(nodeStrength);
-    // if (linkStrength !== undefined) forceLink.strength(linkStrength);
     if (nodeStrength !== undefined)
       forceNode.strength(-5000).distanceMax(200).distanceMin(100);
     if (linkStrength !== undefined) forceLink.strength(linkStrength);
@@ -133,7 +181,7 @@ const Result = ({ data }) => {
       .forceSimulation(nodes)
       .force("link", forceLink)
       .force("charge", forceNode)
-      .force("collide", d3.forceCollide().radius(nodeRadius + 2)) // Add forceCollide      .force("center", d3.forceCenter())
+      .force("collide", d3.forceCollide().radius(nodeRadius + 2))
       .force("center", d3.forceCenter(0, 0)) // Add forceCenter with initial center coordinates (0, 0)
       .on("tick", ticked);
 
@@ -172,19 +220,11 @@ const Result = ({ data }) => {
       .attr("stroke", nodeStroke)
       .attr("stroke-opacity", nodeStrokeOpacity)
       .attr("stroke-width", nodeStrokeWidth)
-      // SM: change
-      // .selectAll("circle")
       .selectAll("g")
       .data(nodes)
-      // SM: change
-      // .join("circle")
       .join("g")
-      // SM: change
-      // .attr("r", nodeRadius)
       .call(drag(simulation));
 
-    // SM: change
-    // append circle and text to node <g> (selection of all <g> elements corresponding to each node)
     node.append("circle").attr("r", nodeRadius);
     node
       .append("text")
@@ -208,6 +248,40 @@ const Result = ({ data }) => {
       })
       .style("pointer-events", "none");
 
+    function wrap(text, width) {
+      text.each(function () {
+        var text = d3.select(this),
+          words = text.text().split(/\s+/).reverse(),
+          word,
+          line = [],
+          lineNumber = 0,
+          lineHeight = 1.2,
+          x = text.attr("x"),
+          y = text.attr("y"),
+          dy = text.attr("dy") ? text.attr("dy") : 0;
+        let tspan = text
+          .text(null)
+          .append("tspan")
+          .attr("x", x)
+          .attr("y", y)
+          .attr("dy", dy);
+        while ((word = words.pop())) {
+          line.push(word);
+          tspan.text(line.join(" "));
+          if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+            tspan = text
+              .append("tspan")
+              .attr("x", x)
+              .attr("y", y)
+              .attr("dy", ++lineNumber * lineHeight + dy + "em")
+              .text(word);
+          }
+        }
+      });
+    }
     const edgelabels = svg
       .selectAll(".edgelabel")
       .data(links)
@@ -224,12 +298,14 @@ const Result = ({ data }) => {
       .attr("xlink:href", function (d, i) {
         return "#edgepath" + i;
       })
-      .style("text-anchor", "middle")
-      .style("pointer-events", "none")
+      .attr("y", 0)
+      .attr("x", 0)
+      .attr("dy", "1.2em")
       .attr("startOffset", "50%")
       .text(({ index: i }) => {
         return EL[i];
-      });
+      })
+      .call(wrap, 30);
 
     if (W) link.attr("stroke-width", ({ index: i }) => W[i]);
     if (L) link.attr("stroke", ({ index: i }) => L[i]);
@@ -258,10 +334,7 @@ const Result = ({ data }) => {
         .attr("y2", (d) => d.target.y);
 
       node.attr("transform", (d) => `translate(${d.x} ${d.y})`);
-      // SM: change
-      // instead of moving the circle centers we transform the whole <g>
-      // .attr("cx", d => d.x)
-      // .attr("cy", d => d.y);
+
       edgepaths.attr("d", function (d) {
         return (
           "M " +
