@@ -128,7 +128,7 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
 
         # Store the highlighted path in the JSON data
         data["highlighted_path"].append({"source": node_mapping[node1], "type": relation.strip().rstrip("_inv"), "target": node_mapping[node2]})
-
+        add_edge(node1, node2, relation)
     for link in neighboring_subgraph:
         node1, relation, node2 = link
         # Assign node IDs and store nodes in the JSON data for the neighboring subgraph
