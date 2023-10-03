@@ -14,7 +14,8 @@ var AlgorithmCallSchema = new Schema({
       "multihopkg.py",
       "embedkgqa.py",
       "pagerank.py",
-      "runcustom.py"
+      "runcustom.py",
+      "DistMult.py"
     ],
     required: true,
     unique: false
