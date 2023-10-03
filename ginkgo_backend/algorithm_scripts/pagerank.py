@@ -3,14 +3,19 @@ import networkx as nx
 import pickle
 import json
 import os
-"""
-TODO:
-redo scores_file_path and graph_pickle_file_path for UMLS
 
-"""
-query_node, k, c = list(map(lambda x: x.strip(), sys.argv[1].split(",")))
-k, c = int(k), int(c)
-z=10
+#this code can be used if you wish to manually input k and c into the system (k=number of answers, node recommendation returns 1. c=maximum depth in hops from source node)
+# query_node, k, c = list(map(lambda x: x.strip(), sys.argv[1].split(",")))
+# k, c = int(k), int(c)
+temp_split = list(map(lambda x: x.strip(), sys.argv[1].split(",")))
+
+if len(temp_split) == 3:
+    query_node, k, c = temp_split
+    k, c = int(k), int(c)
+else:
+    query_node,k,c = temp_split[0],1,10000
+z = 5
+
 scores_file_path = '../functionality/PageRank/pagerank_UMLS_full_scores.txt'
 graph_pickle_file_path = '../functionality/PageRank/UMLS_graph.pkl'
 
@@ -31,7 +36,7 @@ def retrieve_scores(file_path):
 
 
 # Function to perform subgraph extraction within c hops of the query node
-def extract_top_k_subgraph(graph, pr_scores, query_node, k, c, z):
+def extract_top_k_subgraph(graph, pr_scores, query_node, k=1, c=10000, z=5):
     # Create the top subgraph
     top_subgraph = nx.DiGraph()
     top_subgraph.add_node(query_node)
@@ -80,6 +85,12 @@ def extract_top_k_subgraph(graph, pr_scores, query_node, k, c, z):
 
     # Add top k nodes and their paths to the top subgraph
     for node, _ in top_k_nodes:
+        with open("temp.txt", 'w') as f:
+            f.write(str(k))
+            f.write("\n")
+            f.write(str(min(k, len(sorted_nodes))))
+            f.write("\n")
+            f.write(str(top_k_nodes))
         path = nx.shortest_path(graph, source=node, target=query_node)
         add_node_and_path(node, path, top_subgraph)
 
@@ -127,6 +138,7 @@ def subgraph_to_json(top_subgraph, bottom_subgraph):
         source, target = edge
         label = top_subgraph.edges[source, target]['label']
         data["highlighted_path"].append({"source": node_mapping[source], "type": label, "target": node_mapping[target]})
+        add_edge(source, target, label)
 
     # Assign node IDs and store nodes in the JSON data for the bottom subgraph
     for node in bottom_subgraph.nodes:
@@ -148,7 +160,7 @@ def subgraph_to_json(top_subgraph, bottom_subgraph):
 # Load the graph from the pickle file
 with open(graph_pickle_file_path, 'rb') as f:
     graph = pickle.load(f)
-
+            
 # Retrieve the PageRank scores
 pr_scores = retrieve_scores(scores_file_path)
 

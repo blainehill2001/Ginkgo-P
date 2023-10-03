@@ -26,12 +26,7 @@ const PageRank = () => {
   };
   const handleButtonClick = () => {
     const [entity1, entity2, relation] = getRandomRowUMLS();
-    setValue(
-      "query",
-      `${entity1}, ${Math.floor(Math.random() * 5) + 1}, ${
-        Math.floor(Math.random() * 3) + 1
-      }`
-    ); //get random number between 1-5, and 1-3
+    setValue("query", `${entity1}`);
   };
 
   //when user submits the form
@@ -82,8 +77,8 @@ const PageRank = () => {
       .string()
       .required()
       .matches(
-        /^\s*[^,]+\s*,\s*\d+\s*,\s*\d+\s*$/,
-        'Query must be in the format "string, int, int"'
+        /^\s*[^,]+\s*(?:,\s*\d+\s*,\s*\d+\s*)?$/,
+        'Query must be in the format "string" or "string, int, int"'
       )
   });
 
