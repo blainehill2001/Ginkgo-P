@@ -85,12 +85,6 @@ def extract_top_k_subgraph(graph, pr_scores, query_node, k=1, c=10000, z=5):
 
     # Add top k nodes and their paths to the top subgraph
     for node, _ in top_k_nodes:
-        with open("temp.txt", 'w') as f:
-            f.write(str(k))
-            f.write("\n")
-            f.write(str(min(k, len(sorted_nodes))))
-            f.write("\n")
-            f.write(str(top_k_nodes))
         path = nx.shortest_path(graph, source=node, target=query_node)
         add_node_and_path(node, path, top_subgraph)
 
