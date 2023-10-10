@@ -2,10 +2,19 @@ import sys
 import os
 import networkx as nx
 import numpy as np
+import re
 import torch
+import json
 import torch.nn as nn
 from torch.nn import functional as F
-from transformers import *
+from transformers import RobertaTokenizer, RobertaModel 
+
+import logging
+logging.getLogger("transformers").setLevel(logging.ERROR)
+
+# q = list(map(lambda x: x.strip(), sys.argv[1].split(",")))
+q = "What is completes the connection between [clinical_attribute] and another entity?" #a temporary test
+
 
 ######################################################################################################
 
@@ -299,6 +308,7 @@ def main(gpu, use_cuda, question, embedding_folder, model_path):
     # model.load_state_dict(torch.load("checkpoints/roberta_finetune/" + load_from + ".pt"))
     
     # fname = "/scratche/home/apoorv/tut_pytorch/kg-qa/checkpoints/roberta_finetune/" + load_from + ".pt"
+
     model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
     model.to(device)
 
@@ -338,38 +348,37 @@ def tokenize_question(question):
 ####################### main 
 
 # //"args": ["--mode", "train", "--load_from", "full_metaqa", "--relation_dim", "200", "--do_batch_norm", "1", "--gpu", "2", "--freeze", "1", "--batch_size", "128", "--validate_every", "10", "--lr", "0.00002", "--entdrop", "0.0", "--reldrop", "0.0", "--scoredrop", "0.0", "--decay", "1.0", "--model", "ComplEx", "--patience", "20", "--ls", "0.05", "--l3_reg", "0.001", "--nb_epochs", "200", "--outfile", "full_simpleqa"],
-root_dir = os.getcwd()
-root_dir = os.path.join(root_dir, ".")
-data_dir = os.path.join(root_dir, "datasets")
-KG_dir = os.path.join(data_dir, "MetaQA")
+root_dir = os.path.dirname(os.getcwd())
+
+data_dir = os.path.join(root_dir, "data")
+KG_dir = os.path.join(data_dir, "umls")
 model_dir = os.path.join(KG_dir, "embedKGQA")
 
 tokenizer_class = RobertaTokenizer
 pretrained_weights = 'roberta-base'
 tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
 
-model_path = os.path.join(model_dir, "embedKGQA.pt") #"checkpoints/roberta_finetune/embedKGQA.pt"
+model_path = os.path.join(model_dir, "best_score_model.pt") 
 embedding_folder = model_dir
-question = "what does [Robert Stack] appear in" # this question should be the input from users
+# question = f"What is completes the connection between {e1} and {r}?" # this question should be the input from users
+question = q
 
 #check whether the entity in the question is in the knowledge graph
-# replace entity with NE
-components = question.split('[')
-components = components[1].split(']')
-head = components[0].strip()
+matches = re.findall(r'\[(.*?)\]', question)
+if len(matches) == 1:
+    e1 = matches[0]
 
-entity_dict = embedding_folder + '/entities.dict'
+
+entity_dict = os.path.join(model_dir, "entities.dict")
 kg_entity_map = {}
-f = open(entity_dict, 'r')
-for line in f:
-    line = line[:-1].split('\t')
-    ent_id = int(line[0])
-    ent_name = line[1]
-    kg_entity_map[ent_name] = ent_id
-f.close()
-
-if head not in kg_entity_map:
-    return "entity doesn't exist in knowledge grpah"
+with open(entity_dict, 'r') as f:
+    for line in f:
+        line = line[:-1].split('\t')
+        ent_id = int(line[0])
+        ent_name = line[1]
+        kg_entity_map[ent_name] = ent_id
+if e1 not in kg_entity_map:
+    print("entity doesn't exist in knowledge graph")
 
 
 answer_txt, head_txt = main(gpu="0", use_cuda=False, question=question, embedding_folder=embedding_folder, model_path=model_path)
@@ -378,7 +387,7 @@ answer_txt, head_txt = main(gpu="0", use_cuda=False, question=question, embeddin
 ### find all paths between entity_idx and ans
 # build KG
 G_whole = nx.Graph()
-kg_triple_file = KG_dir + "/train.txt"
+kg_triple_file = KG_dir + "/train.triples"
 with open(kg_triple_file, "r") as f:
     for line in f.readlines():
         eles = line.strip().split("\t")
@@ -395,4 +404,65 @@ labels = nx.get_edge_attributes(SG, 'label')
 res = []
 for k, v in labels.items():
   res.append([k[0], v, k[1]])
-print(res)
+
+
+
+def res_to_json(res, k=1):
+    """
+    Convert a predicted res to a JSON string. k represents the number of top predictions to highlight
+
+    """
+    # Initialize the JSON data structure
+    data = {
+        "status": "Consistent",
+        "highlighted_path": [],
+        "highlighted_nodes": [],
+        "graph": {
+            "nodes": [],
+            "links": []
+        }
+    }
+
+    # Mapping of node IDs to integers
+    node_mapping = {}
+
+    # Helper function to assign integer IDs to nodes and store them in the JSON data
+    def assign_node_id(node):
+        if node not in node_mapping:
+            node_id = len(node_mapping) + 1
+            node_mapping[node] = node_id
+            data["graph"]["nodes"].append({"id": node_id, "name": node, "label": ""})
+
+    # Helper function to add an edge to the JSON data
+    def add_edge(source, target, label):
+        data["graph"]["links"].append({"source": node_mapping[source], "type": label.strip().rstrip("_inv"), "target": node_mapping[target]})
+    
+
+    for link in res[:k]:
+        node1, node2, relation = link
+
+        # Assign node IDs and store nodes in the JSON data for the highlighted (predicted) subgraph
+        assign_node_id(node1)
+        data["highlighted_nodes"].append({"id": node_mapping[node1], "name": node1, "label": ""})
+        assign_node_id(node2)
+        data["highlighted_nodes"].append({"id": node_mapping[node2], "name": node2, "label": ""})
+
+        # Store the highlighted path in the JSON data
+        data["highlighted_path"].append({"source": node_mapping[node1], "type": relation.strip().rstrip("_inv"), "target": node_mapping[node2]})
+        add_edge(node1, node2, relation)
+    for link in res[k:]:
+        node1, node2, relation = link
+        # Assign node IDs and store nodes in the JSON data for the neighboring subgraph
+        assign_node_id(node1)
+        assign_node_id(node2)
+        # Store the edges in the JSON data for the neighboring subgraph
+        add_edge(node1, node2, relation)
+                                        
+    # Convert the JSON data to a JSON string
+    json_data = json.dumps(data, indent=4)
+
+    # Print or return the JSON string
+    return(json_data)
+
+
+print(res_to_json(res, k=1))

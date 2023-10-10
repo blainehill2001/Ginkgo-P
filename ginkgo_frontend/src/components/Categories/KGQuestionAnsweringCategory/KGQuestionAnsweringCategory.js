@@ -2,7 +2,6 @@
 import React from "react";
 import KGCompletionHome from "./KGQuestionAnsweringHome";
 import EmbedKGQA from "./EmbedKGQA";
-import BiNet from "./BiNet";
 import {
   Tabs,
   TabsHeader,
@@ -22,12 +21,6 @@ const KGQuestionAnsweringCategory = () => {
       label: "EmbedKGQA",
       value: "embedkgqa",
       desc: <EmbedKGQA />
-    },
-
-    {
-      label: "BiNet",
-      value: "binet",
-      desc: <BiNet />
     }
   ];
 
