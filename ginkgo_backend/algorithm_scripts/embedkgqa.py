@@ -8,6 +8,7 @@ import json
 import torch.nn as nn
 from torch.nn import functional as F
 from transformers import RobertaTokenizer, RobertaModel 
+import zipfile
 
 import logging
 logging.getLogger("transformers").setLevel(logging.ERROR)
@@ -359,7 +360,9 @@ model_dir = os.path.join(KG_dir, "embedKGQA")
 tokenizer_class = RobertaTokenizer
 pretrained_weights = 'roberta-base'
 tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
-
+if not os.path.exists(os.path.join(model_dir, "best_score_model.pt")):
+    with zipfile.ZipFile(os.path.join(model_dir, "best_score_model.pt.zip"), 'r') as zip_ref:
+        zip_ref.extractall(model_dir)
 model_path = os.path.join(model_dir, "best_score_model.pt") 
 embedding_folder = model_dir
 # question = f"What is completes the connection between {e1} and {r}?" # this question should be the input from users
