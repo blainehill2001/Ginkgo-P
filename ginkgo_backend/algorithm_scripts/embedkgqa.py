@@ -12,8 +12,10 @@ from transformers import RobertaTokenizer, RobertaModel
 import logging
 logging.getLogger("transformers").setLevel(logging.ERROR)
 
-# q = list(map(lambda x: x.strip(), sys.argv[1].split(",")))
-q = "What is completes the connection between [clinical_attribute] and another entity?" #a temporary test
+
+q = sys.argv[1]
+
+# q = "What completes the connection between [clinical_attribute] and another entity?" #a temporary test
 
 
 ######################################################################################################
@@ -273,7 +275,7 @@ def process_question(sentence, entity2idx):
 def find_answer(question, device, model, entity2idx, idx2entity=None):
     model.eval()
     d = process_question(question, entity2idx)
-   
+
     answers = []
     head = d[0].to(device)
     question_tokenized = d[1].to(device)
@@ -348,7 +350,7 @@ def tokenize_question(question):
 ####################### main 
 
 # //"args": ["--mode", "train", "--load_from", "full_metaqa", "--relation_dim", "200", "--do_batch_norm", "1", "--gpu", "2", "--freeze", "1", "--batch_size", "128", "--validate_every", "10", "--lr", "0.00002", "--entdrop", "0.0", "--reldrop", "0.0", "--scoredrop", "0.0", "--decay", "1.0", "--model", "ComplEx", "--patience", "20", "--ls", "0.05", "--l3_reg", "0.001", "--nb_epochs", "200", "--outfile", "full_simpleqa"],
-root_dir = os.path.dirname(os.getcwd())
+root_dir = os.getcwd()
 
 data_dir = os.path.join(root_dir, "data")
 KG_dir = os.path.join(data_dir, "umls")
@@ -362,14 +364,15 @@ model_path = os.path.join(model_dir, "best_score_model.pt")
 embedding_folder = model_dir
 # question = f"What is completes the connection between {e1} and {r}?" # this question should be the input from users
 question = q
-
 #check whether the entity in the question is in the knowledge graph
-matches = re.findall(r'\[(.*?)\]', question)
-if len(matches) == 1:
-    e1 = matches[0]
-
+parts = question.split('[')
+if len(parts) > 1:
+    e1 = parts[1].split(']')[0]
+else:
+    print("No text inside square brackets found.")
 
 entity_dict = os.path.join(model_dir, "entities.dict")
+
 kg_entity_map = {}
 with open(entity_dict, 'r') as f:
     for line in f:
@@ -379,6 +382,8 @@ with open(entity_dict, 'r') as f:
         kg_entity_map[ent_name] = ent_id
 if e1 not in kg_entity_map:
     print("entity doesn't exist in knowledge graph")
+
+
 
 
 answer_txt, head_txt = main(gpu="0", use_cuda=False, question=question, embedding_folder=embedding_folder, model_path=model_path)
@@ -394,7 +399,6 @@ with open(kg_triple_file, "r") as f:
         if len(eles) < 3:
             continue
         G_whole.add_edge(eles[0], eles[2], label=eles[1])
-
 head_entity = head_txt
 tail_entity = answer_txt
 paths_between_generator = nx.all_simple_paths(G_whole,source=head_entity,target=tail_entity, cutoff=2)
@@ -403,7 +407,7 @@ SG = G_whole.subgraph(nodes_between_set)
 labels = nx.get_edge_attributes(SG, 'label')
 res = []
 for k, v in labels.items():
-  res.append([k[0], v, k[1]])
+    res.append([k[0], v, k[1]])
 
 
 

@@ -7,6 +7,7 @@ import Error from "../../../Error";
 import Result from "../../../Result";
 import { fetchWithTimeout } from "../../../../ops/fetchWithTimeout";
 import { getBackend } from "../../../../ops/getBackend.js";
+import { getRandomRowUMLS } from "../../../../ops/getRandomRowUMLS.js";
 
 var BACKEND = getBackend();
 
@@ -14,6 +15,22 @@ const EmbedKGQA = () => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+
+  //To be used for highlighted Generate Query Button
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const handleInputFocus = () => {
+    setIsInputFocused(true);
+  };
+  const handleInputBlur = () => {
+    setIsInputFocused(false);
+  };
+  const handleButtonClick = () => {
+    const [entity1, entity2, relation] = getRandomRowUMLS();
+    setValue(
+      "query",
+      `What completes the connection between [${entity1}] and another entity?`
+    );
+  };
 
   const onSubmit = async (data_sent) => {
     const params = {
@@ -59,20 +76,34 @@ const EmbedKGQA = () => {
   };
 
   const schema = yup.object().shape({
-    // language: yup.string().required(),
-    // script: yup.string().required(),
-    query: yup.string().required()
+    query: yup
+      .string()
+      .required()
+      .test(
+        "brackets",
+        "There must be exactly one text enclosed in brackets",
+        (value) => {
+          // Count the number of opening and closing brackets
+          const openingBrackets = (value.match(/\[/g) || []).length;
+          const closingBrackets = (value.match(/\]/g) || []).length;
+
+          // Check if there's exactly one pair of brackets
+          return openingBrackets === 1 && closingBrackets === 1;
+        }
+      )
   });
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors }
   } = useForm({
     mode: "onBlur",
     resolver: yupResolver(schema)
   });
+  const queryValue = watch("query");
 
   return (
     <div className="justify-center ">
@@ -85,60 +116,6 @@ const EmbedKGQA = () => {
           <div className="flex-auto">
             <h5>EmbedKGQA Component</h5>
             <form onSubmit={handleSubmit(onSubmit, onErrors)}>
-              {/* <div className="mb-8">
-                  <label
-                    htmlFor="language"
-                    className={`block font-bold text-sm mb-2 ${
-                      errors.language ? "text-red-400" : "text-purple-500"
-                    }`}
-                  >
-                    Language
-                  </label>
-                  <input
-                    {...register("language")}
-                    type="text"
-                    id="language"
-                    placeholder="e.g., python"
-                    autoComplete="off"
-                    className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
-                      errors.language
-                        ? "text-red-300 border-red-400"
-                        : "text-purple-500 border-purple-400"
-                    }`}
-                  />
-                  {errors.language && (
-                    <p className="text-red-500 text-sm mt-2">
-                      A valid language is required.
-                    </p>
-                  )}
-                </div>
-
-                <div className="mb-8">
-                  <label
-                    htmlFor="script"
-                    className={`block font-bold text-sm mb-2 ${
-                      errors.script ? "text-red-400" : "text-purple-500"
-                    }`}
-                  >
-                    Script Name
-                  </label>
-                  <input
-                    {...register("script")}
-                    type="script"
-                    id="script"
-                    placeholder="e.g., script1.py"
-                    autoComplete="off"
-                    className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4 text-purple-500 focus:bg-purple-100 placeholder-purple-300 ${
-                      errors.script ? "border-red-400" : "border-purple-400"
-                    }`}
-                  />
-                  {errors.script && (
-                    <p className="text-red-500 text-sm mt-2">
-                      Your Script Name is required.
-                    </p>
-                  )}
-                </div> */}
-
               <div className="mb-8">
                 <label
                   htmlFor="query"
@@ -148,21 +125,40 @@ const EmbedKGQA = () => {
                 >
                   Query
                 </label>
-                <input
-                  {...register("query")}
-                  type="text"
-                  id="query"
-                  placeholder="test query!"
-                  autoComplete="off"
-                  className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
-                    errors.query
-                      ? "text-red-300 border-red-400"
-                      : "text-purple-500 border-purple-400"
-                  }`}
-                />
+                <div className="relative flex items-center">
+                  <input
+                    {...register("query")}
+                    type="text"
+                    id="query"
+                    placeholder="What completes the connection between [your query entity] and another entity?"
+                    autoComplete="off"
+                    value={queryValue}
+                    className={`flex-grow bg-transparent outline-none border-b-2 py-2 px-4 placeholder-purple-300 focus:bg-purple-100 ${
+                      errors.query
+                        ? "text-red-300 border-red-400"
+                        : "text-purple-500 border-purple-400"
+                    }`}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
+                  />
+                  <div className="absolute top-1/2 transform -translate-y-1/2 right-2">
+                    <button
+                      type="button"
+                      onClick={handleButtonClick}
+                      className={`py-1 px-4 inline-block rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2] ${
+                        isInputFocused
+                          ? "bg-[#e2c982] text-[#a39172]"
+                          : "bg-[#fbe5a9] text-[#8f69a2]"
+                      }`}
+                    >
+                      Generate Query
+                    </button>
+                  </div>
+                </div>
                 {errors.query && (
                   <p className="text-red-500 text-sm mt-2">
-                    A valid query is required.
+                    Query must be in the format "Natural Language Question [your
+                    query entity] Natural Language Question
                   </p>
                 )}
               </div>
