@@ -11,56 +11,84 @@ const Result = ({ data }) => {
   const links = [];
   const highlightedLinks = [];
 
-  const linkMap = new Map();
-  const highlightLinkMap = new Map();
-
+  const regnodePairs = new Set();
+  const hlnodePairs = new Set();
   for (const link of parsed_data.graph.links) {
-    const key = `${link.source},${link.target}`;
-    if (linkMap.has(key)) {
-      const existing = linkMap.get(key);
-      existing.labels.push(link.type);
-    } else {
-      linkMap.set(key, {
-        source: link.source,
-        target: link.target,
-        labels: [link.type]
-      });
+    const source = link.source;
+    const target = link.target;
+
+    const pairKey =
+      source < target ? `${source}-${target}` : `${target}-${source}`;
+
+    if (!regnodePairs.has(pairKey)) {
+      regnodePairs.add(pairKey);
+      links.push(link);
     }
   }
 
-  for (const highlightLink of parsed_data.highlighted_path) {
-    const key = `${highlightLink.source},${highlightLink.target}`;
+  for (const link of parsed_data.highlighted_path) {
+    const source = link.source;
+    const target = link.target;
 
-    if (highlightLinkMap.has(key)) {
-      const existing = highlightLinkMap.get(key);
-      existing.labels.push(highlightLink.type);
-    } else {
-      highlightLinkMap.set(key, {
-        source: highlightLink.source,
-        target: highlightLink.target,
-        labels: [highlightLink.type]
-      });
+    const pairKey =
+      source < target ? `${source}-${target}` : `${target}-${source}`;
+
+    if (!hlnodePairs.has(pairKey)) {
+      hlnodePairs.add(pairKey);
+      highlightedLinks.push(link);
     }
   }
 
-  for (const value of linkMap.values()) {
-    links.push(value);
-  }
-  for (const link of links) {
-    link.label = link.labels.join(",");
-    delete link.labels; // Remove labels array
-  }
+  parsed_data.graph.links = links;
+  parsed_data.highlighted_path = highlightedLinks;
+  console.log(parsed_data.graph.links);
+  console.log(parsed_data.graph.highlighted_path);
+  //   for (const highlightLink of parsed_data.highlighted_path) {
+  //     const source = highlightLink.source;
+  //     const target = highlightLink.target;
 
-  for (const value of highlightLinkMap.values()) {
-    highlightedLinks.push(value);
-  }
-  for (const highlightedLink of highlightedLinks) {
-    highlightedLink.label = highlightedLink.labels.join(",");
-    delete highlightedLink.labels; // Remove labels array
-  }
+  //     if (source > target) {
+  //       highlightedLinks.push({
+  //         source: target,
+  //         target: source,
+  //         type: highlightLink.type
+  //       });
+  //     } else {
+  //       highlightedLinks.push(highlightLink);
+  //     }
+  //   }
+  //   for (const highlightLink of highlightedLinks) {
+  //     const key = `${highlightLink.source},${highlightLink.target}`;
 
-  console.log(links);
-  console.log(highlightedLinks);
+  //     if (highlightLinkMap.has(key)) {
+  //       const existing = highlightLinkMap.get(key);
+  //       existing.labels.push(highlightLink.type);
+  //     } else {
+  //       highlightLinkMap.set(key, {
+  //         source: highlightLink.source,
+  //         target: highlightLink.target,
+  //         labels: [highlightLink.type]
+  //       });
+  //     }
+  //   }
+
+  //   for (const value of linkMap.values()) {
+  //     links.push(value);
+  //   }
+  //   for (const link of links) {
+  //     // link.label = link.labels.join(","); //use this line to join together multiple edge labels (since they are too long to display, I am taking just the first instead)
+  //     link.label = link.labels[0];
+  //     delete link.labels; // Remove labels array
+  //   }
+
+  //   for (const value of highlightLinkMap.values()) {
+  //     highlightedLinks.push(value);
+  //   }
+  //   for (const highlightedLink of highlightedLinks) {
+  //     // highlightedLink.label = highlightedLink.labels.join(","); //use this line to join together multiple edge labels (since they are too long to display, I am taking just the first instead)
+  //     highlightedLink.label = highlightedLink.labels[0];
+  //     delete highlightedLink.labels; // Remove labels array
+  //   }
 
   function ForceGraph(
     status, //a string denoting status of the data
@@ -103,13 +131,13 @@ const Result = ({ data }) => {
         "type": item.type,
         "target": item.target
       };
-      var backward_dir = {
-        "source": item.target,
-        "type": item.type,
-        "target": item.source
-      };
+      //   var backward_dir = {
+      //     "source": item.target,
+      //     "type": item.type,
+      //     "target": item.source
+      //   };
       highlighted_path_set.add(JSON.stringify(forward_dir));
-      highlighted_path_set.add(JSON.stringify(backward_dir));
+      //   highlighted_path_set.add(JSON.stringify(backward_dir));
     });
 
     //edit linkstrokewidth and linkstrokeopacity to highlight edges
@@ -426,7 +454,6 @@ const Result = ({ data }) => {
         )
       );
     }
-    console.log("we reset the sim");
   }
 
   const svg = useRef(null);
