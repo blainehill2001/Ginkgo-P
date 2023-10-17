@@ -1,3 +1,3 @@
-import KGPointWiseReasoningHome from "./KGSubgraphExtractionHome.js";
+import KGNodeRecommendationHome from "./KGNodeRecommendationHome.js";
 
-export default KGPointWiseReasoningHome;
+export default KGNodeRecommendationHome;

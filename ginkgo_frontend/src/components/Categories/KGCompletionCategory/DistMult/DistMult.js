@@ -119,7 +119,7 @@ const DistMult = () => {
                     {...register("query")}
                     type="text"
                     id="query"
-                    placeholder="test query!"
+                    placeholder="Input a query or click the button to generate one!"
                     autoComplete="off"
                     value={queryValue}
                     className={`flex-grow bg-transparent outline-none border-b-2 py-2 px-4 placeholder-purple-300 focus:bg-purple-100 ${

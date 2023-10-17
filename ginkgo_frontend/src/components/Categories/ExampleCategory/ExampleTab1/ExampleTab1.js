@@ -76,7 +76,7 @@ const ExampleTab1 = () => {
         >
           <div className="flex flex-col space-y-4">
             <div className="flex-auto">
-              <h5>ExampleTab1 Component</h5>
+              <h5>ExampleTab1</h5>
               <form onSubmit={handleSubmit(onSubmit, onErrors)}>
                 <div className="mb-8">
                   <label
@@ -145,7 +145,7 @@ const ExampleTab1 = () => {
                     {...register("query")}
                     type="text"
                     id="query"
-                    placeholder="test query!"
+                    placeholder="Input a query or click the button to generate one!"
                     autoComplete="off"
                     className={`block w-full bg-transparent outline-none border-b-2 py-2 px-4  placeholder-purple-300 focus:bg-purple-100 ${
                       errors.query

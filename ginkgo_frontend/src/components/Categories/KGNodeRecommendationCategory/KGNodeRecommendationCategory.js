@@ -33,7 +33,7 @@ const KGNodeRecommendationCategory = () => {
             className="relative rounded-[15px] text-purple-500 flex-auto p-5"
             data-theme="mytheme"
           >
-            <h5>KG Subgraph Extraction</h5>
+            <h5>KG Node Recommendation</h5>
 
             <Tabs value="home">
               <TabsHeader>
