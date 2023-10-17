@@ -2,22 +2,21 @@ import sys
 import os
 import networkx as nx
 import numpy as np
-import re
 import torch
 import json
 import torch.nn as nn
 from torch.nn import functional as F
 from transformers import RobertaTokenizer, RobertaModel 
-import zipfile
-
 import logging
-logging.getLogger("transformers").setLevel(logging.ERROR)
+logging.getLogger('transformers').setLevel(logging.ERROR)
+old_stdout = sys.stdout
+old_stderr = sys.stderr
+sys.stdout = open(os.devnull, 'w')
+sys.stderr = open(os.devnull, 'w') 
 
+# q = sys.argv[1]
 
-q = sys.argv[1]
-
-# q = "What completes the connection between [clinical_attribute] and another entity?" #a temporary test
-
+q = "What completes the connection between [clinical_attribute] and another entity?" #a temporary test
 
 ######################################################################################################
 
@@ -351,19 +350,27 @@ def tokenize_question(question):
 ####################### main 
 
 # //"args": ["--mode", "train", "--load_from", "full_metaqa", "--relation_dim", "200", "--do_batch_norm", "1", "--gpu", "2", "--freeze", "1", "--batch_size", "128", "--validate_every", "10", "--lr", "0.00002", "--entdrop", "0.0", "--reldrop", "0.0", "--scoredrop", "0.0", "--decay", "1.0", "--model", "ComplEx", "--patience", "20", "--ls", "0.05", "--l3_reg", "0.001", "--nb_epochs", "200", "--outfile", "full_simpleqa"],
+# root_dir = os.path.dirname(os.getcwd())
 root_dir = os.getcwd()
 
 data_dir = os.path.join(root_dir, "data")
 KG_dir = os.path.join(data_dir, "umls")
 model_dir = os.path.join(KG_dir, "embedKGQA")
 
+
+
 tokenizer_class = RobertaTokenizer
 pretrained_weights = 'roberta-base'
+
+
 tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
-if not os.path.exists(os.path.join(model_dir, "best_score_model.pt")):
-    with zipfile.ZipFile(os.path.join(model_dir, "best_score_model.pt.zip"), 'r') as zip_ref:
-        zip_ref.extractall(model_dir)
-model_path = os.path.join(model_dir, "best_score_model.pt") 
+
+
+# if not os.path.exists(os.path.join(model_dir, "best_score_model.pt")):
+#     with zipfile.ZipFile(os.path.join(model_dir, "best_score_model.pt.zip"), 'r') as zip_ref:
+#         zip_ref.extractall(model_dir)
+model_path = os.path.join(model_dir, "best_score_model.pt")
+
 embedding_folder = model_dir
 # question = f"What is completes the connection between {e1} and {r}?" # this question should be the input from users
 question = q
@@ -376,6 +383,7 @@ else:
 
 entity_dict = os.path.join(model_dir, "entities.dict")
 
+
 kg_entity_map = {}
 with open(entity_dict, 'r') as f:
     for line in f:
@@ -383,6 +391,7 @@ with open(entity_dict, 'r') as f:
         ent_id = int(line[0])
         ent_name = line[1]
         kg_entity_map[ent_name] = ent_id
+
 if e1 not in kg_entity_map:
     print("entity doesn't exist in knowledge graph")
 
@@ -471,5 +480,6 @@ def res_to_json(res, k=1):
     # Print or return the JSON string
     return(json_data)
 
-
+sys.stdout = old_stdout
+sys.stderr = old_stderr
 print(res_to_json(res, k=1))
