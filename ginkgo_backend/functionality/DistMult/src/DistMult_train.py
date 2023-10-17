@@ -6,20 +6,6 @@ import torch
 # Load your dataset
 dataset = UMLS()
 
-# Define and train your model using the pipeline
-# training_pipeline = pipeline(
-#     dataset=dataset,
-#     model='TransE',
-#     training_loop='slcwa',
-#     optimizer='adam',
-#     optimizer_kwargs={'lr': 0.001},
-#     epochs=50,
-#     loss='marginranking',
-#     regularizer='LP',
-#     regularizer_kwargs={'p': 2},
-#     negative_sampler='basic',
-#     negative_sampler_kwargs={'num_negs_per_pos': 1}
-# )
 training_pipeline = pipeline_from_path("./UMLS_pipeline.json")
 
 #save model, pipeline

@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
-import { Text } from "@visx/text";
 
 const Result = ({ data }) => {
   // Copyright 2021 Observable, Inc.
