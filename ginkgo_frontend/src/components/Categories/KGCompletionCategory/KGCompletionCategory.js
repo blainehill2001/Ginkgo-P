@@ -1,5 +1,5 @@
 //imports
-import React from "react";
+import React, { useState } from "react";
 import KGCompletionHome from "./KGCompletionHome";
 import TransE from "./TransE";
 import ComplEx from "./ComplEx";
@@ -14,6 +14,13 @@ import {
 } from "@material-tailwind/react";
 
 const KGCompletionCategory = () => {
+  const [activeTab, setActiveTab] = useState("home");
+
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab);
+    console.log("Tab changed to: " + newTab);
+  };
+
   const tabs = [
     {
       label: "Home",
@@ -55,25 +62,35 @@ const KGCompletionCategory = () => {
           >
             <h5>KG Completion</h5>
 
-            <Tabs value="home">
+            <Tabs value={activeTab} onChange={handleTabChange}>
               <TabsHeader>
-                {tabs.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    {label}
-                  </Tab>
-                ))}
+                <Tab value="home">Home</Tab>
+                <Tab value="transe">TransE</Tab>
+                <Tab value="complex">ComplEx</Tab>
+                <Tab value="rotate">RotatE</Tab>
+                <Tab value="distmult">DistMult</Tab>
               </TabsHeader>
-              <TabsBody
-                animate={{
-                  mount: { y: 0 },
-                  unmount: { y: 250 }
-                }}
-              >
-                {tabs.map(({ value, desc }) => (
-                  <TabPanel key={value} value={value}>
-                    {desc}
-                  </TabPanel>
-                ))}
+
+              <TabsBody>
+                <TabPanel value="home" activeTab={activeTab}>
+                  <KGCompletionHome />
+                </TabPanel>
+
+                <TabPanel value="transe" activeTab={activeTab}>
+                  <TransE />
+                </TabPanel>
+
+                <TabPanel value="complex" activeTab={activeTab}>
+                  <ComplEx />
+                </TabPanel>
+
+                <TabPanel value="rotate" activeTab={activeTab}>
+                  <RotatE />
+                </TabPanel>
+
+                <TabPanel value="distmult" activeTab={activeTab}>
+                  <DistMult />
+                </TabPanel>
               </TabsBody>
             </Tabs>
           </div>

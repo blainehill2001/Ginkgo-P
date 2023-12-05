@@ -106,6 +106,7 @@ const Result = ({ data }) => {
       links // an iterable of link objects (typically [{source, target}, …])
     },
     highlighted_path = {}, //a set denoting vectors (as a list) to be highlighted of the form <h, r, t>
+    tag = 0, //a string denoting the tag of the graph
     {
       nodeId = (d) => d.id, // given d in nodes, returns a unique identifier (string)
       nodeGroup, // given d in nodes, returns an (ordinal) value for color
@@ -132,6 +133,7 @@ const Result = ({ data }) => {
       invalidation // when this promise resolves, stop the simulation
     } = {}
   ) {
+    console.log("tag:  " + tag);
     //set highlighted path to be a set to save time
     var highlighted_path_set = new Set();
     highlighted_path.forEach((item) => {
@@ -280,7 +282,7 @@ const Result = ({ data }) => {
       .attr("fill-opacity", 0)
       .attr("stroke-opacity", 0)
       .attr("id", function (d, i) {
-        return "edgepath" + i;
+        return "edgepath" + tag + i;
       })
       .style("pointer-events", "none");
 
@@ -318,6 +320,7 @@ const Result = ({ data }) => {
         }
       });
     }
+
     const edgelabels = svg
       .selectAll(".edgelabel")
       .data(links)
@@ -332,7 +335,7 @@ const Result = ({ data }) => {
       .attr("fill", "#9c28b0")
       .append("textPath")
       .attr("xlink:href", function (d, i) {
-        return "#edgepath" + i;
+        return "#edgepath" + tag + i;
       })
       .attr("y", 0)
       .attr("x", 0)
@@ -340,8 +343,7 @@ const Result = ({ data }) => {
       .attr("startOffset", "50%")
       .text(({ index: i }) => {
         return EL[i];
-      })
-      .call(wrap, 30);
+      });
 
     if (W) link.attr("stroke-width", ({ index: i }) => W[i]);
     if (L) link.attr("stroke", ({ index: i }) => L[i]);
@@ -427,6 +429,7 @@ const Result = ({ data }) => {
     parsed_data.status,
     parsed_data.graph,
     parsed_data.highlighted_path,
+    parsed_data.tag,
     {
       nodeId: (d) => d.id,
       nodeGroup: (d) => d.group,
@@ -450,6 +453,7 @@ const Result = ({ data }) => {
           parsed_data.status,
           parsed_data.graph,
           parsed_data.highlighted_path,
+          parsed_data.tag,
           {
             nodeId: (d) => d.id,
             nodeGroup: (d) => d.group,

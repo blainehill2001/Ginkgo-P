@@ -141,6 +141,7 @@ def subgraph_to_json(top_subgraph, bottom_subgraph):
     # Initialize the JSON data structure
     data = {
         "status": "Consistent",
+        "tag": 5,
         "highlighted_path": [],
         "highlighted_nodes": [],
         "graph": {

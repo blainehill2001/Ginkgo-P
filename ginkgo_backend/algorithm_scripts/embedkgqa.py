@@ -439,6 +439,7 @@ def res_to_json(res, k=1):
     # Initialize the JSON data structure
     data = {
         "status": "Consistent",
+        "tag": 6
         "highlighted_path": [],
         "highlighted_nodes": [],
         "graph": {

@@ -95,6 +95,7 @@ def subgraph_to_json(predicted_subgraph, neighboring_subgraph):
     # Initialize the JSON data structure
     data = {
         "status": "Consistent",
+        "tag": 4,
         "highlighted_path": [],
         "highlighted_nodes": [],
         "graph": {
