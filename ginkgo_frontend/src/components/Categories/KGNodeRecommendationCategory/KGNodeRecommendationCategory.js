@@ -1,7 +1,5 @@
 //imports
-import React from "react";
-import KGNodeRecommendationHome from "./KGNodeRecommendationHome";
-import PageRank from "./PageRank";
+import React, { useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -10,20 +8,15 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
-const KGNodeRecommendationCategory = () => {
-  const tabs = [
-    {
-      label: "Home",
-      value: "home",
-      desc: <KGNodeRecommendationHome />
-    },
+import KGNodeRecommendationHome from "./KGNodeRecommendationHome";
+import PageRank from "./PageRank";
 
-    {
-      label: "PageRank",
-      value: "pagerank",
-      desc: <PageRank />
-    }
-  ];
+const KGNodeRecommendationCategory = () => {
+  const [activeTab, setActiveTab] = useState("home");
+
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab);
+  };
 
   return (
     <>
@@ -35,25 +28,20 @@ const KGNodeRecommendationCategory = () => {
           >
             <h5>KG Node Recommendation</h5>
 
-            <Tabs value="home">
+            <Tabs value={activeTab} onChange={handleTabChange}>
               <TabsHeader>
-                {tabs.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    {label}
-                  </Tab>
-                ))}
+                <Tab value="home">Home</Tab>
+                <Tab value="pagerank">PageRank</Tab>
               </TabsHeader>
-              <TabsBody
-                animate={{
-                  mount: { y: 0 },
-                  unmount: { y: 250 }
-                }}
-              >
-                {tabs.map(({ value, desc }) => (
-                  <TabPanel key={value} value={value}>
-                    {desc}
-                  </TabPanel>
-                ))}
+
+              <TabsBody>
+                <TabPanel value="home" activeTab={activeTab}>
+                  <KGNodeRecommendationHome />
+                </TabPanel>
+
+                <TabPanel value="pagerank" activeTab={activeTab}>
+                  <PageRank />
+                </TabPanel>
               </TabsBody>
             </Tabs>
           </div>

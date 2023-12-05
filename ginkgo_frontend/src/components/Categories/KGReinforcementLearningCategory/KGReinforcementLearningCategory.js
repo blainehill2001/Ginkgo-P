@@ -1,7 +1,5 @@
 //imports
-import React from "react";
-import KGReinforcementLearningHome from "./KGReinforcementLearningHome";
-import MultiHopKG from "./MultiHopKG";
+import React, { useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -10,20 +8,15 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
-const KGReinforcementLearningCategory = () => {
-  const tabs = [
-    {
-      label: "Home",
-      value: "home",
-      desc: <KGReinforcementLearningHome />
-    },
+import KGReinforcementLearningHome from "./KGReinforcementLearningHome";
+import MultiHopKG from "./MultiHopKG";
 
-    {
-      label: "MultiHopKG",
-      value: "multihopkg",
-      desc: <MultiHopKG />
-    }
-  ];
+const KGReinforcementLearningCategory = () => {
+  const [activeTab, setActiveTab] = useState("home");
+
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab);
+  };
 
   return (
     <>
@@ -35,25 +28,20 @@ const KGReinforcementLearningCategory = () => {
           >
             <h5>KG Reinforcement Learning</h5>
 
-            <Tabs value="home">
+            <Tabs value={activeTab} onChange={handleTabChange}>
               <TabsHeader>
-                {tabs.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    {label}
-                  </Tab>
-                ))}
+                <Tab value="home">Home</Tab>
+                <Tab value="multihopkg">MultiHopKG</Tab>
               </TabsHeader>
-              <TabsBody
-                animate={{
-                  mount: { y: 0 },
-                  unmount: { y: 250 }
-                }}
-              >
-                {tabs.map(({ value, desc }) => (
-                  <TabPanel key={value} value={value}>
-                    {desc}
-                  </TabPanel>
-                ))}
+
+              <TabsBody>
+                <TabPanel value="home" activeTab={activeTab}>
+                  <KGReinforcementLearningHome />
+                </TabPanel>
+
+                <TabPanel value="multihopkg" activeTab={activeTab}>
+                  <MultiHopKG />
+                </TabPanel>
               </TabsBody>
             </Tabs>
           </div>

@@ -1,8 +1,5 @@
 //imports
 import React from "react";
-import ExampleHome from "./ExampleHome";
-import ExampleTab1 from "./ExampleTab1";
-import ExampleTab2 from "./ExampleTab2";
 import {
   Tabs,
   TabsHeader,
@@ -11,31 +8,16 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
+import ExampleHome from "./ExampleHome";
+import ExampleTab1 from "./ExampleTab1";
+import ExampleTab2 from "./ExampleTab2";
+
 const ExampleCategory = () => {
-  const tabs = [
-    {
-      label: "Home",
-      value: "home",
-      desc: <ExampleHome />
-    },
-    {
-      label: "Tab 1",
-      value: "tab1",
-      desc: <ExampleTab1 />
-    },
+  const [activeTab, setActiveTab] = useState("home");
 
-    {
-      label: "Tab 2",
-      value: "tab2",
-      desc: <ExampleTab2 />
-    },
-
-    {
-      label: "Tab 3",
-      value: "tab3",
-      desc: `Eventually insert tab 3 component here`
-    }
-  ];
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab);
+  };
 
   return (
     <>
@@ -45,27 +27,27 @@ const ExampleCategory = () => {
             className="relative rounded-[15px] text-purple-500 flex-auto p-5"
             data-theme="mytheme"
           >
-            <h5>ExampleCategory Component</h5>
+            <h5>ExampleCategory</h5>
 
-            <Tabs value="home">
+            <Tabs value={activeTab} onChange={handleTabChange}>
               <TabsHeader>
-                {tabs.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    {label}
-                  </Tab>
-                ))}
+                <Tab value="home">Home</Tab>
+                <Tab value="tab1">Tab 1</Tab>
+                <Tab value="tab2">Tab 2</Tab>
               </TabsHeader>
-              <TabsBody
-                animate={{
-                  mount: { y: 0 },
-                  unmount: { y: 250 }
-                }}
-              >
-                {tabs.map(({ value, desc }) => (
-                  <TabPanel key={value} value={value}>
-                    {desc}
-                  </TabPanel>
-                ))}
+
+              <TabsBody>
+                <TabPanel value="home" activeTab={activeTab}>
+                  <ExampleHome />
+                </TabPanel>
+
+                <TabPanel value="tab1" activeTab={activeTab}>
+                  <ExampleTab1 />
+                </TabPanel>
+
+                <TabPanel value="tab2" activeTab={activeTab}>
+                  <ExampleTab2 />
+                </TabPanel>
               </TabsBody>
             </Tabs>
           </div>

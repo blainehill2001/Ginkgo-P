@@ -18,39 +18,7 @@ const KGCompletionCategory = () => {
 
   const handleTabChange = (newTab) => {
     setActiveTab(newTab);
-    console.log("Tab changed to: " + newTab);
   };
-
-  const tabs = [
-    {
-      label: "Home",
-      value: "home",
-      desc: <KGCompletionHome />
-    },
-    {
-      label: "TransE",
-      value: "transe",
-      desc: <TransE />
-    },
-
-    {
-      label: "ComplEx",
-      value: "complex",
-      desc: <ComplEx />
-    },
-
-    {
-      label: "RotatE",
-      value: "rotate",
-      desc: <RotatE />
-    },
-
-    {
-      label: "DistMult",
-      value: "distmult",
-      desc: <DistMult />
-    }
-  ];
 
   return (
     <>

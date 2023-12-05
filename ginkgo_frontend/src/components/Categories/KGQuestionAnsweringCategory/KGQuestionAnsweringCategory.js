@@ -1,7 +1,5 @@
 //imports
-import React from "react";
-import KGCompletionHome from "./KGQuestionAnsweringHome";
-import EmbedKGQA from "./EmbedKGQA";
+import React, { useState } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -10,19 +8,15 @@ import {
   TabPanel
 } from "@material-tailwind/react";
 
+import KGQuestionAnsweringHome from "./KGQuestionAnsweringHome";
+import EmbedKGQA from "./EmbedKGQA";
+
 const KGQuestionAnsweringCategory = () => {
-  const tabs = [
-    {
-      label: "Home",
-      value: "home",
-      desc: <KGCompletionHome />
-    },
-    {
-      label: "EmbedKGQA",
-      value: "embedkgqa",
-      desc: <EmbedKGQA />
-    }
-  ];
+  const [activeTab, setActiveTab] = useState("home");
+
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab);
+  };
 
   return (
     <>
@@ -34,25 +28,20 @@ const KGQuestionAnsweringCategory = () => {
           >
             <h5>KG Question Answering</h5>
 
-            <Tabs value="home">
+            <Tabs value={activeTab} onChange={handleTabChange}>
               <TabsHeader>
-                {tabs.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
-                    {label}
-                  </Tab>
-                ))}
+                <Tab value="home">Home</Tab>
+                <Tab value="embedkgqa">EmbedKGQA</Tab>
               </TabsHeader>
-              <TabsBody
-                animate={{
-                  mount: { y: 0 },
-                  unmount: { y: 250 }
-                }}
-              >
-                {tabs.map(({ value, desc }) => (
-                  <TabPanel key={value} value={value}>
-                    {desc}
-                  </TabPanel>
-                ))}
+
+              <TabsBody>
+                <TabPanel value="home" activeTab={activeTab}>
+                  <KGQuestionAnsweringHome />
+                </TabPanel>
+
+                <TabPanel value="embedkgqa" activeTab={activeTab}>
+                  <EmbedKGQA />
+                </TabPanel>
               </TabsBody>
             </Tabs>
           </div>
