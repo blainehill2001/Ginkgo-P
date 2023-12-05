@@ -485,7 +485,6 @@ const Result = ({ data }) => {
               className="relative rounded-[15px] text-purple-500 p-5"
               data-theme="mytheme"
             >
-              <h5>Result Component</h5>
               <div className="absolute bottom-2 right-2">
                 <button
                   type="button"
