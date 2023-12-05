@@ -14,7 +14,6 @@ const QuickStart = () => {
   const jsonSchema = {
     type: "object",
     properties: {
-      status: { type: "string" },
       highlighted_path: { type: "array" },
       highlighted_nodes: { type: "array" },
       graph: {
@@ -26,7 +25,17 @@ const QuickStart = () => {
         required: ["nodes", "links"] // Make sure "nodes" and "links" are present in "graph"
       }
     },
-    required: ["status", "highlighted_path", "highlighted_nodes", "graph"] // Make sure these properties are present at the top level
+    required: ["highlighted_path", "highlighted_nodes", "graph"] // Make sure these properties are present at the top level
+  };
+
+  const addStatus = (inputValue) => {
+    const jsonData = JSON.parse(inputValue);
+
+    if (jsonData.status === undefined) {
+      jsonData.status = "Consistent";
+    }
+
+    return JSON.stringify(jsonData);
   };
 
   const validateJSON = (inputValue) => {
@@ -53,8 +62,8 @@ const QuickStart = () => {
     setData({});
     setHasError(false);
     setIsLoading(false);
+    data = addStatus(data.query);
     setData(data);
-    console.log(data);
   };
 
   const {
@@ -90,7 +99,6 @@ const QuickStart = () => {
                       const
                       placeholder={`e.g.
 {
-    "status": "Consistent",
     "highlighted_path": [],
     "highlighted_nodes": [],
     "graph": {
@@ -111,7 +119,7 @@ const QuickStart = () => {
                   </div>
                   {errors.query && (
                     <div className="text-red-500 text-sm mt-2">
-                      {<p>Query must match the specified JSON schema</p>}
+                      {<p>Query must be valid JSON and satisfy the schema!</p>}
                     </div>
                   )}
                 </div>
@@ -127,7 +135,7 @@ const QuickStart = () => {
                 </button>
               </form>
 
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center py-3">
                 {isLoading && <Loading />}
                 {!isLoading && hasError && (
                   <Error

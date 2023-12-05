@@ -52,9 +52,7 @@ const ExampleTab1 = () => {
       });
   };
 
-  const onErrors = (data) => {
-    console.log(data);
-  };
+  const onErrors = (data) => {};
 
   const schema = yup.object().shape({
     // language: yup.string().required(),

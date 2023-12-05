@@ -67,9 +67,7 @@ const TransE = () => {
       });
   };
 
-  const onErrors = (data_received) => {
-    console.log(data_received);
-  };
+  const onErrors = (data_received) => {};
 
   const schema = yup.object().shape({
     query: yup

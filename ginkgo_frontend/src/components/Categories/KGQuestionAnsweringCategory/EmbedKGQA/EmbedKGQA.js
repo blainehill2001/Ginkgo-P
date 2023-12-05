@@ -62,7 +62,6 @@ const EmbedKGQA = () => {
       .then((data_received) => {
         setIsLoading(false);
         setData(data_received);
-        console.log(data_received);
       })
       .catch((err) => {
         setHasError(true);
@@ -71,9 +70,7 @@ const EmbedKGQA = () => {
       });
   };
 
-  const onErrors = (data_received) => {
-    console.log(data_received);
-  };
+  const onErrors = (data_received) => {};
 
   const schema = yup.object().shape({
     query: yup
