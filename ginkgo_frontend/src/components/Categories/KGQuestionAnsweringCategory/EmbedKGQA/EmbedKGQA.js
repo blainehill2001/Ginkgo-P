@@ -177,15 +177,21 @@ const EmbedKGQA = () => {
           </div>
           <div className="flex flex-col items-center">
             {isLoading && <Loading />}
-            {!isLoading && hasError && (
-              <Error
-                errorMessage="Error! The poor API didn't like that. Try again in a little bit or
+            {!isLoading &&
+              (hasError ||
+                (data &&
+                  data.algocall_result &&
+                  data.algocall_result.result &&
+                  JSON.parse(data.algocall_result.result).error)) && (
+                <Error
+                  errorMessage="Error! The poor API didn't like that. Try again in a little bit or
             with different inputs"
-              />
-            )}
+                />
+              )}
             {data &&
               data.algocall_result &&
               data.algocall_result.result &&
+              !JSON.parse(data.algocall_result.result).error &&
               !isLoading &&
               !hasError && <Result data={data.algocall_result.result} />}
           </div>

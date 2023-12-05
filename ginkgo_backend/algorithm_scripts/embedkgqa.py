@@ -1,3 +1,5 @@
+
+
 import sys
 import os
 import networkx as nx
@@ -11,8 +13,8 @@ import logging
 logging.getLogger('transformers').setLevel(logging.ERROR)
 old_stdout = sys.stdout
 old_stderr = sys.stderr
-sys.stdout = open(os.devnull, 'w')
-sys.stderr = open(os.devnull, 'w') 
+# sys.stdout = open(os.devnull, 'w')
+# sys.stderr = open(os.devnull, 'w') 
 
 # q = sys.argv[1]
 
@@ -385,16 +387,22 @@ entity_dict = os.path.join(model_dir, "entities.dict")
 
 
 kg_entity_map = {}
-with open(entity_dict, 'r') as f:
-    for line in f:
+os.chmod(entity_dict, 0o777)
+
+
+
+
+with open(entity_dict, 'r') as f2:
+
+    for line in f2:
         line = line[:-1].split('\t')
         ent_id = int(line[0])
         ent_name = line[1]
         kg_entity_map[ent_name] = ent_id
+        
 
 if e1 not in kg_entity_map:
     print("entity doesn't exist in knowledge graph")
-
 
 
 
@@ -483,3 +491,4 @@ def res_to_json(res, k=1):
 sys.stdout = old_stdout
 sys.stderr = old_stderr
 print(res_to_json(res, k=1))
+

@@ -7,7 +7,6 @@ if (process.env.NODE_ENV !== "prod") {
 const mongoose = require("mongoose");
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
-const User = require("./schemas/user.model");
 const AlgorithmCall = require("./schemas/algorithm.model");
 const { apiRouter } = require("./routes"); // see the following link for organizing routes with express.js: https://dev.to/jameseaster/organizing-with-express-router-3i82
 

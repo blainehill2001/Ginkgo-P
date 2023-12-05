@@ -6,7 +6,17 @@ const Result = ({ data }) => {
   // Released under the ISC license.
   // https://observablehq.com/@d3/force-directed-graph
 
+  const svg = useRef(null);
+  useEffect(() => {
+    if (svg.current) {
+      svg.current.appendChild(chart);
+    }
+  }, []);
+
   const parsed_data = JSON.parse(data);
+  if (parsed_data.error) {
+    return parsed_data;
+  }
 
   const links = [];
   const highlightedLinks = [];
@@ -41,8 +51,7 @@ const Result = ({ data }) => {
 
   parsed_data.graph.links = links;
   parsed_data.highlighted_path = highlightedLinks;
-  console.log(parsed_data.graph.links);
-  console.log(parsed_data.graph.highlighted_path);
+
   //   for (const highlightLink of parsed_data.highlighted_path) {
   //     const source = highlightLink.source;
   //     const target = highlightLink.target;
@@ -456,12 +465,12 @@ const Result = ({ data }) => {
     }
   }
 
-  const svg = useRef(null);
-  useEffect(() => {
-    if (svg.current) {
-      svg.current.appendChild(chart);
-    }
-  }, []);
+  //   const svg = useRef(null);
+  //   useEffect(() => {
+  //     if (svg.current) {
+  //       svg.current.appendChild(chart);
+  //     }
+  //   }, []);
 
   return (
     <div className="flex justify-center">

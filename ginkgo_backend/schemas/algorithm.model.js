@@ -6,8 +6,7 @@ var AlgorithmCallSchema = new Schema({
     type: String,
     enum: [
       "test_script.py",
-      "script1.py",
-      "script2.cpp",
+      "Hawaii_example.py",
       "transE.py",
       "ComplEx.py",
       "rotatE.py",
@@ -28,7 +27,7 @@ var AlgorithmCallSchema = new Schema({
   },
   result: {
     type: String,
-    default: "default result"
+    default: JSON.stringify({ error: "error" })
   }
 });
 
