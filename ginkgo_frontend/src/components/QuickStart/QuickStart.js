@@ -135,7 +135,7 @@ const QuickStart = () => {
                 </button>
               </form>
 
-              <div className="flex items-center py-3">
+              <div className="flex justify-center">
                 {isLoading && <Loading />}
                 {!isLoading && hasError && (
                   <Error
