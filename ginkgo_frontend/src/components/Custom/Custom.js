@@ -196,7 +196,7 @@ const FileUpload = () => {
                     Please select one Python file to upload.
                   </Typography>
                   <div className="m-3">
-                    <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
+                    <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] py-0.5 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
                       <div
                         className={`${
                           isDragActive1 ? "bg-blue-100" : ""
@@ -252,7 +252,7 @@ const FileUpload = () => {
                     Please select one or more Pickle or text files to upload.
                   </Typography>
                   <div className="m-3">
-                    <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
+                    <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] py-0.5 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
                       <div
                         className={`${
                           isDragActive2 ? "bg-blue-100" : ""
