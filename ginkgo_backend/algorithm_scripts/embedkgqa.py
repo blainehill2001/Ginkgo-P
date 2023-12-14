@@ -405,10 +405,10 @@ if e1 not in kg_entity_map:
     print("entity doesn't exist in knowledge graph")
 
 
+
+answer_txt, head_txt = main(gpu="0", use_cuda=False, question=question, embedding_folder=embedding_folder, model_path=model_path)
 sys.stdout = old_stdout
 sys.stderr = old_stderr
-answer_txt, head_txt = main(gpu="0", use_cuda=False, question=question, embedding_folder=embedding_folder, model_path=model_path)
-
 ##### find subgraph 
 ### find all paths between entity_idx and ans
 # build KG
