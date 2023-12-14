@@ -1,5 +1,0 @@
-test2test3test4
-/Users/blaineh2/Desktop/Ginkgo-P/ginkgo_backend/data/umls/embedKGQA/entities.dict
-Truetest4.4
-test4.5
-test5test6
