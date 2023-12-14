@@ -367,7 +367,8 @@ pretrained_weights = 'roberta-base'
 
 tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
 
-
+sys.stdout = old_stdout
+sys.stderr = old_stderr
 # if not os.path.exists(os.path.join(model_dir, "best_score_model.pt")):
 #     with zipfile.ZipFile(os.path.join(model_dir, "best_score_model.pt.zip"), 'r') as zip_ref:
 #         zip_ref.extractall(model_dir)
