@@ -328,25 +328,29 @@ const FileUpload = () => {
                     Submit Job
                   </Button>
                 </div>
-                {isLoading && <Loading />}
-                {!isLoading && hasError && (
-                  <Error
-                    errorMessage="Error! The poor API didn't like that. Try again in a little bit or
-            with different inputs"
-                  />
-                )}
-                {!isLoading && hasError2 && (
-                  <div>
-                    <Error errorMessage="Error! Your inputs produced an output that isn't valid JSON. Edit your script or data files and try again." />
-                  </div>
-                )}
-                {!isLoading &&
-                  !hasError &&
-                  response &&
-                  response.algocall_result &&
-                  response.algocall_result.result && (
-                    <Result data={response.algocall_result.result} />
+                <div className="flex justify-center">
+                  {isLoading && <Loading />}
+                  {!isLoading && hasError && (
+                    <Error
+                      errorMessage="Error! The poor API didn't like that. Try again in a little bit or
+                    with different inputs"
+                    />
                   )}
+                  {!isLoading && hasError2 && (
+                    <div>
+                      <Error errorMessage="Error! Your inputs produced an output that isn't valid JSON. Edit your script or data files and try again." />
+                    </div>
+                  )}
+                  <div className="mb-2">
+                    {!isLoading &&
+                      !hasError &&
+                      response &&
+                      response.algocall_result &&
+                      response.algocall_result.result && (
+                        <Result data={response.algocall_result.result} />
+                      )}
+                  </div>
+                </div>
               </form>
             </Card>
           </div>
