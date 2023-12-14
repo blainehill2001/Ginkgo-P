@@ -93,17 +93,28 @@ const postAlgoResult = async (req, res, next) => {
 };
 
 const postCustomAlgoResult = async (req, res, next) => {
+  // Construct the absolute path by joining the current working directory and the relative path
+  const relativePath = path.resolve("custom");
+  console.log(`directory: ${relativePath}`);
+
+  fs.mkdir(relativePath, { recursive: true }, (err) => {
+    if (err) {
+      console.error(`Error creating folder: ${err.message}`);
+    } else {
+      console.log(`Folder '${relativePath}' created successfully.`);
+    }
+  });
   // Create an array to store the file paths
   const filePaths = [];
 
   // Iterate over the files and write them to /custom
   for (const file of req.files.script_file) {
-    const filePath = path.resolve("custom") + `/${file.originalname}`;
+    const filePath = relativePath + `/${file.originalname}`;
     filePaths.push(filePath);
     fs.writeFileSync(filePath, file.buffer);
   }
   for (const file of req.files.data_files) {
-    const filePath = path.resolve("custom") + `/${file.originalname}`;
+    const filePath = relativePath + `/${file.originalname}`;
     filePaths.push(filePath);
     fs.writeFileSync(filePath, file.buffer);
   }
@@ -160,8 +171,8 @@ const postCustomAlgoResult = async (req, res, next) => {
         });
       })
       .finally(() => {
-        fs.readdirSync(path.resolve("custom")).forEach((fileName) => {
-          fs.unlinkSync(path.join(path.resolve("custom"), fileName));
+        fs.readdirSync(relativePath).forEach((fileName) => {
+          fs.unlinkSync(path.join(relativePath, fileName));
         });
       });
   }
