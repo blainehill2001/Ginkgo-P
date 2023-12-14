@@ -13,8 +13,8 @@ import logging
 logging.getLogger('transformers').setLevel(logging.ERROR)
 old_stdout = sys.stdout
 old_stderr = sys.stderr
-# sys.stdout = open(os.devnull, 'w')
-# sys.stderr = open(os.devnull, 'w') 
+sys.stdout = open(os.devnull, 'w')
+sys.stderr = open(os.devnull, 'w') 
 
 # q = sys.argv[1]
 
