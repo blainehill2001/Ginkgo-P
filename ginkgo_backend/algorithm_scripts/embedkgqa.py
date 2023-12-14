@@ -367,8 +367,7 @@ pretrained_weights = 'roberta-base'
 
 tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
 
-sys.stdout = old_stdout
-sys.stderr = old_stderr
+
 # if not os.path.exists(os.path.join(model_dir, "best_score_model.pt")):
 #     with zipfile.ZipFile(os.path.join(model_dir, "best_score_model.pt.zip"), 'r') as zip_ref:
 #         zip_ref.extractall(model_dir)
@@ -406,7 +405,8 @@ if e1 not in kg_entity_map:
     print("entity doesn't exist in knowledge graph")
 
 
-
+sys.stdout = old_stdout
+sys.stderr = old_stderr
 answer_txt, head_txt = main(gpu="0", use_cuda=False, question=question, embedding_folder=embedding_folder, model_path=model_path)
 
 ##### find subgraph 
