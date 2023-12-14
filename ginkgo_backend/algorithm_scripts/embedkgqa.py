@@ -16,9 +16,9 @@ old_stderr = sys.stderr
 sys.stdout = open(os.devnull, 'w')
 sys.stderr = open(os.devnull, 'w') 
 
-# q = sys.argv[1]
+q = sys.argv[1]
 
-q = "What completes the connection between [clinical_attribute] and another entity?" #a temporary test
+# q = "What completes the connection between [clinical_attribute] and another entity?" #a temporary test
 
 ######################################################################################################
 
