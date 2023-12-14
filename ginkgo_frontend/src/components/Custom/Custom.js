@@ -180,169 +180,176 @@ const FileUpload = () => {
 
   return (
     <div className="justify-center py-20 px-80">
-      <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
-        <div
-          className="relative rounded-[15px] p-6 text-purple-500"
-          data-theme="mytheme"
-        >
-          <Card color="transparent" shadow={false}>
-            <form onSubmit={handleFormSubmit}>
-              <div className="p-8 space-y-6">
-                <Typography variant="h4" color="blue-gray">
-                  Script Upload
-                </Typography>
-                <Typography color="gray" className="mt-1 font-normal">
-                  Please select one Python file to upload.
-                </Typography>
-                <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
-                  <div
-                    className={`${
-                      isDragActive1 ? "bg-blue-100" : ""
-                    } flex flex-col items-center justify-center rounded-[15px] p-6 whitespace-wrap text-center`}
-                    {...getRootProps1()}
-                    data-theme="mytheme"
-                  >
-                    <input {...getInputProps1()} />
-                    <img
-                      src="https://img.icons8.com/?size=512&id=43469&format=png&color=1A6DFF,C822FF"
-                      className="object-scale-down w-12 h-12"
-                    />
-                    <Typography color="gray" className="mt-1 font-normal">
-                      Click to select a Python file or drag and drop here.
+      <div className="m-6">
+        <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
+          <div
+            className="relative rounded-[15px] p-6 text-purple-500"
+            data-theme="mytheme"
+          >
+            <Card color="transparent" shadow={false}>
+              <form onSubmit={handleFormSubmit}>
+                <div className="p-8 space-y-6">
+                  <Typography variant="h4" color="blue-gray">
+                    Script Upload
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal">
+                    Please select one Python file to upload.
+                  </Typography>
+                  <div className="m-3">
+                    <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
+                      <div
+                        className={`${
+                          isDragActive1 ? "bg-blue-100" : ""
+                        } flex flex-col items-center justify-center rounded-[15px] p-6 whitespace-wrap text-center`}
+                        {...getRootProps1()}
+                        data-theme="mytheme"
+                      >
+                        <input {...getInputProps1()} />
+                        <img
+                          src="https://img.icons8.com/?size=512&id=43469&format=png&color=1A6DFF,C822FF"
+                          className="object-scale-down w-12 h-12"
+                        />
+                        <Typography color="gray" className="mt-4 font-normal">
+                          Click to select a Python file or drag and drop here.
+                        </Typography>
+                      </div>
+                    </div>
+                  </div>
+                  {scriptError && (
+                    <Typography color="red" className="text-sm">
+                      Please select one Python file.
                     </Typography>
+                  )}
+                  <div className="flex flex-col space-y-4">
+                    {script.map((file, index) => (
+                      <div className="flex items-center" key={index}>
+                        <i className="ri-file-line text-gray-500 text-xl"></i>
+                        <Typography color="gray" className="ml-2">
+                          {file.name}
+                        </Typography>
+                        <Button
+                          size="sm"
+                          color="red"
+                          buttonType="link"
+                          rounded={true}
+                          iconOnly={true}
+                          ripple="dark"
+                          className="ml-2"
+                          onClick={() => handleRemoveScript(index)}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                {scriptError && (
-                  <Typography color="red" className="text-sm">
-                    Please select one Python file.
-                  </Typography>
-                )}
-                <div className="flex flex-col space-y-4">
-                  {script.map((file, index) => (
-                    <div className="flex items-center" key={index}>
-                      <i className="ri-file-line text-gray-500 text-xl"></i>
-                      <Typography color="gray" className="ml-2">
-                        {file.name}
-                      </Typography>
-                      <Button
-                        size="sm"
-                        color="red"
-                        buttonType="link"
-                        rounded={true}
-                        iconOnly={true}
-                        ripple="dark"
-                        className="ml-2"
-                        onClick={() => handleRemoveScript(index)}
-                      >
-                        Remove
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
 
-              <div className="p-8 space-y-6">
-                <Typography variant="h4" color="blue-gray">
-                  Data Upload
-                </Typography>
-                <Typography color="gray" className="mt-1 font-normal">
-                  Please select one or more Pickle or text files to upload.
-                </Typography>
-                <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
-                  <div
-                    className={`${
-                      isDragActive2 ? "bg-blue-100" : ""
-                    } flex flex-col items-center justify-center rounded-[15px] p-6 whitespace-wrap text-center`}
-                    {...getRootProps2()}
-                    data-theme="mytheme"
-                  >
-                    <input {...getInputProps2()} />
-                    <img
-                      src="https://img.icons8.com/?size=512&id=43469&format=png&color=1A6DFF,C822FF"
-                      className="object-scale-down w-12 h-12"
-                    />
-                    <Typography color="gray" className="mt-1 font-normal">
-                      Click to select Pickle file(s) or drag and drop here. Use
-                      Control/Command to select multiple files.
-                    </Typography>
-                  </div>
-                </div>
-                {dataError && (
-                  <Typography color="red" className="text-sm">
-                    Please select at least one Pickle or text file.
+                <div className="p-8 space-y-6">
+                  <Typography variant="h4" color="blue-gray">
+                    Data Upload
                   </Typography>
-                )}
-                <div className="flex flex-col space-y-4">
-                  {data.map((file, index) => (
-                    <div className="flex items-center" key={index}>
-                      <i className="ri-file-line text-gray-500 text-xl"></i>
-                      <Typography color="gray" className="ml-2">
-                        {file.name}
-                      </Typography>
-                      <Button
-                        size="sm"
-                        color="red"
-                        buttonType="link"
-                        rounded={true}
-                        iconOnly={true}
-                        ripple="dark"
-                        className="ml-2"
-                        onClick={() => handleRemoveData(index)}
+                  <Typography color="gray" className="mt-1 font-normal">
+                    Please select one or more Pickle or text files to upload.
+                  </Typography>
+                  <div className="m-3">
+                    <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
+                      <div
+                        className={`${
+                          isDragActive2 ? "bg-blue-100" : ""
+                        } flex flex-col items-center justify-center rounded-[15px] p-6 whitespace-wrap text-center`}
+                        {...getRootProps2()}
+                        data-theme="mytheme"
                       >
-                        Remove
-                      </Button>
+                        <input {...getInputProps2()} />
+                        <img
+                          src="https://img.icons8.com/?size=512&id=43469&format=png&color=1A6DFF,C822FF"
+                          className="object-scale-down w-12 h-12"
+                        />
+                        <Typography color="gray" className="mt-4 font-normal">
+                          Click to select file(s) or drag and drop here. Use
+                          Control/Command to select multiple files.
+                        </Typography>
+                      </div>
                     </div>
-                  ))}
+                  </div>
+                  {dataError && (
+                    <Typography color="red" className="text-sm">
+                      Please select at least one Pickle or text file.
+                    </Typography>
+                  )}
+                  <div className="flex flex-col space-y-4">
+                    {data.map((file, index) => (
+                      <div className="flex items-center" key={index}>
+                        <i className="ri-file-line text-gray-500 text-xl"></i>
+                        <Typography color="gray" className="ml-2">
+                          {file.name}
+                        </Typography>
+                        <Button
+                          size="sm"
+                          color="red"
+                          buttonType="link"
+                          rounded={true}
+                          iconOnly={true}
+                          ripple="dark"
+                          className="ml-2"
+                          onClick={() => handleRemoveData(index)}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                  <Typography variant="h4" color="blue-gray">
+                    Email Upload
+                  </Typography>
+                  <Typography color="gray" className="mt-1 font-normal py-2">
+                    Please enter a valid email address for the results to be
+                    sent.
+                  </Typography>
+                  <Input
+                    size="lg"
+                    label="Email"
+                    value={email}
+                    onChange={(e) => validateEmail(e.target.value)}
+                    error={emailError ? true : false}
+                    helperText={emailError}
+                  />
+                  <Button
+                    className="mt-6"
+                    fullWidth
+                    disabled={
+                      !script.length ||
+                      script.length > 1 ||
+                      !data.length ||
+                      emailError
+                    }
+                    type="submit"
+                  >
+                    Submit Job
+                  </Button>
                 </div>
-                <Typography variant="h4" color="blue-gray">
-                  Email Upload
-                </Typography>
-                <Typography color="gray" className="mt-1 font-normal py-2">
-                  Please enter a valid email address for the results to be sent.
-                </Typography>
-                <Input
-                  size="lg"
-                  label="Email"
-                  value={email}
-                  onChange={(e) => validateEmail(e.target.value)}
-                  error={emailError ? true : false}
-                  helperText={emailError}
-                />
-                <Button
-                  className="mt-6"
-                  fullWidth
-                  disabled={
-                    !script.length ||
-                    script.length > 1 ||
-                    !data.length ||
-                    emailError
-                  }
-                  type="submit"
-                >
-                  Submit Job
-                </Button>
-              </div>
-              {isLoading && <Loading />}
-              {!isLoading && hasError && (
-                <Error
-                  errorMessage="Error! The poor API didn't like that. Try again in a little bit or
+                {isLoading && <Loading />}
+                {!isLoading && hasError && (
+                  <Error
+                    errorMessage="Error! The poor API didn't like that. Try again in a little bit or
             with different inputs"
-                />
-              )}
-              {!isLoading && hasError2 && (
-                <div>
-                  <Error errorMessage="Error! Your inputs produced an output that isn't valid JSON. Edit your script or data files and try again." />
-                </div>
-              )}
-              {!isLoading &&
-                !hasError &&
-                response &&
-                response.algocall_result &&
-                response.algocall_result.result && (
-                  <Result data={response.algocall_result.result} />
+                  />
                 )}
-            </form>
-          </Card>
+                {!isLoading && hasError2 && (
+                  <div>
+                    <Error errorMessage="Error! Your inputs produced an output that isn't valid JSON. Edit your script or data files and try again." />
+                  </div>
+                )}
+                {!isLoading &&
+                  !hasError &&
+                  response &&
+                  response.algocall_result &&
+                  response.algocall_result.result && (
+                    <Result data={response.algocall_result.result} />
+                  )}
+              </form>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

@@ -153,7 +153,8 @@ const HomePage = () => {
                   For the best experience, we recommend running custom
                   algorithms on your own machine and making use of Quick Start
                   to visualize your results. Beyond showcasing some algorithms
-                  algorithms, our free online compute resources are limited.
+                  algorithms, our{" "}
+                  <strong>free online compute resources are limited</strong>.
                 </p>{" "}
                 <p class="mb-4">
                   Ginkgo-P is fully open source to make knowledge graph research
@@ -164,7 +165,7 @@ const HomePage = () => {
                     className="text-indigo-400 hover:text-blue-500 hover:underline"
                   >
                     GitHub
-                  </a>{" "}
+                  </a>
                   . Please refer to our paper for full details on the system
                   architecture and algorithms.
                 </p>{" "}
