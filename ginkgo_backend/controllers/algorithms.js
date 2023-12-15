@@ -20,6 +20,7 @@ function loadProcess(script_language, script_name, ...args) {
     let process_result;
     process.stdout.on("data", function (data) {
       process_result = data;
+      console.log(data.toString());
     });
 
     process.stderr.on("data", function (err) {
@@ -100,8 +101,6 @@ const postCustomAlgoResult = async (req, res, next) => {
   fs.mkdir(relativePath, { recursive: true }, (err) => {
     if (err) {
       console.error(`Error creating folder: ${err.message}`);
-    } else {
-      console.log(`Folder '${relativePath}' created successfully.`);
     }
   });
   // Create an array to store the file paths
