@@ -17,10 +17,9 @@ function loadProcess(script_language, script_name, ...args) {
       `./algorithm_scripts/${script_name}`,
       ...args
     ]);
-    let process_result;
+    let process_result = "";
     process.stdout.on("data", function (data) {
-      process_result = data;
-      console.log(data.toString());
+      process_result += data.toString();
     });
 
     process.stderr.on("data", function (err) {
