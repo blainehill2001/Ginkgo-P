@@ -25,6 +25,9 @@ var AlgorithmCallSchema = new Schema({
     required: true,
     unique: false
   },
+  query: {
+    type: String
+  },
   result: {
     type: String,
     default: JSON.stringify({ error: "error" })

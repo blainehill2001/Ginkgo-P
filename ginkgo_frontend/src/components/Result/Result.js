@@ -2,27 +2,25 @@ import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
 
 const Result = ({ data }) => {
-  // Copyright 2021 Observable, Inc.
-  // Released under the ISC license.
-  // https://observablehq.com/@d3/force-directed-graph
-
   const svg = useRef(null);
   useEffect(() => {
     if (svg.current) {
       svg.current.appendChild(chart);
     }
   }, []);
-
+  console.log("this is data ");
+  console.log(data);
   const parsed_data = JSON.parse(data);
   if (parsed_data.error) {
     return parsed_data;
   }
-
+  console.log(parsed_data);
   const links = [];
   const highlightedLinks = [];
 
   const regnodePairs = new Set();
   const hlnodePairs = new Set();
+  let myBool = false;
   for (const link of parsed_data.graph.links) {
     const source = link.source;
     const target = link.target;
@@ -31,73 +29,27 @@ const Result = ({ data }) => {
       source < target ? `${source}-${target}` : `${target}-${source}`;
 
     if (!regnodePairs.has(pairKey)) {
+      if ((source == 39 && target == 25) || (source == 78 && target == 39)) {
+        continue;
+      }
       regnodePairs.add(pairKey);
       links.push(link);
     }
   }
-
   for (const link of parsed_data.highlighted_path) {
     const source = link.source;
     const target = link.target;
-
+    highlightedLinks.push(link);
     const pairKey =
       source < target ? `${source}-${target}` : `${target}-${source}`;
 
     if (!hlnodePairs.has(pairKey)) {
       hlnodePairs.add(pairKey);
-      highlightedLinks.push(link);
     }
   }
 
   parsed_data.graph.links = links;
   parsed_data.highlighted_path = highlightedLinks;
-
-  //   for (const highlightLink of parsed_data.highlighted_path) {
-  //     const source = highlightLink.source;
-  //     const target = highlightLink.target;
-
-  //     if (source > target) {
-  //       highlightedLinks.push({
-  //         source: target,
-  //         target: source,
-  //         type: highlightLink.type
-  //       });
-  //     } else {
-  //       highlightedLinks.push(highlightLink);
-  //     }
-  //   }
-  //   for (const highlightLink of highlightedLinks) {
-  //     const key = `${highlightLink.source},${highlightLink.target}`;
-
-  //     if (highlightLinkMap.has(key)) {
-  //       const existing = highlightLinkMap.get(key);
-  //       existing.labels.push(highlightLink.type);
-  //     } else {
-  //       highlightLinkMap.set(key, {
-  //         source: highlightLink.source,
-  //         target: highlightLink.target,
-  //         labels: [highlightLink.type]
-  //       });
-  //     }
-  //   }
-
-  //   for (const value of linkMap.values()) {
-  //     links.push(value);
-  //   }
-  //   for (const link of links) {
-  //     // link.label = link.labels.join(","); //use this line to join together multiple edge labels (since they are too long to display, I am taking just the first instead)
-  //     link.label = link.labels[0];
-  //     delete link.labels; // Remove labels array
-  //   }
-
-  //   for (const value of highlightLinkMap.values()) {
-  //     highlightedLinks.push(value);
-  //   }
-  //   for (const highlightedLink of highlightedLinks) {
-  //     // highlightedLink.label = highlightedLink.labels.join(","); //use this line to join together multiple edge labels (since they are too long to display, I am taking just the first instead)
-  //     highlightedLink.label = highlightedLink.labels[0];
-  //     delete highlightedLink.labels; // Remove labels array
-  //   }
 
   function ForceGraph(
     status, //a string denoting status of the data
@@ -133,7 +85,6 @@ const Result = ({ data }) => {
       invalidation // when this promise resolves, stop the simulation
     } = {}
   ) {
-    console.log("tag:  " + tag);
     //set highlighted path to be a set to save time
     var highlighted_path_set = new Set();
     highlighted_path.forEach((item) => {
@@ -150,11 +101,10 @@ const Result = ({ data }) => {
       highlighted_path_set.add(JSON.stringify(forward_dir));
       //   highlighted_path_set.add(JSON.stringify(backward_dir));
     });
-
     //edit linkstrokewidth and linkstrokeopacity to highlight edges
-
     linkStroke = (cur_link) => {
       if (typeof linkStroke == "function") {
+        console.log(JSON.stringify(cur_link));
         return highlighted_path_set.has(JSON.stringify(cur_link))
           ? "#fceaba"
           : "#8f69a2";
@@ -504,3 +454,144 @@ const Result = ({ data }) => {
 };
 
 export default Result;
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+// import React, { useRef, useEffect } from "react";
+// import * as d3 from "d3";
+// import ForceGraph from "./ForceGraph";
+
+// const Result = ({ data }) => {
+//   const parsed_data = JSON.parse(data);
+//   if (parsed_data.error) {
+//     return parsed_data;
+//   }
+
+//   console.log(parsed_data);
+
+//   function handleReset() {
+//     // Call resetSimulation method
+//   }
+
+//   return (
+//     <div className="flex justify-center">
+//       <div className="flex-col">
+//         <div className="justify-center">
+//           <div className="group relative mx-auto overflow-hidden bg-gray-300 rounded-[16px] p-[1px] px-0.5 transition-all duration-300 ease-in-out hover:bg-gradient-to-r hover:from-indigo-500 hover:via-purple-500 hover:to-pink-500">
+//             <div
+//               className="relative rounded-[15px] text-purple-500 p-5"
+//               data-theme="mytheme"
+//             >
+//               <div className="absolute bottom-2 right-2">
+//                 <div>
+//                   <ForceGraph
+//                     links={parsed_data.graph.links}
+//                     resetSimulation={handleReset}
+//                   />
+//                 </div>
+//                 <button
+//                   type="button"
+//                   onClick={() => handleReset()}
+//                   className={`py-1 px-4 inline-block rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2] bg-[#fbe5a9] text-[#8f69a2]`}
+//                 >
+//                   Reset
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Result;

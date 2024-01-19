@@ -6,6 +6,8 @@
  
  Policy gradient (REINFORCE algorithm) training and inference.
 """
+import logging
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 import torch
 
@@ -255,7 +257,12 @@ class PolicyGradient(LFramework):
         pred_e2s = beam_search_output['pred_e2s']
         pred_e2_scores = beam_search_output['pred_e2_scores']
         search_traces = beam_search_output['search_traces']
+        logging.debug("this is beam search output")
+        logging.debug(f"pred_e2s: {pred_e2s}")
+        logging.debug(f"pred_e2_scores: {pred_e2_scores}")
+        logging.debug(f"search_traces: {search_traces}")
         output_beam_size = min(self.beam_size, pred_e2_scores.shape[1])
+        logging.debug(f"output_beam_size: {output_beam_size}")
         for i in range(len(e1)):
             for j in range(output_beam_size):
                 ind = i * output_beam_size + j
@@ -264,6 +271,8 @@ class PolicyGradient(LFramework):
                 search_trace = []
                 for k in range(len(search_traces)):
                     search_trace.append((int(search_traces[k][0][ind]), int(search_traces[k][1][ind])))
+
+        logging.debug(f"ops.format_path_ginkgo: {ops.format_path_ginkgo(search_trace, kg)}")
         return ops.format_path_ginkgo(search_trace, kg)
 
     def record_path_trace(self, path_trace):

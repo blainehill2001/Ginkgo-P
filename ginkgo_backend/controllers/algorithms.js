@@ -12,32 +12,38 @@ function loadProcess(script_language, script_name, ...args) {
             script_name: String => title of script with file extension (e.g. "script1.py" not "script1")
             ...args: String => values of the rest of the parsed JSON object passed to api call
     */
-  return new bbPromise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
+    console.log("got to loadProcess return statement");
+    console.log(script_language, script_name, ...args);
     var process = spawn(`${script_language}`, [
       `./algorithm_scripts/${script_name}`,
       ...args
     ]);
     let process_result = "";
-    process.stdout.on("data", function (data) {
+    process.stdout.on("data", (data) => {
       process_result += data.toString();
     });
 
-    process.stderr.on("data", function (err) {
+    process.stderr.on("error", (err) => {
       reject(err.toString());
     });
 
-    process.on("close", function () {
+    process.on("close", () => {
+      console.log("process_result: ", process_result);
       resolve(process_result);
     });
   });
 }
 
 async function searchMongo(body) {
+  console.log("\n\n\n\nthis is searchMongo!!!");
+  console.log(body);
   const doc = await AlgorithmCall.findOne(body).exec();
+  console.log(doc);
   return doc;
 }
 const getAlgoResult = (req, res, next) => {
-  res.json({ message: "GET (blaine wrote this) request receieved." });
+  res.json({ message: "GET request receieved." });
   next();
 };
 const postAlgoResult = async (req, res, next) => {
@@ -46,45 +52,41 @@ const postAlgoResult = async (req, res, next) => {
   //TODO
   //return object.result
   //if it is not in cache
-  var mongo_check;
-  searchMongo(req.body).then((res) => {
-    mongo_check = res;
-  });
+  let mongo_check;
+  mongo_check = await searchMongo(req.body);
+
   //if it is in mongodb
-  if (typeof mongo_check !== "undefined") {
+  if (mongo_check !== null) {
+    console.log("fetch from mongo");
+    console.log(mongo_check);
     //return object.result
     return res.status(201).json({
-      algocall_result: mongo_check.result,
+      algocall_result: mongo_check,
       message:
         "GET request receieved. Found algorithm result for inputs in MongoDB."
     });
     // next();
   } else {
     //if it is not in mongodb, call loadProcess;
+    const algocall_result = await loadProcess(...Object.values(req.body));
 
-    const algocall_result = await loadProcess(...Object.values(req.body)).then(
-      (x) => x,
-      console.log
-    );
-    let finished_algocall = new AlgorithmCall(
-      _.merge(req.body, { result: algocall_result })
-    );
+    let finished_algocall = new AlgorithmCall({
+      ...req.body,
+      result: algocall_result
+    });
 
-    //store finished_algocall in cache
-    //TODO
-    //store answer in mongodb
     return finished_algocall
       .save()
       .then(() => {
         res.status(201).json({
           message:
-            "GET request receieved. Ran algorithm and stored results [in cache] AND MongoDB.",
+            "GET request receieved. Ran algorithm and stored results in MongoDB.",
           algocall_result: finished_algocall
         });
       })
       .catch((err) => {
         res.status(400).json({
-          message: `GET request receieved. Ran algorithm and stored results [in cache] but NOT MongoDB. See error: \n${err}`,
+          message: `GET request receieved. Ran algorithm and but did not store results in MongoDB. See error: \n${err}`,
           algocall_result: finished_algocall
         });
       });
@@ -135,7 +137,7 @@ const postCustomAlgoResult = async (req, res, next) => {
   if (typeof mongo_check !== "undefined") {
     //return object.result
     return res.status(201).json({
-      algocall_result: mongo_check.result,
+      algocall_result: mongo_check,
       message:
         "GET request receieved. Found algorithm result for inputs in MongoDB."
     });
