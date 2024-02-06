@@ -123,19 +123,21 @@ const QuickStart = () => {
                     </div>
                   )}
                 </div>
-                <button
-                  className={
-                    isLoading === true
-                      ? "inline-block bg-[#fbe5a9] text-[#8f69a2] rounded shadow py-2 px-5 text-sm opacity-50 cursor-not-allowed outline outline-1 outline-[#8f69a2]"
-                      : "inline-block bg-[#fbe5a9] text-[#8f69a2] rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2]"
-                  }
-                  type="submit"
-                >
-                  Submit
-                </button>
+                <div className="py-2">
+                  <button
+                    className={
+                      isLoading === true
+                        ? "inline-block bg-[#fbe5a9] text-[#8f69a2] rounded shadow py-2 px-5 text-sm opacity-50 cursor-not-allowed outline outline-1 outline-[#8f69a2]"
+                        : "inline-block bg-[#fbe5a9] text-[#8f69a2] rounded shadow py-2 px-5 text-sm outline outline-1 outline-[#8f69a2]"
+                    }
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                </div>
               </form>
 
-              <div className="flex justify-center">
+              <div className="py-2 flex justify-center">
                 {isLoading && <Loading />}
                 {!isLoading && hasError && (
                   <Error
