@@ -20,7 +20,9 @@ const KGCompletionHome = () => {
                 like UMLS represent medical facts as triplets of node,
                 relationship, and node. For example: &lt;Aspirin, treats,
                 Pain&gt;. KG Completion helps populate UMLS with new medical
-                facts by analyzing existing links.
+                facts by analyzing existing links. In the example algorithm
+                implementations, the top 10 answers are returned with the top
+                overall answer highlighted.
               </p>{" "}
               <h3 class="text-xl font-bold mb-2">TransE</h3>{" "}
               <p class="mb-4 ">

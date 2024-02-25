@@ -18,6 +18,8 @@ const KGQuestionAnsweringHome = () => {
                 Knowledge Graph Question Answering (KGQA) involves querying a
                 knowledge graph to answer natural language questions. It locates
                 relevant triplets in the KG to return the best answering entity.
+                Additionally, nearby entities and relations are included to
+                provide context for the answer.
               </p>{" "}
               <h3 class="text-xl font-bold mb-2">EmbedKGQA</h3>{" "}
               <p class="mb-4">

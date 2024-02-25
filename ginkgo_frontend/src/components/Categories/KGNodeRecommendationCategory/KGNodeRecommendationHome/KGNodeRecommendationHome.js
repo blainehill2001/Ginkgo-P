@@ -18,7 +18,9 @@ const KGNodeRecommendationHome = () => {
                 Node recommendation in knowledge graphs aims to predict the most
                 relevant neighboring node for a given source node. This is based
                 on minimizing the distance between the source node and candidate
-                nodes in the graph embedding space.
+                nodes in the graph embedding space. In the example algorithm
+                implementation, the top 5 answers are returned with the top
+                overall answer highlighted.
               </p>{" "}
               <h3 class="text-xl font-bold mb-2">PageRank</h3>{" "}
               <p class="mb-4">

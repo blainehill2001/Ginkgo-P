@@ -29,9 +29,6 @@ const Result = ({ data }) => {
       source < target ? `${source}-${target}` : `${target}-${source}`;
 
     if (!regnodePairs.has(pairKey)) {
-      if ((source == 39 && target == 25) || (source == 78 && target == 39)) {
-        continue;
-      }
       regnodePairs.add(pairKey);
       links.push(link);
     }
